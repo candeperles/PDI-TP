@@ -1,0 +1,19 @@
+# Dataset (too large for git — see README for download instructions)
+/data/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# ML artifacts
+*.pt
+*.pth
+*.onnx
+runs/
+wandb/
+
+# OS
+.DS_Store
