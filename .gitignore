@@ -1,5 +1,6 @@
 # Dataset (too large for git — see README for download instructions)
 /data/
+/resultados/
 
 # Python
 __pycache__/
