@@ -62,10 +62,10 @@ matriz de experimentos se definirá en una etapa posterior.
 
 ## Puntos pendientes antes de entrenar
 
-1. **Significado de las clases 0, 1 y 2.** La consigna no lo explica. Buscar la
-   definición original o consultar a la cátedra antes de fusionarlas. Una etiqueta
-   vacía podrá representar "sin paneles" una vez validada su integridad; no tratar
-   archivos faltantes o corruptos como imágenes negativas.
+1. **Clases y criterios.** Se cotejó la fuente original: en `solarpanels_hd`, 0/1/2
+   son niveles de confianza. La futura fusión a `panel` preservará ese metadato;
+   ver [criterios_datos.md](criterios_datos.md). No tratar archivos faltantes,
+   corruptos o dudas registradas como negativos confirmados.
 2. **Calidad de datos y anotaciones.** Verificar correspondencias imagen/etiqueta,
    dimensiones, coordenadas, tamaños de cajas y duplicados. Revisar visualmente
    clases raras y cajas mínimas. Conservar los originales y documentar cualquier
@@ -85,5 +85,6 @@ matriz de experimentos se definirá en una etapa posterior.
 ## Siguiente etapa acordada en la conversación
 
 El entorno y la auditoría ya se prepararon y ejecutaron, sin implementar ni entrenar
-modelos. Se generaron tablas de incidencias y ejemplos visuales. Sigue pendiente
-acordar el tratamiento de la anotación inválida, las cajas pequeñas y las clases.
+modelos. Se generaron tablas de incidencias y ejemplos visuales. Los criterios de
+preparación están documentados y falta aplicarlos a una copia derivada. Dos negativos
+ambiguos requieren segunda revisión; originales y split permanecen sin cambios.

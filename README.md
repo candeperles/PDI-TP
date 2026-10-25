@@ -87,6 +87,7 @@ Esta comprobación no reemplaza la validación detallada de anotaciones del sigu
 | `notebooks/00_plantilla.ipynb` — base para cada experimento | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/00_plantilla.ipynb) |
 | `notebooks/01_exploracion.ipynb` — exploración del dataset | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/01_exploracion.ipynb) |
 | `notebooks/02_validacion_datos.ipynb` — validación de archivos, cajas, duplicados y split | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/02_validacion_datos.ipynb) |
+| `notebooks/03_revision_anotaciones.ipynb` — casos dudosos, muestra de negativos y criterios | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/03_revision_anotaciones.ipynb) |
 
 ### Una sola vez
 
@@ -151,4 +152,32 @@ Pruebas del validador con datos sintéticos, incluidos archivos dañados y fuga 
 
 ```powershell
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
+```
+
+## Revisión de anotaciones y criterios
+
+Los criterios para la futura preparación están en [docs/criterios_datos.md](docs/criterios_datos.md).
+En `solarpanels_hd`, los IDs 0/1/2 indican confianza alta/moderada/baja, según la
+documentación original cotejada. Se definió una clase `panel` para el derivado,
+conservando la clase y confianza originales como metadatos. No se filtran cajas
+pequeñas positivas; se excluirá únicamente la caja de ancho cero. Estas reglas
+todavía no se aplicaron a una copia de datos.
+
+La [revisión documentada](docs/revision_anotaciones.md) incluye 17 cajas minoritarias,
+37 pequeñas, una nula y 18 imágenes con etiqueta vacía. Los negativos N06/N16 quedan
+para una segunda revisión, sin modificar sus etiquetas ni el split.
+
+```powershell
+.\.venv\Scripts\python.exe scripts/check_environment.py --notebook 03_revision_anotaciones.ipynb
+```
+
+El notebook genera las galerías completas y coteja la selección con
+`docs/revision_anotaciones.csv`, correspondiente a `dataset-v1`. Si cambian los
+datos, hay que repetir la revisión y actualizar el registro. No necesita conexión
+adicional una vez instalado el entorno y descargados los datos.
+
+Para repetir el cotejo de las 17 cajas con las etiquetas de Figshare (requiere red):
+
+```powershell
+.\.venv\Scripts\python.exe scripts/check_annotation_source.py
 ```

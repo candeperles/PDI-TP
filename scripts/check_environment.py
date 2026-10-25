@@ -75,5 +75,5 @@ def verificar(nombre_notebook: str = "01_exploracion.ipynb") -> None:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--notebook", default="01_exploracion.ipynb",
-                        choices=["01_exploracion.ipynb", "02_validacion_datos.ipynb"])
+                        choices=["01_exploracion.ipynb", "02_validacion_datos.ipynb", "03_revision_anotaciones.ipynb"])
     verificar(parser.parse_args().notebook)

@@ -71,16 +71,17 @@ no se suben a Git; cada integrante puede reproducirlos. En Colab se guardan en D
 
 ## Límites y pendientes
 
-- Los IDs 0, 1 y 2 se aceptan porque son los que usa el repositorio. Su significado
-  no está confirmado; las 17 cajas de clases 1 y 2 siguen pendientes de revisión semántica.
+- Actualización posterior a la auditoría: se cotejaron los IDs 0/1/2 de `solarpanels_hd`
+  como niveles de confianza de origen. Ver [criterios_datos.md](criterios_datos.md)
+  y [revision_anotaciones.md](revision_anotaciones.md). La auditoría conserva los IDs originales.
 - Los hashes detectan copias exactas; no descartan imágenes casi iguales,
   transformadas o recortes solapados.
 - La separación espacial usa las reglas basadas en nombres de `pdi_tp/split.py`.
   Que los grupos no se crucen no demuestra independencia geográfica absoluta.
 - Los controles numéricos no prueban que las cajas estén completas ni que cada
   anotación corresponda visualmente a un panel. Hace falta revisión visual del equipo.
-- Antes de entrenar: resolver la anotación degenerada y acordar si se conservan
-  todas las cajas pequeñas. Mantener los originales y documentar cualquier derivación.
+- Antes de entrenar: aplicar los criterios documentados a una copia derivada y
+  resolver la segunda revisión de N06/N16. Mantener los originales y el split.
 
 ## Verificación del código
 
