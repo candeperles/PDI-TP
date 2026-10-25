@@ -104,7 +104,6 @@ de Drive y el entrenamiento completo requieren una sesión real de Colab.
 | `notebooks/03_revision_anotaciones.ipynb` — casos dudosos, muestra de negativos y criterios | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/03_revision_anotaciones.ipynb) |
 | `notebooks/04_clasificacion_mobilenetv2.ipynb` — clasificación con MobileNetV2 (congelado, fine-tuning, sin pre-entrenamiento) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/04_clasificacion_mobilenetv2.ipynb) |
 | `notebooks/05_ResNet50_Colab_v2.ipynb` — ResNet50, versión recomendada con guardado por ID | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/05_ResNet50_Colab_v2.ipynb) |
-| `notebooks/04_clasificacion_ResNet50.ipynb` — clasificación con ResNet50 (congelado, fine-tuning y pesos aleatorios) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/04_clasificacion_ResNet50.ipynb) |
 
 ### Extra: modelos adicionales (fuera de la consigna)
 

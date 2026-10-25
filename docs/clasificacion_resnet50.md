@@ -1,10 +1,11 @@
 # Ítem 2: ResNet50
 
-Abrir `notebooks/04_clasificacion_ResNet50.ipynb`, completar `INTEGRANTE` y ejecutar
-en orden en Colab con GPU T4. El notebook instala `requirements-training.txt` y usa
-el mismo montaje de Drive y split del resto del trabajo. Guardar una copia del notebook.
-El notebook nuevo y los módulos deben estar disponibles en el repositorio que clona
-Colab; mientras los cambios sean locales, subirlos antes de abrirlo desde GitHub.
+Abrir `notebooks/05_ResNet50_Colab_v2.ipynb` en una sesión nueva de Colab con GPU T4.
+Completar `INTEGRANTE` y `CORRIDA`; cuando se pida, pegar el enlace de una carpeta
+existente de Drive. El notebook guarda primero en disco local y copia archivos por
+ID a esa carpeta, sin montar Drive ni crear carpetas allí. Verifica escritura antes
+de entrenar y copia checkpoints al terminar cada época. Guardar una copia del notebook.
+El dataset y el split son los mismos del resto del trabajo.
 
 Se implementaron tres experimentos: ImageNet con extractor congelado, ajuste fino
 de conv5 desde el mejor modelo congelado y entrenamiento desde pesos aleatorios.
@@ -24,11 +25,13 @@ Las métricas sobre las 162 imágenes y la selección por `val_loss` usan la ref
 original **provisional**; el informe incluye además métricas sin estos dos casos.
 No se cambió el split ni se resolvieron sus dudas semánticas por entrenamiento.
 
-Cada corrida crea `resultados/<integrante>/resnet50_<fecha>/` (Drive en Colab) con
+Cada corrida guarda localmente en `/content/resultados_resnet50_v2/<integrante>/<corrida>/`, con
 manifiesto, cajas, huella de datos, configuración, versiones y comparación CSV.
 Cada variante guarda `mejor.keras`, `ultimo.keras`, historial por época, curvas,
 matriz de confusión, métricas globales y por fuente y predicciones identificadas
-por archivo. Los JSON resumidos se integran con `resultados.cargar_experimentos`.
+por archivo. En Drive se copian como archivos con prefijo de integrante y corrida;
+los JSON de registro quedan junto a las métricas. El ZIP final reúne métricas y gráficos;
+los checkpoints se conservan como archivos separados.
 Para cargar un modelo, usar `keras.models.load_model(ruta)` e ingresar RGB 0..255;
 el preprocesamiento ResNet está incluido en el modelo.
 
