@@ -27,11 +27,16 @@ No se cambió el split ni se resolvieron sus dudas semánticas por entrenamiento
 
 Cada corrida guarda localmente en `/content/resultados_resnet50_v2/<integrante>/<corrida>/`, con
 manifiesto, cajas, huella de datos, configuración, versiones y comparación CSV.
-Cada variante guarda `mejor.keras`, `ultimo.keras`, historial por época, curvas,
-matriz de confusión, métricas globales y por fuente y predicciones identificadas
-por archivo. En Drive se copian como archivos con prefijo de integrante y corrida;
-los JSON de registro quedan junto a las métricas. El ZIP final reúne métricas y gráficos;
-los checkpoints se conservan como archivos separados.
+Cada variante guarda localmente `mejor.keras`, `ultimo.keras`, historial por época, curvas,
+matriz de confusión, métricas globales y por fuente y predicciones por archivo.
+En Drive se conservan solo cuatro archivos por corrida, con prefijo de integrante y corrida:
+`metricas_y_graficos.zip`, `imagenet_cabeza__mejor.keras`,
+`imagenet_finetuning__mejor.keras` y `aleatorio__mejor.keras`.
+El ZIP contiene todos los archivos auxiliares excepto los modelos y se actualiza después
+de cada época junto con los mejores modelos disponibles. `ultimo.keras` queda solo en Colab.
+La celda final verifica las cuatro copias y manda a la papelera los auxiliares de la misma
+corrida que hubiera subido la versión anterior, sin tocar otras corridas. Los registros JSON
+para comparar resultados del equipo se pueden extraer del ZIP.
 Para cargar un modelo, usar `keras.models.load_model(ruta)` e ingresar RGB 0..255;
 el preprocesamiento ResNet está incluido en el modelo.
 

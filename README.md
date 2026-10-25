@@ -122,7 +122,12 @@ Mi unidad/PDI-TP/
 - **Nombres de experimento únicos**: si se repite un nombre, se pisa el JSON anterior.
 - **Excepción, `05_ResNet50_Colab_v2`**: no monta Drive; al correrlo pide la URL de una carpeta existente.
   Para mantener el orden, pegar la URL de **tu** carpeta `PDI-TP/resultados/<integrante>/`. Los archivos
-  llevan el prefijo `<integrante>__<corrida>`.
+  llevan el prefijo `<integrante>__<corrida>`. Conserva solo cuatro archivos por corrida: un ZIP
+  con métricas, gráficos, predicciones y configuración, y los tres mejores modelos `.keras`.
+  La celda final verifica las copias y retira a la papelera los auxiliares de esa misma corrida
+  que hubiera guardado la versión anterior. Los JSON para comparar en equipo están dentro del ZIP.
+  Para limpiar una corrida anterior ya terminada sin entrenar otra vez, abrir
+  `notebooks/06_ordenar_resultados_resnet50.ipynb` en Colab y ejecutar sus dos celdas.
 
 ## Subir notebooks y cambios al repositorio
 
