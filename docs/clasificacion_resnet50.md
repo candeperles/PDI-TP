@@ -51,3 +51,9 @@ entorno de modelos; no hay métricas ni pesos producidos hasta ejecutarlos.
 La comparación entre arquitecturas requiere ejecutar también MobileNetV2, disponible en el repositorio.
 Val sirve para elegir checkpoints y comparar; no proporciona una evaluación final
 independiente. No inferir superioridad sin resultados reales y revisión de curvas.
+
+Si una etapa se interrumpe en la misma sesión de Colab, al volver a ejecutar su celda
+continúa desde `ultimo.keras` y conserva el optimizador Adam, el historial y el mejor
+checkpoint anterior. No se reinicia la etapa ni se repiten las épocas ya registradas.
+Si historial y checkpoint no coinciden, se detiene sin sobrescribirlos. El último
+checkpoint permanece solo en Colab; esto no recupera una sesión cuyo disco se perdió.
