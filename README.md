@@ -127,6 +127,49 @@ En local, los notebooks funcionan desde la raíz o desde `notebooks/`. Los resul
 El montaje de Drive y la GPU de Colab requieren una comprobación desde la cuenta de
 cada integrante; la verificación local no los comprueba.
 
+## Subir cambios al repositorio
+
+Se trabaja directo sobre `main`. En el repo va **el código**; los resultados de cada corrida van a Drive.
+
+| Va a Git | No va a Git |
+|---|---|
+| Notebooks **sin salidas**, `pdi_tp/`, `scripts/`, `docs/`, `splits/` | `data/` (dataset), `resultados/` (JSON, pesos `.keras`, CSV de predicciones) |
+| Experimentos nuevos, como una entrada más en `EXPERIMENTOS` del notebook | Copias ejecutadas de un notebook por experimento (se guardan en Drive) |
+
+### Un experimento nuevo
+
+No se copia el notebook: en `notebooks/04_clasificacion_mobilenetv2.ipynb` se agrega una entrada a
+`EXPERIMENTOS` con un nombre único y los valores que cambian respecto de `BASE`, por ejemplo
+`"mobilenetv2_imagenet_sin_aug": {"pesos": "imagenet", "modo": "congelado", "augmentation": False}`.
+Después se hace push, así queda registrado qué se corrió. El nombre es el del JSON en Drive: no reutilizar
+uno existente, porque se pisa el resultado.
+
+### Desde una copia local
+
+```bash
+git pull                                   # traer lo último antes de tocar nada
+# ... editar ...
+git status                                 # revisar que no se cuelen data/ ni resultados/
+git add notebooks/04_clasificacion_mobilenetv2.ipynb   # agregar archivos puntuales, no "git add ."
+git commit -m "Agregar experimento MobileNetV2 sin augmentation"
+git push
+```
+
+Si `git push` se rechaza porque alguien subió antes: `git pull --rebase` y de nuevo `git push`.
+Si hay un conflicto en un notebook, avisar al equipo antes de resolverlo: un `.ipynb` mal mergeado deja
+de abrir.
+
+### Desde Colab
+
+1. *Editar → Borrar todos los resultados*, para no subir las salidas.
+2. *Archivo → Guardar una copia en GitHub*, repositorio `candeperles/PDI-TP`, rama `main`, y la **misma
+   ruta** del notebook (p. ej. `notebooks/04_clasificacion_mobilenetv2.ipynb`). Escribir un mensaje de commit.
+3. Ojo: guarda la versión de Colab tal cual. Si alguien cambió ese notebook en `main` después de que lo
+   abriste, sus cambios se pierden. Ante la duda, volver a abrirlo desde el README antes de editar.
+
+Los mensajes de commit van en castellano, en infinitivo y diciendo qué cambia
+("Agregar ...", "Corregir ...").
+
 ## Validación del dataset
 
 Ejecutar `notebooks/02_validacion_datos.ipynb` después de completar `INTEGRANTE`.
