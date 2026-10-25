@@ -1,6 +1,6 @@
 """Prepara el entorno de trabajo, en Colab o en local.
 
-- Descarga el dataset si no está (scripts/download_data.sh).
+- Descarga el dataset si no está (scripts/download_data.py).
 - En Colab monta Google Drive y usa la carpeta compartida del equipo para los resultados,
   así no se pierden si se corta la sesión.
 - Avisa si no hay GPU.
@@ -39,7 +39,9 @@ def preparar(integrante: str, usar_drive: bool = True) -> Rutas:
 
     datos = REPO_ROOT / "data" / "grupo_5"
     if not datos.is_dir():
-        subprocess.run(["bash", str(REPO_ROOT / "scripts" / "download_data.sh")], check=True)
+        subprocess.run([sys.executable, str(REPO_ROOT / "scripts" / "download_data.py")], check=True)
+    if not all((datos / carpeta).is_dir() for carpeta in ("images", "labels")):
+        raise FileNotFoundError(f"Dataset incompleto o inaccesible en {datos}: se esperan images/ y labels/.")
 
     if en_colab() and usar_drive:
         from google.colab import drive
