@@ -45,7 +45,15 @@ release (e.g. `dataset-v2`), then update the `TAG` in `scripts/download_data.sh`
 - Guardar los pesos de los modelos en `rutas.resultados` (Drive), no en `/content`, que se borra al
   cortarse la sesión.
 
-El código compartido (setup, lectura del dataset, registro de resultados) está en `pdi_tp/`. Si lo
+### División train/val
+
+Está versionada en `splits/train.txt` y `splits/val.txt` (738 / 162 imágenes); se carga con
+`split.cargar_split(rutas)`. Es 80/20 **por grupos espaciales** (recortes vecinos de una misma imagen
+grande quedan del mismo lado, para no tener fuga) y estratificada por fuente + con/sin paneles.
+Todos usan esta misma división: no regenerarla salvo que el equipo lo decida
+(`python scripts/make_split.py`).
+
+El código compartido (setup, lectura del dataset, split, registro de resultados) está en `pdi_tp/`. Si lo
 cambiás, hacé push para que el resto lo reciba en el próximo setup.
 
 En local, los notebooks también funcionan (corriendo desde `notebooks/`). Los resultados van a
