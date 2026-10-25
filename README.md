@@ -86,6 +86,7 @@ Esta comprobación no reemplaza la validación detallada de anotaciones del sigu
 |---|---|
 | `notebooks/00_plantilla.ipynb` — base para cada experimento | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/00_plantilla.ipynb) |
 | `notebooks/01_exploracion.ipynb` — exploración del dataset | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/01_exploracion.ipynb) |
+| `notebooks/02_validacion_datos.ipynb` — validación de archivos, cajas, duplicados y split | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/02_validacion_datos.ipynb) |
 
 ### Una sola vez
 
@@ -123,3 +124,31 @@ En local, los notebooks funcionan desde la raíz o desde `notebooks/`. Los resul
 
 El montaje de Drive y la GPU de Colab requieren una comprobación desde la cuenta de
 cada integrante; la verificación local no los comprueba.
+
+## Validación del dataset
+
+Ejecutar `notebooks/02_validacion_datos.ipynb` después de completar `INTEGRANTE`.
+También se puede verificar desde un kernel nuevo en local:
+
+```powershell
+.\.venv\Scripts\python.exe scripts/check_environment.py --notebook 02_validacion_datos.ipynb
+```
+
+En Linux/macOS usar `.venv/bin/python`. El notebook exporta tablas CSV, un resumen
+JSON y ejemplos visuales a `rutas.resultados / "validacion_datos"`. Con el comando
+anterior quedan en `resultados/verificacion/validacion_datos/`, y la copia ejecutada
+en `resultados/verificacion/02_validacion_datos.ejecutado.ipynb`.
+
+Revisa correspondencias, lectura y dimensiones de imágenes, formato YOLO,
+clases esperadas, geometría de cajas, duplicados exactos por bytes y píxeles RGB,
+cobertura del split y grupos espaciales compartidos. No modifica los datos ni
+regenera la división. Las cajas pequeñas son advertencias para revisión.
+
+Resultados y limitaciones de la primera ejecución:
+[docs/validacion_dataset.md](docs/validacion_dataset.md).
+
+Pruebas del validador con datos sintéticos, incluidos archivos dañados y fuga entre splits:
+
+```powershell
+.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+```

@@ -46,16 +46,19 @@ matriz de experimentos se definirá en una etapa posterior.
 
 ## Qué aporta el repositorio actual
 
-- `notebooks/01_exploracion.ipynb`: exploración con salidas guardadas; falta
-  reproducirla sobre la copia local del dataset y validar los archivos originales.
+- `notebooks/01_exploracion.ipynb`: exploración reproducida sobre la copia local.
+- `notebooks/02_validacion_datos.ipynb`: auditoría estructural y visual ejecutada;
+  detectó una caja de ancho cero y 37 cajas pequeñas positivas para revisión.
+  Ver [validacion_dataset.md](validacion_dataset.md) para resultados y límites.
 - `splits/train.txt` y `splits/val.txt`: división compartida de 738 y 162 imágenes.
   El código agrupa por cercanía espacial y busca equilibrar fuente y presencia
   de paneles. La proporción efectiva es 82/18; la consigna no impone una proporción.
 - `pdi_tp/`: preparación del entorno, lectura de imágenes y cajas, manejo del split
   y registro de parámetros y métricas en JSON.
 - `notebooks/00_plantilla.ipynb`: base para registrar futuros experimentos.
-- En esta copia todavía no están descargados los datos. No hay modelos
-  implementados, pesos ni resultados de entrenamiento.
+- Los datos están descargados en esta copia y siguen fuera de Git. Cada integrante
+  debe descargarlos en su entorno. Las dependencias y el procedimiento de instalación
+  están documentados en el README. No hay modelos implementados, pesos ni resultados de entrenamiento.
 
 ## Puntos pendientes antes de entrenar
 
@@ -81,6 +84,6 @@ matriz de experimentos se definirá en una etapa posterior.
 
 ## Siguiente etapa acordada en la conversación
 
-Preparar un entorno reproducible y validar el dataset, sin implementar ni entrenar
-modelos todavía. El resultado esperado es una tabla de incidencias con ejemplos
-visuales y criterios documentados para tratar las anotaciones.
+El entorno y la auditoría ya se prepararon y ejecutaron, sin implementar ni entrenar
+modelos. Se generaron tablas de incidencias y ejemplos visuales. Sigue pendiente
+acordar el tratamiento de la anotación inválida, las cajas pequeñas y las clases.
