@@ -82,6 +82,16 @@ Esta comprobación no reemplaza la validación detallada de anotaciones del sigu
 
 ## Trabajar en Colab
 
+### Ítem 2: clasificación con ResNet50
+
+Abrir [04_clasificacion_ResNet50.ipynb](notebooks/04_clasificacion_ResNet50.ipynb),
+completar `INTEGRANTE` y ejecutar en orden con GPU T4. Compara ImageNet con extractor
+congelado, ajuste fino de conv5 y pesos aleatorios. Instala las dependencias separadas
+de `requirements-training.txt`. Guarda checkpoints, métricas, curvas y predicciones
+en Drive. [Procedimiento y límites](docs/clasificacion_resnet50.md).
+Los resultados sobre las 162 imágenes son provisionales por N06/N16; también se
+evalúa sin ambos casos. El repositorio también incluye MobileNetV2 para comparar arquitecturas.
+
 | Notebook | |
 |---|---|
 | `notebooks/00_plantilla.ipynb` — base para cada experimento | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/00_plantilla.ipynb) |
@@ -89,6 +99,7 @@ Esta comprobación no reemplaza la validación detallada de anotaciones del sigu
 | `notebooks/02_validacion_datos.ipynb` — validación de archivos, cajas, duplicados y split | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/02_validacion_datos.ipynb) |
 | `notebooks/03_revision_anotaciones.ipynb` — casos dudosos, muestra de negativos y criterios | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/03_revision_anotaciones.ipynb) |
 | `notebooks/04_clasificacion_mobilenetv2.ipynb` — clasificación con MobileNetV2 (congelado, fine-tuning, sin pre-entrenamiento) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/04_clasificacion_mobilenetv2.ipynb) |
+| `notebooks/04_clasificacion_ResNet50.ipynb` — clasificación con ResNet50 (congelado, fine-tuning y pesos aleatorios) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/04_clasificacion_ResNet50.ipynb) |
 
 ### Extra: modelos adicionales (fuera de la consigna)
 

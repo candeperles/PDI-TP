@@ -84,7 +84,12 @@ matriz de experimentos se definirá en una etapa posterior.
 
 ## Siguiente etapa acordada en la conversación
 
-El entorno y la auditoría ya se prepararon y ejecutaron, sin implementar ni entrenar
-modelos. Se generaron tablas de incidencias y ejemplos visuales. Los criterios de
-preparación están documentados y falta aplicarlos a una copia derivada. Dos negativos
+Se implementó la parte ResNet50 del ítem 2 en
+`notebooks/04_clasificacion_ResNet50.ipynb`: ImageNet congelado, ajuste fino y pesos
+aleatorios, con evaluación y checkpoints. La preparación binaria aplica los criterios
+a un manifiesto sin modificar originales. Los entrenamientos todavía deben ejecutarse
+en Colab; ver [clasificacion_resnet50.md](clasificacion_resnet50.md).
+El repositorio también incluye MobileNetV2; queda ejecutar y comparar ambas arquitecturas.
+
+La preparación de un dataset derivado de detección sigue pendiente. Dos negativos
 ambiguos requieren segunda revisión; originales y split permanecen sin cambios.

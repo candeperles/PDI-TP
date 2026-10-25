@@ -1,0 +1,8 @@
+# Entorno separado del de exploración. Recomendado: Colab con GPU T4.
+# No incluir requirements.txt: sus versiones de NumPy pueden ser incompatibles con TF.
+tensorflow>=2.20,<2.22
+numpy>=1.26,<2.3
+pandas>=2.2,<3
+Pillow>=11,<13
+matplotlib>=3.9,<4
+scikit-learn>=1.5,<2
