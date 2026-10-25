@@ -90,6 +90,20 @@ Esta comprobación no reemplaza la validación detallada de anotaciones del sigu
 | `notebooks/03_revision_anotaciones.ipynb` — casos dudosos, muestra de negativos y criterios | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/03_revision_anotaciones.ipynb) |
 | `notebooks/04_clasificacion_mobilenetv2.ipynb` — clasificación con MobileNetV2 (congelado, fine-tuning, sin pre-entrenamiento) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/04_clasificacion_mobilenetv2.ipynb) |
 
+### Extra: modelos adicionales (fuera de la consigna)
+
+No es parte de lo que pide la consigna: es un agregado para comparar los modelos obligatorios con otros
+enfoques, usando el mismo split.
+
+| Notebook | |
+|---|---|
+| `notebooks/extras/modelos_adicionales.ipynb` — **EXTRA**: DINOv2 y CLIP (features congeladas y zero-shot), fine-tuning de ConvNeXt-Tiny / EfficientNetV2-S y YOLO11s como clasificador, con comparador final | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/extras/modelos_adicionales.ipynb) |
+
+Elige todo con validación cruzada de 5 folds dentro de train (agrupada por zona espacial) y evalúa una
+sola vez en `val` al final (`EVALUAR_TEST = True`). Guarda resultados y caché en
+`Mi unidad/PDI-TP/resultados/<integrante>/modelos_extra/`. En Colab instala solo `ultralytics`, no
+`requirements.txt`, para no cambiar las versiones de torch que trae Colab.
+
 ### Una sola vez
 
 1. **Carpeta compartida en Drive.** Una persona crea la carpeta `PDI-TP` en su Drive y la comparte
