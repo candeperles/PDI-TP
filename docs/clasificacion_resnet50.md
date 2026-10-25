@@ -1,10 +1,8 @@
 # Ítem 2: ResNet50
 
-Abrir `notebooks/05_ResNet50_Colab_v2.ipynb` en una sesión nueva de Colab con GPU T4.
-Completar `INTEGRANTE` y `CORRIDA`; cuando se pida, pegar el enlace de una carpeta
-existente de Drive. El notebook guarda primero en disco local y copia archivos por
-ID a esa carpeta, sin montar Drive ni crear carpetas allí. Verifica escritura antes
-de entrenar y copia checkpoints al terminar cada época. Guardar una copia del notebook.
+Abrir `notebooks/05_ResNet50_Colab_v2.ipynb` en Colab con GPU T4 y completar `INTEGRANTE`.
+Monta Drive con `entorno.preparar` (como el resto de los notebooks) y guarda cada variante con el
+formato común `resultados/<modelo>/<modo>/` (ver README, *Dónde quedan los resultados*).
 El dataset y el split son los mismos del resto del trabajo.
 
 Se implementaron tres experimentos: ImageNet con extractor congelado, ajuste fino
@@ -25,18 +23,13 @@ Las métricas sobre las 162 imágenes y la selección por `val_loss` usan la ref
 original **provisional**; el informe incluye además métricas sin estos dos casos.
 No se cambió el split ni se resolvieron sus dudas semánticas por entrenamiento.
 
-Cada corrida guarda localmente en `/content/resultados_resnet50_v2/<integrante>/<corrida>/`, con
-manifiesto, cajas, huella de datos, configuración, versiones y comparación CSV.
-Cada variante guarda localmente `mejor.keras`, `ultimo.keras`, historial por época, curvas,
-matriz de confusión, métricas globales y por fuente y predicciones por archivo.
-En Drive se conservan solo cuatro archivos por corrida, con prefijo de integrante y corrida:
-`metricas_y_graficos.zip`, `imagenet_cabeza__mejor.keras`,
-`imagenet_finetuning__mejor.keras` y `aleatorio__mejor.keras`.
-El ZIP contiene todos los archivos auxiliares excepto los modelos y se actualiza después
-de cada época junto con los mejores modelos disponibles. `ultimo.keras` queda solo en Colab.
-La celda final verifica las cuatro copias y manda a la papelera los auxiliares de la misma
-corrida que hubiera subido la versión anterior, sin tocar otras corridas. Los registros JSON
-para comparar resultados del equipo se pueden extraer del ZIP.
+Cada variante queda en Drive en `resultados/resnet50/<modo>/` (`imagenet_cabeza`,
+`imagenet_finetuning`, `aleatorio`) y el baseline en `resultados/baseline/siempre_con_paneles/`.
+Dentro: `mejor.keras` (pesos evaluados), `ultimo.keras` (para reanudar), `historia.csv`, curvas,
+matriz de confusión, `metricas.json` (globales, por fuente y sin N06/N16), `predicciones_val.csv`
+(predicción contra el real) y `config.json` (parámetros, versiones, huella de datos e integrante).
+El manifiesto y las cajas derivadas quedan en `analisis/resnet50/`. No se borra nada en Drive:
+`REPETIR = True` archiva la variante anterior como `<modo>__anterior_<fecha>`.
 Para cargar un modelo, usar `keras.models.load_model(ruta)` e ingresar RGB 0..255;
 el preprocesamiento ResNet está incluido en el modelo.
 
@@ -52,8 +45,8 @@ La comparación entre arquitecturas requiere ejecutar también MobileNetV2, disp
 Val sirve para elegir checkpoints y comparar; no proporciona una evaluación final
 independiente. No inferir superioridad sin resultados reales y revisión de curvas.
 
-Si una etapa se interrumpe en la misma sesión de Colab, al volver a ejecutar su celda
+Si una etapa se interrumpe, al volver a ejecutar el notebook (aunque sea en otra sesión de Colab)
 continúa desde `ultimo.keras` y conserva el optimizador Adam, el historial y el mejor
 checkpoint anterior. No se reinicia la etapa ni se repiten las épocas ya registradas.
-Si historial y checkpoint no coinciden, se detiene sin sobrescribirlos. El último
-checkpoint permanece solo en Colab; esto no recupera una sesión cuyo disco se perdió.
+Si historial y checkpoint no coinciden, se detiene sin sobrescribirlos. Las variantes ya completas
+se reutilizan.

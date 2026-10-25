@@ -50,8 +50,8 @@ Si el lanzador `py` no está disponible, crear el entorno con la ruta del ejecut
 `& "$env:LOCALAPPDATA\Python\pythoncore-3.14-64\python.exe" -m venv .venv`.
 
 En Jupyter, abrir el notebook, completar `INTEGRANTE` y ejecutar todo. Funciona tanto si Jupyter se
-inicia desde la raíz como desde `notebooks/`. En local, los resultados van a `resultados/<integrante>/`
-dentro del repo (ignorado por Git), no a Drive.
+inicia desde la raíz como desde `notebooks/`. En local, los resultados van a `resultados_locales/` dentro del repo
+(ignorado por Git), con la misma estructura que en Drive (`resultados/<modelo>/<modo>/`, `analisis/`, `cache/`).
 
 ### Dependencias
 
@@ -70,10 +70,14 @@ El notebook extra (`notebooks/extras/modelos_adicionales.ipynb`) usa PyTorch: en
 En Windows reemplazar `.venv/bin/python` por `.\.venv\Scripts\python.exe`.
 
 ```bash
+.venv/bin/python scripts/verificar_notebooks.py       # normas de los notebooks (ver README)
 .venv/bin/python -m pip check                         # dependencias consistentes
 .venv/bin/python scripts/check_environment.py         # ejecuta la exploración en un kernel limpio
-.venv/bin/python -m unittest discover -s tests -v     # pruebas de pdi_tp y del notebook de ResNet50
+.venv/bin/python -m unittest discover -s tests -v     # pruebas de pdi_tp, del verificador y de ResNet50
 ```
+
+El verificador también corre solo antes de cada commit (`git config core.hooksPath .githooks`, una vez por
+clon) y en GitHub en cada push.
 
 `check_environment.py` ejecuta el notebook en un kernel nuevo sin modificar el original ni el split. Guarda
 la copia ejecutada y las versiones en `resultados/verificacion/` y termina con error si falla una celda.
@@ -111,7 +115,9 @@ Escribe `splits/train.txt` y `splits/val.txt`. El criterio está documentado en 
 | `No existe /content/drive/MyDrive/PDI-TP` | Falta el acceso directo a la carpeta compartida, o se montó Drive con otra cuenta. Ver *Puesta en marcha* en el README. |
 | "Desaparecieron" los resultados del resto | Colab está usando otra carpeta `PDI-TP` (duplicada en tu Drive) u otra cuenta. Correr `!ls /content/drive/MyDrive` y revisar. En Drive, el panel *Actividad* de la carpeta muestra quién movió o borró algo. |
 | `Poné tu nombre en INTEGRANTE` | Quedó `INTEGRANTE = "nombre"`: poner el tuyo (y volver a dejar `"nombre"` antes de subirlo). |
-| Mis resultados aparecen en la carpeta de otro | El notebook se subió con el nombre de otra persona en `INTEGRANTE`. Cambiarlo y avisar. |
+| `La corrida ... no cumple el formato` | `guardar_corrida` encontró algo incompleto (casi siempre: no se guardaron los pesos dentro de la carpeta antes de llamarla). El mensaje dice qué falta. |
+| `Las predicciones tienen que ser exactamente las 162 imágenes de val` | Se predijo sobre otro conjunto o faltan imágenes: predecir sobre `split.cargar_split(rutas)["val"]`. |
+| El commit se cancela con una lista de ✗ | El verificador encontró notebooks que no cumplen las normas: corregir lo que indica. |
 | Colab pide reiniciar la sesión | Normal tras instalar paquetes: reiniciar y correr de nuevo desde el setup. |
 | Se cortó la sesión a mitad de un entrenamiento | Lo guardado en Drive se conserva. Varios notebooks retoman o saltean lo ya hecho al volver a correrlos. |
 | `ModuleNotFoundError: torch` (local) | El `.venv` de exploración no trae PyTorch: ver *Dependencias*. |

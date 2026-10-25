@@ -54,8 +54,7 @@ matriz de experimentos se definirá en una etapa posterior.
   El código agrupa por cercanía espacial y busca equilibrar fuente y presencia
   de paneles. La proporción efectiva es 82/18; la consigna no impone una proporción.
 - `pdi_tp/`: preparación del entorno, lectura de imágenes y cajas, manejo del split
-  y registro de parámetros y métricas en JSON.
-- `notebooks/00_plantilla.ipynb`: base para registrar futuros experimentos.
+  y formato común de resultados por modelo y modo (`pdi_tp/resultados.py`).
 - Los datos están descargados en esta copia y siguen fuera de Git. Cada integrante
   debe descargarlos en su entorno. Las dependencias y el procedimiento de instalación
   están documentados en el README. No hay modelos implementados, pesos ni resultados de entrenamiento.

@@ -1,8 +1,9 @@
 """Prepara el entorno de trabajo, en Colab o en local.
 
 - Descarga el dataset si no está (scripts/download_data.py).
-- En Colab monta Google Drive y usa la carpeta compartida del equipo para los resultados,
-  así no se pierden si se corta la sesión.
+- En Colab monta Google Drive (`drive.mount`) y usa la carpeta compartida del equipo, así los
+  resultados no se pierden si se corta la sesión. Es el único mecanismo de acceso a Drive del repo.
+- Los resultados se organizan por modelo y modo (ver pdi_tp/resultados.py), no por integrante.
 - Avisa si no hay GPU.
 """
 import shutil
@@ -28,14 +29,16 @@ class Rutas:
     datos: Path
     imagenes: Path
     labels: Path
-    resultados_equipo: Path  # resultados de todos los integrantes
-    resultados: Path  # resultados propios: resultados_equipo / integrante
+    resultados_equipo: Path  # raíz de resultados: <raíz>/<modelo>/<modo>/ (ver pdi_tp/resultados.py)
+    resultados: Path  # igual a resultados_equipo; se conserva por compatibilidad
+    analisis: Path | None = None  # salidas de los notebooks de datos (validación, revisión)
+    cache: Path | None = None  # archivos intermedios reutilizables (features, folds); no son resultados
 
 
 def preparar(integrante: str, usar_drive: bool = True) -> Rutas:
     integrante = integrante.strip().lower()
     if not integrante or integrante == "nombre":
-        raise ValueError("Poné tu nombre en INTEGRANTE, se usa para separar tus resultados.")
+        raise ValueError("Poné tu nombre en INTEGRANTE: queda registrado como autor de cada corrida.")
 
     datos = REPO_ROOT / "data" / "grupo_5"
     if not datos.is_dir():
@@ -52,12 +55,13 @@ def preparar(integrante: str, usar_drive: bool = True) -> Rutas:
                 f"No existe {DRIVE_DIR}. Agregá un acceso directo a la carpeta compartida "
                 "'PDI-TP' en tu 'Mi unidad' (ver README)."
             )
-        resultados_equipo = DRIVE_DIR / "resultados"
+        base = DRIVE_DIR
     else:
-        resultados_equipo = REPO_ROOT / "resultados"
+        base = REPO_ROOT / "resultados_locales"
 
-    resultados = resultados_equipo / integrante
-    resultados.mkdir(parents=True, exist_ok=True)
+    resultados = base / "resultados"
+    for carpeta in (resultados, base / "analisis", base / "cache"):
+        carpeta.mkdir(parents=True, exist_ok=True)
 
     rutas = Rutas(
         integrante=integrante,
@@ -65,8 +69,10 @@ def preparar(integrante: str, usar_drive: bool = True) -> Rutas:
         datos=datos,
         imagenes=datos / "images",
         labels=datos / "labels",
-        resultados_equipo=resultados_equipo,
+        resultados_equipo=resultados,
         resultados=resultados,
+        analisis=base / "analisis",
+        cache=base / "cache",
     )
     _resumen(rutas)
     return rutas

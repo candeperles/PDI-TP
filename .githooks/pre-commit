@@ -1,0 +1,9 @@
+#!/bin/sh
+# Frena el commit si algún notebook no cumple las normas del equipo (ver AGENTS.md).
+# Activarlo una vez por clon:  git config core.hooksPath .githooks
+PYTHON=$(command -v python3 || command -v python)
+if ! "$PYTHON" scripts/verificar_notebooks.py; then
+    echo ""
+    echo "Commit cancelado: corregí los notebooks marcados con ✗ y volvé a intentar."
+    exit 1
+fi

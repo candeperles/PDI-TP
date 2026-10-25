@@ -11,7 +11,8 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 NB = json.loads((ROOT / 'notebooks/05_ResNet50_Colab_v2.ipynb').read_text(encoding='utf-8'))
-SOURCE = ''.join(NB['cells'][9]['source'])
+SOURCE = next(''.join(c['source']) for c in NB['cells']
+              if c['cell_type'] == 'code' and 'def entrenar(' in ''.join(c['source']))
 
 
 class EarlyStopping:
@@ -33,7 +34,7 @@ class ResumeTest(unittest.TestCase):
         self.loaded.optimizer.iterations.numpy.return_value = 6
         self.keras = SimpleNamespace(callbacks=self.callbacks, models=SimpleNamespace(load_model=Mock(return_value=self.loaded)))
         self.env = dict(np=np, pd=pd, json=json, keras=self.keras, compilar=Mock(),
-            respaldo=Mock(), salida=self.folder, CopiarADrive=Mock())
+            salida=self.folder)
         tree = ast.parse(SOURCE)
         tree.body = [n for n in tree.body if isinstance(n, (ast.FunctionDef, ast.ClassDef)) and n.name in ('entrenar', 'ParadaReanudada')]
         exec(compile(tree, 'resume', 'exec'), self.env)
