@@ -84,13 +84,17 @@ Esta comprobación no reemplaza la validación detallada de anotaciones del sigu
 
 ### Ítem 2: clasificación con ResNet50
 
-Abrir [04_clasificacion_ResNet50.ipynb](notebooks/04_clasificacion_ResNet50.ipynb),
-completar `INTEGRANTE` y ejecutar en orden con GPU T4. Compara ImageNet con extractor
-congelado, ajuste fino de conv5 y pesos aleatorios. Instala las dependencias separadas
-de `requirements-training.txt`. Guarda checkpoints, métricas, curvas y predicciones
-en Drive. [Procedimiento y límites](docs/clasificacion_resnet50.md).
-Los resultados sobre las 162 imágenes son provisionales por N06/N16; también se
-evalúa sin ambos casos. El repositorio también incluye MobileNetV2 para comparar arquitecturas.
+Usar [05_ResNet50_Colab_v2.ipynb](notebooks/05_ResNet50_Colab_v2.ipynb) en una sesión
+nueva de Colab con GPU T4. Completar integrante y corrida; cuando se pida, pegar
+la URL de una carpeta existente en Drive. Esta versión guarda primero en disco
+local y copia archivos por ID, sin montar Drive ni crear carpetas allí. Comprueba
+escritura antes de entrenar y copia checkpoints al terminar cada época. No usar
+el mismo nombre de corrida en dos sesiones simultáneas.
+
+Compara ImageNet congelado, ajuste fino de conv5 y pesos aleatorios. Mantiene el
+split y la evaluación provisional por N06/N16, incluyendo métricas sin esos casos.
+La preparación, exportaciones y 16 pruebas se verificaron localmente; la autorización
+de Drive y el entrenamiento completo requieren una sesión real de Colab.
 
 | Notebook | |
 |---|---|
@@ -99,6 +103,7 @@ evalúa sin ambos casos. El repositorio también incluye MobileNetV2 para compar
 | `notebooks/02_validacion_datos.ipynb` — validación de archivos, cajas, duplicados y split | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/02_validacion_datos.ipynb) |
 | `notebooks/03_revision_anotaciones.ipynb` — casos dudosos, muestra de negativos y criterios | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/03_revision_anotaciones.ipynb) |
 | `notebooks/04_clasificacion_mobilenetv2.ipynb` — clasificación con MobileNetV2 (congelado, fine-tuning, sin pre-entrenamiento) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/04_clasificacion_mobilenetv2.ipynb) |
+| `notebooks/05_ResNet50_Colab_v2.ipynb` — ResNet50, versión recomendada con guardado por ID | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/05_ResNet50_Colab_v2.ipynb) |
 | `notebooks/04_clasificacion_ResNet50.ipynb` — clasificación con ResNet50 (congelado, fine-tuning y pesos aleatorios) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/04_clasificacion_ResNet50.ipynb) |
 
 ### Extra: modelos adicionales (fuera de la consigna)
