@@ -1,5 +1,7 @@
 # PDI-TP
 
+Paneles solares: clasificación y detección. Consigna: [docs/Consigna_Paneles_Solares.pdf](docs/Consigna_Paneles_Solares.pdf).
+
 ## Dataset
 
 The `grupo_5` dataset (900 image/label pairs, ~84MB) is **not committed to this
