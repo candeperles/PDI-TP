@@ -1,0 +1,23 @@
+name: Verificar notebooks y tests
+
+# Corre en cada push y pull request. Si falla, el commit queda marcado en rojo en GitHub.
+# Para que además BLOQUEE el merge a main hay que activar la protección de rama
+# (Settings → Branches → Require status checks), lo hace quien administra el repo.
+on:
+  push:
+  pull_request:
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Normas de los notebooks
+        run: python scripts/verificar_notebooks.py
+      - name: Tests
+        run: |
+          pip install -q numpy pandas scikit-learn Pillow matplotlib nbformat
+          python -m unittest discover -s tests -v
