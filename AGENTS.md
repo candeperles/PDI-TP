@@ -72,13 +72,33 @@ ni agregar excepciones sin acuerdo del equipo.
   README.
 - No tocar notebooks de otro integrante (ver `git log`) sin que lo pidan; si hace falta, avisar qué cambia.
 
-## Git
+## Git: rama + pull request, siempre y sin que lo pidan
 
-- Se trabaja sobre `main`. `git pull` antes de empezar.
-- Agregar archivos puntuales (nunca `git add .`). No commitear `data/`, `resultados/`,
-  `resultados_locales/` ni `notebooks/local/`.
-- Mensajes de commit en castellano, en infinitivo, diciendo qué cambia ("Agregar ...", "Corregir ...").
-- Prohibido `push --force`, reescribir historial publicado o borrar ramas ajenas.
+`main` está protegida: no acepta pushes directos y solo une PRs con el chequeo `verificar` en verde.
+**Todo cambio que hagas en el repo sigue este flujo automáticamente**, aunque el usuario solo diga
+"subilo", "commitealo" o "pushealo":
+
+1. Partir de `main` actualizado y crear una rama: `git switch main && git pull` y
+   `git switch -c <tipo>/<descripcion-corta>` (tipos: `notebook/`, `codigo/`, `datos/`, `docs/`, `fix/`).
+   Si ya estás en una rama de trabajo propia para esta tarea, seguir en ella.
+2. Hacer los cambios, correr `python scripts/verificar_notebooks.py` y `python -m unittest discover -s tests`,
+   y commitear archivos puntuales (nunca `git add .`).
+3. Subir la rama: `git push -u origin <rama>`.
+4. Abrir el PR hacia `main`: `gh pr create --base main --fill`, completando la plantilla
+   (`.github/pull_request_template.md`). Sin `gh`, dar al usuario el link que imprime `git push`.
+5. Esperar el chequeo (`gh pr checks --watch`). Si falla, corregir en la misma rama y volver a subir.
+6. **El merge no lo hace el agente por su cuenta:** con el chequeo en verde, preguntar al usuario.
+   - Si el PR toca `pdi_tp/`, `splits/`, `scripts/`, `.github/`, `.githooks/`, `docs/criterios_datos.md` o un
+     notebook de otro integrante, avisar que necesita **revisión de otra persona** antes del merge.
+   - Si no, con el OK del usuario: `gh pr merge --squash --delete-branch`.
+
+Además:
+
+- No commitear `data/`, `resultados/`, `resultados_locales/` ni `notebooks/local/`.
+- Mensajes de commit y títulos de PR en castellano, en infinitivo, diciendo qué cambia ("Agregar ...",
+  "Corregir ...").
+- Nunca push a `main`, nunca `--force` sobre `main` ni sobre ramas ajenas; en la rama propia, solo
+  `--force-with-lease` después de un `git pull --rebase origin main`. No borrar ramas ajenas.
 - Hook local: `git config core.hooksPath .githooks` (corre el verificador antes de cada commit).
   En GitHub corre `.github/workflows/verificar.yml` en cada push.
 
@@ -88,4 +108,6 @@ ni agregar excepciones sin acuerdo del equipo.
 python scripts/download_data.py            # bajar el dataset a data/grupo_5/
 python scripts/verificar_notebooks.py      # normas de los notebooks
 python -m unittest discover -s tests -v    # tests
+gh pr create --base main --fill             # abrir el PR de la rama actual
+gh pr checks --watch                       # esperar el chequeo verificar
 ```

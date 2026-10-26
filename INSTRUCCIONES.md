@@ -121,4 +121,6 @@ Escribe `splits/train.txt` y `splits/val.txt`. El criterio está documentado en 
 | Colab pide reiniciar la sesión | Normal tras instalar paquetes: reiniciar y correr de nuevo desde el setup. |
 | Se cortó la sesión a mitad de un entrenamiento | Lo guardado en Drive se conserva. Varios notebooks retoman o saltean lo ya hecho al volver a correrlos. |
 | `ModuleNotFoundError: torch` (local) | El `.venv` de exploración no trae PyTorch: ver *Dependencias*. |
-| `git push` rechazado | `git pull --rebase` y `git push`. |
+| `git push` a `main` rechazado (*protected branch* / *required status check*) | `main` está protegida: subir a una rama y abrir un PR (ver README, *Subir notebooks y cambios*). |
+| PR en rojo | El chequeo `verificar` falló: abrir el detalle en el PR, corregir en la misma rama y volver a subir. |
+| El push de la rama se rechaza porque `main` cambió | `git pull --rebase origin main` y `git push --force-with-lease` (solo en tu rama). |

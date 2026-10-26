@@ -92,10 +92,15 @@ precisión-recall para detección. Se entrega un informe con comparaciones y con
    - Montar Drive en Colab **con la misma cuenta** a la que se compartió la carpeta.
 2. **Elegir tu nombre de integrante**: minúsculas, sin espacios ni acentos (`kevo`, `pia`, `cande`,
    `santiago`). Queda registrado en cada corrida como autor; las carpetas **no** llevan nombres de personas.
-3. **Si trabajás con git en local**, activar el chequeo previo a cada commit (una vez por clon):
+3. **Si trabajás con git en local (con o sin IA)**, una vez por clon: activar el chequeo previo a cada commit
+   e instalar la CLI de GitHub para abrir PRs ([cli.github.com](https://cli.github.com/)):
 
    ```bash
    git config core.hooksPath .githooks
+   ```
+
+   ```bash
+   gh auth login
    ```
 
 ## Correr un notebook en Colab
@@ -182,13 +187,33 @@ Mi unidad/PDI-TP/
 
 ## Subir notebooks y cambios al repositorio
 
-Se trabaja directo sobre `main`. **En el repo va el código; los resultados van a Drive.**
+**`main` está protegida: no se puede subir directo.** Todo cambio entra por una **rama** y un **pull request
+(PR)**, y GitHub solo deja unirlo a `main` cuando el chequeo `verificar` está en verde.
+**En el repo va el código; los resultados van a Drive.**
 
 | Va a Git | No va a Git |
 |---|---|
 | Notebooks **sin salidas** y con `INTEGRANTE = "nombre"` | Notebooks ejecutados (con gráficos y tablas) |
 | `pdi_tp/`, `scripts/`, `docs/`, `splits/`, `tests/` | `data/` (dataset), `resultados/` y `resultados_locales/` |
 | Experimentos nuevos, como una entrada más en `EXPERIMENTOS` del notebook | Una copia del notebook por experimento |
+
+### Quién abre y quién acepta un PR
+
+- **Lo abre quien hizo el cambio** (o su IA, automáticamente: ver abajo), desde su rama hacia `main`.
+- **Lo acepta (merge) quien lo abrió**, cuando el chequeo `verificar` está en verde. Es lo único que exige
+  GitHub hoy.
+- **Excepción, pedir revisión a otra persona antes del merge** (que la apruebe en el PR) si el cambio toca
+  algo que usan todos: `pdi_tp/`, `splits/`, `scripts/`, `.github/`, `.githooks/`,
+  `docs/criterios_datos.md`, o un notebook de otro integrante.
+- Al hacer merge se usa *Squash and merge* y se borra la rama.
+
+### Trabajando con una IA (Claude Code, Codex, Cursor...)
+
+No hay que pedírselo: [`AGENTS.md`](AGENTS.md) (y [`CLAUDE.md`](CLAUDE.md), que lo incluye) le indican al agente
+que **cada cambio** lo haga solo así: rama nueva desde `main` actualizado → commit → verificador y tests →
+push de la rama → PR → esperar el chequeo en verde. **El merge lo confirma la persona** (o pide revisión,
+según la regla de arriba). Para eso el agente necesita `git` y, para abrir el PR, la CLI `gh` (ver
+*Puesta en marcha*); sin `gh`, sube la rama y te deja el link para abrir el PR desde el navegador.
 
 ### Normas que se verifican solas
 
@@ -204,37 +229,44 @@ Corre en dos lugares:
 
 - **Antes de cada commit local** (con el hook activado, ver *Puesta en marcha*): si algo no cumple, el commit
   no se hace.
-- **En GitHub, en cada push** ([`.github/workflows/verificar.yml`](.github/workflows/verificar.yml)), junto con
-  los tests. Así también se controla lo que se sube desde Colab. Si falla, el commit queda marcado en rojo;
-  para que además **bloquee** la subida, quien administra el repo tiene que activar *Settings → Branches →
-  Require status checks* sobre `main`.
+- **En GitHub, en cada push a cualquier rama** ([`.github/workflows/verificar.yml`](.github/workflows/verificar.yml)),
+  junto con los tests. Es el chequeo `verificar` que exige `main`: un PR en rojo no se puede unir.
+
+### Desde una copia local (o con una IA)
+
+```bash
+git switch main && git pull                           # partir de lo último
+git switch -c notebook/mobilenetv2-sin-aug            # rama nueva: <tipo>/<descripcion-corta>
+# ... editar ...
+python scripts/verificar_notebooks.py                 # (el hook lo corre solo en el commit)
+git add notebooks/04_clasificacion_mobilenetv2.ipynb  # archivos puntuales, nunca "git add ."
+git commit -m "Agregar experimento MobileNetV2 sin augmentation"
+git push -u origin notebook/mobilenetv2-sin-aug
+gh pr create --base main --fill                       # abre el PR (o usar el link que imprime git push)
+gh pr checks --watch                                  # esperar el chequeo en verde
+gh pr merge --squash --delete-branch                  # unir a main (o pedir revisión, ver arriba)
+```
+
+Tipos de rama: `notebook/`, `codigo/`, `datos/`, `docs/`, `fix/`. Si mientras tanto cambió `main`,
+traerlo a la rama con `git pull --rebase origin main` y volver a subir (`git push --force-with-lease`, solo
+sobre **tu** rama, nunca sobre `main`). Si hay conflicto en un `.ipynb`, avisar al equipo antes de
+resolverlo: un notebook mal mergeado deja de abrir.
 
 ### Desde Colab
 
-1. Abrir el notebook **desde el botón del README** (así partís de la última versión).
-2. Editar, correr y verificar.
+Colab no crea ramas, así que primero se crea en GitHub:
+
+1. En GitHub, botón de ramas (arriba a la izquierda, dice `main`) → escribir el nombre, por ejemplo
+   `notebook/resnet50-otra-receta` → *Create branch*.
+2. Abrir el notebook **desde el botón del README**, editar, correr y verificar.
 3. Borrar salidas y volver a poner `INTEGRANTE = "nombre"`.
-4. *Archivo → Guardar una copia en GitHub* → repositorio `candeperles/PDI-TP`, rama `main`, **misma ruta**
-   del archivo (p. ej. `notebooks/04_clasificacion_mobilenetv2.ipynb`) y un mensaje de commit.
-5. Revisar en GitHub que el chequeo quedó en verde.
+4. *Archivo → Guardar una copia en GitHub* → repositorio `candeperles/PDI-TP`, **la rama nueva**, misma ruta del
+   archivo y un mensaje de commit.
+5. En GitHub aparece *Compare & pull request*: abrir el PR, esperar el chequeo en verde y hacer merge (o
+   pedir revisión, ver arriba).
 
 Ojo: Colab sube su versión tal cual. Si alguien cambió ese notebook en `main` después de que lo abriste,
-sus cambios se pierden. Si dos personas tienen que tocar el mismo notebook, coordinar antes.
-
-### Desde una copia local
-
-```bash
-git pull                                              # traer lo último antes de tocar nada
-# ... editar ...
-python scripts/verificar_notebooks.py                 # (el hook lo corre solo en el commit)
-git status                                            # revisar que no se cuelen data/ ni resultados/
-git add notebooks/04_clasificacion_mobilenetv2.ipynb  # archivos puntuales, nunca "git add ."
-git commit -m "Agregar experimento MobileNetV2 sin augmentation"
-git push
-```
-
-Si `git push` se rechaza porque alguien subió antes: `git pull --rebase` y de nuevo `git push`. Si hay
-conflicto en un `.ipynb`, avisar al equipo antes de resolverlo: un notebook mal mergeado deja de abrir.
+sus cambios se pierden al unir. Si dos personas tienen que tocar el mismo notebook, coordinar antes.
 
 ### Experimentos y notebooks nuevos
 
@@ -265,7 +297,7 @@ conflicto en un `.ipynb`, avisar al equipo antes de resolverlo: un notebook mal 
 ├── splits/                train.txt / val.txt compartidos
 ├── tests/                 pruebas de pdi_tp y del verificador
 ├── .githooks/             chequeo antes de cada commit
-├── .github/workflows/     chequeo en GitHub en cada push
+├── .github/               chequeo en GitHub en cada push y plantilla de PR
 └── requirements*.txt      dependencias (ver INSTRUCCIONES.md)
 ```
 
