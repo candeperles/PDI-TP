@@ -155,7 +155,7 @@ Mi unidad/PDI-TP/
 │   ├── mobilenetv2/
 │   │   ├── imagenet_congelado/
 │   │   │   ├── modelo.keras            ← pesos (o .pt / .joblib según el framework)
-│   │   │   ├── metricas.json           ← accuracy, precision, recall, F1, F1 macro, matriz, por fuente
+│   │   │   ├── metricas.json           ← accuracy, precision, recall, F1, F1 macro, matriz, por fuente y solo Jamaica
 │   │   │   ├── predicciones_val.csv    ← predicción contra el real: archivo, fuente, y_real,
 │   │   │   │                              probabilidad, prediccion, acierto (las 162 imágenes de val)
 │   │   │   ├── config.json             ← modelo, modo, parámetros, fecha y commit del repo
@@ -318,5 +318,6 @@ sus cambios se pierden al unir. Si dos personas tienen que tocar el mismo notebo
 | [revision_anotaciones.md](docs/revision_anotaciones.md) | Revisión de cajas raras, pequeñas, nulas y negativos dudosos |
 | [criterios_datos.md](docs/criterios_datos.md) | Decisiones de datos: una clase `panel`, cajas pequeñas, negativos N06/N16 |
 | [clasificacion_resnet50.md](docs/clasificacion_resnet50.md) | Notas de los experimentos con ResNet50 |
+| [evaluacion_jamaica.md](docs/evaluacion_jamaica.md) | Cómo medir sobre Kingston/Jamaica, como el test (propuesta) |
 
 ¿Algo no funciona? Ver [problemas comunes](INSTRUCCIONES.md#problemas-comunes).
