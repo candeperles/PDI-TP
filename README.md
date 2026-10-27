@@ -102,7 +102,8 @@ precisión-recall para detección. Se entrega un informe con comparaciones y con
 1. Abrirlo con su botón **Open in Colab** (tabla de abajo). Siempre abre la última versión de `main`.
 2. *Entorno de ejecución → Cambiar tipo de entorno → T4* (GPU).
 3. *Entorno de ejecución → Ejecutar todas*. La celda de setup clona o actualiza el repo, instala
-   dependencias, descarga el dataset, monta Drive y avisa si no hay GPU. Si Colab pide reiniciar por
+   dependencias, descarga el dataset, monta Drive (solo los notebooks que entrenan) y avisa si no hay GPU.
+   Si Colab pide reiniciar por
    cambios de paquetes, reiniciar y volver a correr desde el principio.
 
 No hay que poner ningún nombre: los resultados se guardan por modelo y modo, no por persona.
@@ -164,9 +165,13 @@ Mi unidad/PDI-TP/
 │   ├── efficientnetb0/
 │   ├── resnet50/
 │   └── baseline/siempre_con_paneles/
-├── analisis/                           ← salidas de los notebooks de datos (validación, revisión)
+├── analisis/                           ← tablas auxiliares de notebooks que entrenan (p. ej. manifiesto de ResNet50)
 └── cache/                              ← intermedios reutilizables (features, folds); no son resultados
 ```
+
+**Solo los notebooks que entrenan crean carpetas en Drive**, y recién cuando guardan algo. El EDA, la
+validación y la revisión de anotaciones no montan Drive: correrlos no crea nada en la carpeta compartida
+(sus reportes quedan solo en la sesión de Colab).
 
 - **Siempre las mismas métricas, calculadas de la misma manera**, y `y_real` sale de las etiquetas del
   dataset, no del notebook. Si falta algo (pesos, una imagen de val, una columna), `guardar_corrida` frena
@@ -221,7 +226,8 @@ según la regla de arriba). Para eso el agente necesita `git` y, para abrir el P
 1. tienen salidas (*Editar → Borrar todos los resultados* en Colab);
 2. piden el nombre de quien los corre (`INTEGRANTE`): ya no se usa;
 3. montan Drive a mano, usan la API de Drive, borran archivos o usan la forma vieja de guardar;
-4. entrenan un modelo y no guardan con `resultados.guardar_corrida(...)`;
+4. entrenan un modelo y no guardan con `resultados.guardar_corrida(...)`, o no entrenan y montan Drive igual
+   (tienen que usar `entorno.preparar(usar_drive=False)`);
 5. no están enlazados en este README con su botón de Colab.
 
 Corre en dos lugares:

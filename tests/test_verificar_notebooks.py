@@ -47,6 +47,10 @@ class VerificadorTest(unittest.TestCase):
         for esperado in ("googleapiclient", "rmtree", "drive.mount"):
             self.assertIn(esperado, problemas)
 
+    def test_notebook_sin_modelo_no_monta_drive(self):
+        self.assertIn("usar_drive=False", "\n".join(self.notebook("rutas = entorno.preparar()\nprint(1)\n")))
+        self.assertEqual(self.notebook("rutas = entorno.preparar(usar_drive=False)\nprint(1)\n"), [])
+
     def test_excepcion_solo_libera_la_regla_de_drive(self):
         ruta = RAIZ / next(iter(verificar.EXCEPCIONES))
         readme = (RAIZ / "README.md").read_text(encoding="utf-8")
