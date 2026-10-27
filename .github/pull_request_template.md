@@ -4,7 +4,7 @@
 
 ## Chequeos
 
-- [ ] `python scripts/verificar_notebooks.py` pasa (notebooks sin salidas, `INTEGRANTE = "nombre"`, guardado común)
+- [ ] `python scripts/verificar_notebooks.py` pasa (notebooks sin salidas, sin `INTEGRANTE`, guardado común)
 - [ ] `python -m unittest discover -s tests` pasa
 - [ ] Si entrena un modelo: guarda con `resultados.guardar_corrida` en `resultados/<modelo>/<modo>/`
 - [ ] Si agrega un notebook: está en la tabla del README con su botón de Colab

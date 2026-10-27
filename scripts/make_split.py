@@ -10,7 +10,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from pdi_tp import entorno, split  # noqa: E402
 
-rutas = entorno.preparar("split", usar_drive=False)
+rutas = entorno.preparar(usar_drive=False)
 tabla = split.armar_split(rutas)
 split.guardar_split(tabla)
 

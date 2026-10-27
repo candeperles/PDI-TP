@@ -19,7 +19,7 @@ class ValidacionTest(unittest.TestCase):
         self.splits = self.raiz / "splits"
         for p in (self.imagenes, self.labels, self.splits):
             p.mkdir()
-        self.rutas = Rutas("test", self.raiz, self.raiz, self.imagenes, self.labels,
+        self.rutas = Rutas(self.raiz, self.raiz, self.imagenes, self.labels,
                            self.raiz / "resultados", self.raiz / "resultados" / "test")
         self.crear("PV01_0_0", "0 0.5 0.5 0.25 0.25\n", "red")
         self.crear("PV01_100_100", "", "blue")

@@ -63,10 +63,12 @@ precisión-recall para detección. Se entrega un informe con comparaciones y con
 | Clasificación: EfficientNetB0 | `02_clasificacion_efficientnet` | En curso · bugs corregidos, **volver a correr** |
 | Clasificación: MobileNetV2 | `04_clasificacion_mobilenetv2` | En curso |
 | Clasificación: ResNet50 | `05_ResNet50_Colab_v2` | En curso |
-| Receta común de clasificación | — | Pendiente (ver cartel) |
-| Detección: YOLOv8n / YOLO11n | — | Pendiente |
+| Receta común de clasificación | — | Pendiente: acordarla en equipo (ver cartel) |
+| Ordenar nombres de notebooks (`NN_<tarea>_<modelo>`) | — | Pendiente: hay dos `02` y `05_ResNet50_Colab_v2` no sigue la convención. Hacerlo una sola vez, junto con la receta común |
+| Detección: YOLOv8n / YOLO11n | — | Pendiente (todavía no arrancó) |
 | Detector como clasificador y comparación final | — | Pendiente |
 | Informe | — | Pendiente |
+| Página interactiva para el cierre | — | Idea: un módulo que muestre cómo se generan las cajas (candidatas → filtrado → finales) y otro con la red calculando en vivo (mapas de activación capa por capa). Se arma al final, con los resultados reales |
 | *Extra (fuera de la consigna)*: modelos adicionales | `extras/modelos_adicionales` | En curso |
 
 ## Datos
@@ -81,17 +83,15 @@ precisión-recall para detección. Se entrega un informe con comparaciones y con
 - **Clases**: en `solarpanels_hd` los IDs 0/1/2 son la *confianza* de la anotación (alta/moderada/baja),
   no tipos de panel. Se trabaja con una sola clase `panel`. Ver [docs/criterios_datos.md](docs/criterios_datos.md).
 
-## Puesta en marcha (una sola vez por integrante)
+## Puesta en marcha (una sola vez por persona)
 
 1. **Carpeta compartida en Drive.** Una sola persona crea la carpeta `PDI-TP` y la comparte con el resto
-   como Editor. Cada integrante entra a *Compartidos conmigo* → clic derecho en `PDI-TP` → *Organizar →
+   como Editor. Cada persona entra a *Compartidos conmigo* → clic derecho en `PDI-TP` → *Organizar →
    Agregar acceso directo* → *Mi unidad*. Tiene que quedar exactamente en `Mi unidad/PDI-TP`.
    - **No crear otra carpeta llamada `PDI-TP`** en tu Drive: Drive permite nombres repetidos y Colab puede
      agarrar la equivocada (vas a ver la carpeta vacía y "desaparecen" los resultados del resto).
    - Montar Drive en Colab **con la misma cuenta** a la que se compartió la carpeta.
-2. **Elegir tu nombre de integrante**: minúsculas, sin espacios ni acentos (`kevo`, `pia`, `cande`,
-   `santiago`). Queda registrado en cada corrida como autor; las carpetas **no** llevan nombres de personas.
-3. **Si trabajás con git en local (con o sin IA)**, una vez por clon: activar el chequeo previo a cada commit
+2. **Si trabajás con git en local (con o sin IA)**, una vez por clon: activar el chequeo previo a cada commit
    e instalar la CLI de GitHub para abrir PRs ([cli.github.com](https://cli.github.com/)):
 
    ```bash
@@ -106,10 +106,11 @@ precisión-recall para detección. Se entrega un informe con comparaciones y con
 
 1. Abrirlo con su botón **Open in Colab** (tabla de abajo). Siempre abre la última versión de `main`.
 2. *Entorno de ejecución → Cambiar tipo de entorno → T4* (GPU).
-3. En la primera celda, cambiar `INTEGRANTE = "nombre"` por tu nombre.
-4. *Entorno de ejecución → Ejecutar todas*. La celda de setup clona o actualiza el repo, instala
+3. *Entorno de ejecución → Ejecutar todas*. La celda de setup clona o actualiza el repo, instala
    dependencias, descarga el dataset, monta Drive y avisa si no hay GPU. Si Colab pide reiniciar por
    cambios de paquetes, reiniciar y volver a correr desde el principio.
+
+No hay que poner ningún nombre: los resultados se guardan por modelo y modo, no por persona.
 
 ### Notebooks
 
@@ -161,7 +162,7 @@ Mi unidad/PDI-TP/
 │   │   │   ├── metricas.json           ← accuracy, precision, recall, F1, F1 macro, matriz, por fuente
 │   │   │   ├── predicciones_val.csv    ← predicción contra el real: archivo, fuente, y_real,
 │   │   │   │                              probabilidad, prediccion, acierto (las 162 imágenes de val)
-│   │   │   ├── config.json             ← modelo, modo, parámetros, integrante, fecha, commit
+│   │   │   ├── config.json             ← modelo, modo, parámetros, fecha y commit del repo
 │   │   │   └── historia.csv, curvas…   ← opcionales
 │   │   ├── imagenet_fine_tuning/
 │   │   └── aleatorio/
@@ -181,18 +182,22 @@ Mi unidad/PDI-TP/
 - **Repetir un modo**: cada notebook tiene `REPETIR`. Con `False`, los modos ya completos se saltean y uno a
   medias se retoma; con `True` se entrena de nuevo y la carpeta anterior **se renombra**
   (`<modo>__anterior_<fecha>`), no se borra.
+- **Corridas hechas con el formato anterior** (carpetas por persona, JSON sueltos o el ZIP de ResNet50) no
+  aparecen en `cargar_corridas`: para comparar, volver a correrlas con los notebooks actuales.
 - **Nada borra archivos de Drive** y todos los notebooks usan el mismo acceso (`drive.mount` dentro de
   `entorno.preparar`). La única excepción es la herramienta vieja `06_ordenar_resultados_resnet50`.
 
 ## Subir notebooks y cambios al repositorio
 
 **`main` está protegida: no se puede subir directo.** Todo cambio entra por una **rama** y un **pull request
-(PR)**, y GitHub solo deja unirlo a `main` cuando el chequeo `verificar` está en verde.
+(PR)**, y GitHub solo deja unirlo a `main` cuando el chequeo `verificar` está en verde. Hoy la regla no aplica a
+quien administra el repo; para que valga para todos, activar *Do not allow bypassing the above settings* en
+la protección de `main`.
 **En el repo va el código; los resultados van a Drive.**
 
 | Va a Git | No va a Git |
 |---|---|
-| Notebooks **sin salidas** y con `INTEGRANTE = "nombre"` | Notebooks ejecutados (con gráficos y tablas) |
+| Notebooks **sin salidas** | Notebooks ejecutados (con gráficos y tablas) |
 | `pdi_tp/`, `scripts/`, `docs/`, `splits/`, `tests/` | `data/` (dataset), `resultados/` y `resultados_locales/` |
 | Experimentos nuevos, como una entrada más en `EXPERIMENTOS` del notebook | Una copia del notebook por experimento |
 
@@ -203,7 +208,7 @@ Mi unidad/PDI-TP/
   GitHub hoy.
 - **Excepción, pedir revisión a otra persona antes del merge** (que la apruebe en el PR) si el cambio toca
   algo que usan todos: `pdi_tp/`, `splits/`, `scripts/`, `.github/`, `.githooks/`,
-  `docs/criterios_datos.md`, o un notebook de otro integrante.
+  `docs/criterios_datos.md`, o un notebook que armó otra persona.
 - Al hacer merge se usa *Squash and merge* y se borra la rama.
 
 ### Trabajando con una IA (Claude Code, Codex, Cursor...)
@@ -219,7 +224,7 @@ según la regla de arriba). Para eso el agente necesita `git` y, para abrir el P
 [`scripts/verificar_notebooks.py`](scripts/verificar_notebooks.py) revisa cada notebook y **rechaza** los que:
 
 1. tienen salidas (*Editar → Borrar todos los resultados* en Colab);
-2. tienen un nombre fijo en `INTEGRANTE` (dejar `"nombre"`);
+2. piden el nombre de quien los corre (`INTEGRANTE`): ya no se usa;
 3. montan Drive a mano, usan la API de Drive, borran archivos o usan la forma vieja de guardar;
 4. entrenan un modelo y no guardan con `resultados.guardar_corrida(...)`;
 5. no están enlazados en este README con su botón de Colab.
@@ -258,7 +263,7 @@ Colab no crea ramas, así que primero se crea en GitHub:
 1. En GitHub, botón de ramas (arriba a la izquierda, dice `main`) → escribir el nombre, por ejemplo
    `notebook/resnet50-otra-receta` → *Create branch*.
 2. Abrir el notebook **desde el botón del README**, editar, correr y verificar.
-3. Borrar salidas y volver a poner `INTEGRANTE = "nombre"`.
+3. Borrar salidas (*Editar → Borrar todos los resultados*).
 4. *Archivo → Guardar una copia en GitHub* → repositorio `candeperles/PDI-TP`, **la rama nueva**, misma ruta del
    archivo y un mensaje de commit.
 5. En GitHub aparece *Compare & pull request*: abrir el PR, esperar el chequeo en verde y hacer merge (o

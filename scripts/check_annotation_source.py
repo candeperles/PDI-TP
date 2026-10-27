@@ -23,7 +23,7 @@ SHA256_LABELS = "9a24d5657d7d0e27d5b083f7749067fefa376f03189293ff8c05b2b3c991692
 
 
 def cotejar():
-    rutas = entorno.preparar("revision_anotaciones", usar_drive=False)
+    rutas = entorno.preparar(usar_drive=False)
     salida = rutas.analisis / "cotejo_figshare"
     salida.mkdir(parents=True, exist_ok=True)
     informe = validacion.validar(rutas)

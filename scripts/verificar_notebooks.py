@@ -5,7 +5,7 @@ Uso: python scripts/verificar_notebooks.py [notebook ...]   (sin argumentos: tod
 
 Normas:
 1. Sin salidas ni contadores de ejecución (se suben limpios).
-2. `INTEGRANTE` sin nombres fijos: solo "nombre" (o leerlo de PDI_INTEGRANTE / input()).
+2. Sin `INTEGRANTE`: los resultados se guardan por modelo y modo, no se pide el nombre de nadie.
 3. Un solo mecanismo de Drive y nada de borrados: prohibido montar Drive o usar la API por fuera de
    pdi_tp.entorno, y prohibidas las formas viejas de guardar resultados.
 4. Todo notebook que entrena un modelo guarda con `resultados.guardar_corrida(...)`
@@ -13,10 +13,9 @@ Normas:
 5. Cada notebook está enlazado en el README con su botón de Colab.
 
 Excepciones: notebooks que no entrenan ni generan resultados y quedan por compatibilidad. Se listan en
-EXCEPCIONES con el motivo; se les sigue exigiendo 1, 2 y 5. No agregar excepciones sin acuerdo del equipo.
+EXCEPCIONES con el motivo; se les sigue exigiendo 1 y 5. No agregar excepciones sin acuerdo del equipo.
 """
 import json
-import re
 import sys
 from pathlib import Path
 
@@ -24,7 +23,8 @@ RAIZ = Path(__file__).resolve().parent.parent
 COLAB = "https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/"
 
 PROHIBIDOS = {
-    "drive.mount(": "montar Drive a mano: usar entorno.preparar(INTEGRANTE)",
+    "INTEGRANTE": "ya no se pide el nombre de quien corre: borrar INTEGRANTE y llamar entorno.preparar()",
+    "drive.mount(": "montar Drive a mano: usar entorno.preparar()",
     "googleapiclient": "API de Drive: usar entorno.preparar (drive.mount) y resultados.guardar_corrida",
     "googleapis.com/auth/drive": "permisos de la API de Drive",
     "RespaldoDrive": "guardado por API de Drive",
@@ -34,7 +34,7 @@ PROHIBIDOS = {
     '"trashed": True': "mandar archivos a la papelera desde código",
     "rmtree(": "borrar carpetas desde un notebook",
 }
-# Herramientas viejas que se conservan pero NO son para entrenar: no se les aplica la regla 3.
+# Herramientas viejas que se conservan pero NO son para entrenar: no se les aplican las reglas 2 y 3.
 EXCEPCIONES = {
     "notebooks/06_ordenar_resultados_resnet50.ipynb":
         "herramienta vieja: ordena en Drive corridas de ResNet50 hechas con la API (formato anterior); "
@@ -42,7 +42,6 @@ EXCEPCIONES = {
 }
 # Señales de que el notebook entrena un modelo.
 ENTRENA = ("keras.applications", "torchvision.models", "from ultralytics", ".fit(", ".train(", "torch.optim")
-INTEGRANTE_OK = re.compile(r"""(["']nombre["']|PDI_INTEGRANTE|^input\()""")
 
 
 def verificar(ruta: Path, readme: str) -> list[str]:
@@ -61,10 +60,6 @@ def verificar(ruta: Path, readme: str) -> list[str]:
         codigo.append(fuente)
         if celda.get("outputs") or celda.get("execution_count") is not None:
             problemas.append(f"celda {i}: tiene salidas (Colab: Editar → Borrar todos los resultados)")
-        for linea in fuente.splitlines():
-            m = re.match(r"\s*INTEGRANTE\s*=\s*(.+)", linea)
-            if m and not INTEGRANTE_OK.search(m.group(1).split("#")[0].strip()):
-                problemas.append(f"celda {i}: INTEGRANTE con un nombre fijo ({m.group(1).strip()}); dejar \"nombre\"")
     todo = "\n".join(codigo)
     relativa = ruta.resolve().relative_to(RAIZ).as_posix()
     if relativa not in EXCEPCIONES:

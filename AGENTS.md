@@ -18,8 +18,9 @@ para las personas del equipo. Si una tarea choca con alguna de estas normas, fre
 No desactivar, aflojar ni esquivar el verificador. Si algo legítimo no entra en las reglas, preguntar.
 
 1. **Notebooks sin salidas** ni contadores de ejecución.
-2. **`INTEGRANTE = "nombre"`** en el repo. Nunca subir un notebook con un nombre de persona.
-3. **Drive se usa de una sola manera:** `entorno.preparar(INTEGRANTE)` (que hace `drive.mount`).
+2. **Sin `INTEGRANTE` ni nombres de personas:** los resultados se guardan por modelo y modo, así que los
+   notebooks no piden el nombre de quien los corre. No volver a agregarlo.
+3. **Drive se usa de una sola manera:** `entorno.preparar()` (que hace `drive.mount`).
    Prohibido: la API de Drive (`googleapiclient`, scopes de `auth/drive`), montar Drive a mano,
    **borrar o mandar a la papelera archivos de Drive** y `rmtree` en notebooks.
 4. **Todo modelo entrenado se guarda con el formato común** de `pdi_tp/resultados.py`:
