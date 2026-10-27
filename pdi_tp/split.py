@@ -46,7 +46,7 @@ def fuente(nombre: str) -> str:
 def es_jamaica(nombre: str) -> bool:
     """Imágenes de Jamaica (kingston, kingston2 y geo): capturas tipo Google Maps, como las del test."""
     nombre = Path(nombre).stem
-    if fuente(nombre) == "kingston":
+    if fuente(nombre) in {"kingston", "kingston2"}:
         return True
     if m := _GEO.match(nombre):
         (lat_min, lat_max), (lon_min, lon_max) = _JAMAICA
