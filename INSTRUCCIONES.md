@@ -52,6 +52,7 @@ Si el lanzador `py` no está disponible, crear el entorno con la ruta del ejecut
 En Jupyter, abrir el notebook y ejecutar todo. Funciona tanto si Jupyter se
 inicia desde la raíz como desde `notebooks/`. En local, los resultados van a `resultados_locales/` dentro del repo
 (ignorado por Git), con la misma estructura que en Drive (`resultados/<modelo>/<modo>/`, `analisis/`, `cache/`).
+Las carpetas se crean recién cuando algo se guarda adentro.
 
 ### Dependencias
 

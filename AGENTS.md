@@ -20,7 +20,9 @@ No desactivar, aflojar ni esquivar el verificador. Si algo legítimo no entra en
 1. **Notebooks sin salidas** ni contadores de ejecución.
 2. **Sin `INTEGRANTE` ni nombres de personas:** los resultados se guardan por modelo y modo, así que los
    notebooks no piden el nombre de quien los corre. No volver a agregarlo.
-3. **Drive se usa de una sola manera:** `entorno.preparar()` (que hace `drive.mount`).
+3. **Drive se usa de una sola manera:** `entorno.preparar()` (que hace `drive.mount`), y **solo en notebooks que
+   entrenan**. Los demás (EDA, validación, revisión) llaman `entorno.preparar(usar_drive=False)`: no pueden
+   crear carpetas en la carpeta compartida. Ninguna carpeta se crea por adelantado.
    Prohibido: la API de Drive (`googleapiclient`, scopes de `auth/drive`), montar Drive a mano,
    **borrar o mandar a la papelera archivos de Drive** y `rmtree` en notebooks.
 4. **Todo modelo entrenado se guarda con el formato común** de `pdi_tp/resultados.py`:

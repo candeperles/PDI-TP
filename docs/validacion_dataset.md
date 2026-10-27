@@ -56,7 +56,7 @@ regla de limpieza ya acordada.
 
 ## Archivos generados
 
-El notebook guarda en `rutas.resultados / "validacion_datos"`:
+El notebook guarda en `rutas.analisis / "validacion_datos"`, en el disco de la sesión (no monta Drive):
 
 - `imagenes.csv`: dimensiones, modo, split, grupo, estado de la etiqueta y hashes de originales.
 - `cajas.csv`: valores YOLO, línea original, tamaño en píxeles y validez de cada fila numérica finita.
@@ -67,7 +67,8 @@ El notebook guarda en `rutas.resultados / "validacion_datos"`:
 
 El verificador local usa `resultados/verificacion/validacion_datos/` y guarda
 la copia ejecutada del notebook en `resultados/verificacion/`. Estos resultados
-no se suben a Git; cada integrante puede reproducirlos. En Colab se guardan en Drive.
+no se suben a Git; cada integrante puede reproducirlos. En Colab quedan solo en la sesión: el notebook no
+crea nada en la carpeta compartida de Drive.
 
 ## Límites y pendientes
 

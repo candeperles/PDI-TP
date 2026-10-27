@@ -1,7 +1,7 @@
 # Ítem 2: ResNet50
 
 Abrir `notebooks/05_ResNet50_Colab_v2.ipynb` en Colab con GPU T4 y ejecutar todo.
-Monta Drive con `entorno.preparar` (como el resto de los notebooks) y guarda cada variante con el
+Monta Drive con `entorno.preparar` (como el resto de los notebooks que entrenan) y guarda cada variante con el
 formato común `resultados/<modelo>/<modo>/` (ver README, *Dónde quedan los resultados*).
 El dataset y el split son los mismos del resto del trabajo.
 

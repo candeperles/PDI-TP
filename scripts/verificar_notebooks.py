@@ -10,6 +10,8 @@ Normas:
    pdi_tp.entorno, y prohibidas las formas viejas de guardar resultados.
 4. Todo notebook que entrena un modelo guarda con `resultados.guardar_corrida(...)`
    (carpeta resultados/<modelo>/<modo>/ con pesos, métricas y predicción contra el real).
+   Los que no entrenan no montan Drive (`entorno.preparar(usar_drive=False)`): solo los modelos crean
+   carpetas en la carpeta compartida.
 5. Cada notebook está enlazado en el README con su botón de Colab.
 
 Excepciones: notebooks que no entrenan ni generan resultados y quedan por compatibilidad. Se listan en
@@ -66,8 +68,12 @@ def verificar(ruta: Path, readme: str) -> list[str]:
         for patron, motivo in PROHIBIDOS.items():
             if patron in todo:
                 problemas.append(f"usa `{patron}`: {motivo}")
-        if any(s in todo for s in ENTRENA) and "resultados.guardar_corrida(" not in todo:
+        entrena = any(s in todo for s in ENTRENA)
+        if entrena and "resultados.guardar_corrida(" not in todo:
             problemas.append("entrena un modelo pero no guarda con resultados.guardar_corrida(...)")
+        if not entrena and "entorno.preparar(" in todo and "usar_drive=False" not in todo:
+            problemas.append("no entrena pero monta Drive: usar entorno.preparar(usar_drive=False) "
+                             "(solo los modelos crean carpetas en Drive)")
     if COLAB + relativa not in readme:
         problemas.append(f"no está enlazado en el README (falta el botón de Colab a {relativa})")
     return problemas
