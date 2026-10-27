@@ -84,7 +84,7 @@ matriz de experimentos se definirá en una etapa posterior.
 ## Siguiente etapa acordada en la conversación
 
 Se implementó la parte ResNet50 del ítem 2 en
-`notebooks/05_ResNet50_Colab_v2.ipynb`: ImageNet congelado, ajuste fino y pesos
+`notebooks/05_clasificacion_resnet50.ipynb`: ImageNet congelado, ajuste fino y pesos
 aleatorios, con evaluación y checkpoints. La preparación binaria aplica los criterios
 a un manifiesto sin modificar originales. Los entrenamientos todavía deben ejecutarse
 en Colab; ver [clasificacion_resnet50.md](clasificacion_resnet50.md).

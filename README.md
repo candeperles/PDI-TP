@@ -3,15 +3,11 @@
 > [!CAUTION]
 > ## ⚠️ LOS RESULTADOS DE CLASIFICACIÓN TODAVÍA NO SON COMPARABLES ENTRE MODELOS
 >
-> **1. ✅ Corregido: el fine-tuning de `06_clasificacion_efficentnet` arrancaba descongelado.** Antes el
-> extractor se entrenaba entero con `Adam(1e-3)` desde la primera época; ahora sigue el esquema de la
-> consigna (cabeza con el extractor congelado y después extractor con `Adam(1e-5)`).
-> **Las corridas de EfficientNet hechas antes del arreglo no valen: volver a correrlo con `REPETIR = True`.**
+> **1. Falta volver a correr EfficientNet** (`06_clasificacion_efficientnet`) con `REPETIR = True`. Las
+> corridas hechas antes de corregir sus bugs (fine-tuning, pesos de clase y BatchNorm del modo `aleatorio`)
+> no valen.
 >
-> **2. ✅ Corregido: EfficientNet no usaba pesos de clase.** Ahora los usa, igual que MobileNetV2 y ResNet50
-> (mismo aviso: volver a correrlo).
->
-> **3. Cada modelo se entrena con una receta distinta.** Si un modelo le gana a otro no se puede saber si es
+> **2. Cada modelo se entrena con una receta distinta.** Si un modelo le gana a otro no se puede saber si es
 > por la arquitectura o por todo lo demás:
 >
 > | | EfficientNetB0 | MobileNetV2 | ResNet50 |
@@ -19,14 +15,14 @@
 > | Tamaño de entrada | 256 | 224 | 256 |
 > | Batch | 32 | 32 | 16 |
 > | Augmentation | flip horizontal, rotación ±18°, zoom 10 % | rotaciones de 90°, flip, brillo/contraste | flip h+v, rotación ±90° |
-> | Pesos de clase | sí (corregido) | sí | sí |
+> | Pesos de clase | sí | sí | sí |
 > | Épocas (cabeza + fine-tuning / aleatorio) | 10 + 10 / 10 | 15 + 15 / 40 | 10 + 10 / 20 |
 > | Early stopping (paciencia) | 3 | 6 | 5 |
 > | LR aleatorio | 1e-3 | 1e-3 | 1e-4 |
 > | Qué se descongela en fine-tuning | todo el extractor, después de la cabeza | desde la capa 100, o todo | solo el bloque conv5 |
 > | Dropout | 0.3 | 0.2 | 0.3 |
 >
-> **4. Val elige el modelo y también lo evalúa.** Los tres usan early stopping o el mejor checkpoint según
+> **3. Val elige el modelo y también lo evalúa.** Los tres usan early stopping o el mejor checkpoint según
 > `val_loss` y después reportan métricas sobre ese mismo val: los números son optimistas. Como la consigna
 > solo pide train/val es aceptable, pero hay que decirlo en el informe y aplicarlo igual en todos.
 >
@@ -60,11 +56,10 @@ precisión-recall para detección. Se entrega un informe con comparaciones y con
 |---|---|---|
 | Exploración del dataset | `01_exploracion` | Hecho |
 | Validación del dataset y revisión de anotaciones | `02_validacion_datos`, `03_revision_anotaciones` | Hecho; criterios en [docs/criterios_datos.md](docs/criterios_datos.md) |
-| Clasificación: EfficientNetB0 | `06_clasificacion_efficentnet` | En curso · bugs corregidos, **volver a correr** |
 | Clasificación: MobileNetV2 | `04_clasificacion_mobilenetv2` | En curso |
-| Clasificación: ResNet50 | `05_ResNet50_Colab_v2` | En curso |
+| Clasificación: ResNet50 | `05_clasificacion_resnet50` | En curso |
+| Clasificación: EfficientNetB0 | `06_clasificacion_efficientnet` | En curso · bugs corregidos, **volver a correr** |
 | Receta común de clasificación | — | Pendiente: acordarla en equipo (ver cartel) |
-| Ordenar nombres de notebooks (`NN_<tarea>_<modelo>`) | — | Pendiente: hay dos `02` y `05_ResNet50_Colab_v2` no sigue la convención. Hacerlo una sola vez, junto con la receta común |
 | Detección: YOLOv8n / YOLO11n | — | Pendiente (todavía no arrancó) |
 | Detector como clasificador y comparación final | — | Pendiente |
 | Informe | — | Pendiente |
@@ -126,9 +121,9 @@ No hay que poner ningún nombre: los resultados se guardan por modelo y modo, no
 
 | Notebook | |
 |---|---|
-| `06_clasificacion_efficentnet` — EfficientNetB0: congelado, fine-tuning y pesos aleatorios (**volver a correr, ver cartel**) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/06_clasificacion_efficentnet.ipynb) |
 | `04_clasificacion_mobilenetv2` — MobileNetV2: congelado, fine-tuning y sin preentrenamiento | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/04_clasificacion_mobilenetv2.ipynb) |
-| `05_ResNet50_Colab_v2` — ResNet50: congelado, fine-tuning de conv5 y pesos aleatorios | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/05_ResNet50_Colab_v2.ipynb) |
+| `05_clasificacion_resnet50` — ResNet50: congelado, fine-tuning de conv5 y pesos aleatorios | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/05_clasificacion_resnet50.ipynb) |
+| `06_clasificacion_efficientnet` — EfficientNetB0: congelado, fine-tuning y pesos aleatorios (**volver a correr, ver cartel**) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/06_clasificacion_efficientnet.ipynb) |
 
 **Extra: modelos adicionales (fuera de la consigna)**
 
@@ -146,7 +141,7 @@ sola vez en `val` al final (`EVALUAR_TEST = True`).
 
 | Notebook | |
 |---|---|
-| `06_ordenar_resultados_resnet50` — ⚠️ **HERRAMIENTA VIEJA**: solo ordena en Drive corridas de ResNet50 hechas con la versión anterior (API de Drive, formato ZIP). No entrena ni genera resultados. Es una excepción documentada del verificador | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/06_ordenar_resultados_resnet50.ipynb) |
+| `07_ordenar_resultados_resnet50` — ⚠️ **HERRAMIENTA VIEJA**: solo ordena en Drive corridas de ResNet50 hechas con la versión anterior (API de Drive, formato ZIP). No entrena ni genera resultados. Es una excepción documentada del verificador | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/07_ordenar_resultados_resnet50.ipynb) |
 
 ## Dónde quedan los resultados
 
@@ -185,7 +180,7 @@ Mi unidad/PDI-TP/
 - **Corridas hechas con el formato anterior** (carpetas por persona, JSON sueltos o el ZIP de ResNet50) no
   aparecen en `cargar_corridas`: para comparar, volver a correrlas con los notebooks actuales.
 - **Nada borra archivos de Drive** y todos los notebooks usan el mismo acceso (`drive.mount` dentro de
-  `entorno.preparar`). La única excepción es la herramienta vieja `06_ordenar_resultados_resnet50`.
+  `entorno.preparar`). La única excepción es la herramienta vieja `07_ordenar_resultados_resnet50`.
 
 ## Subir notebooks y cambios al repositorio
 

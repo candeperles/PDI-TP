@@ -9,8 +9,8 @@ import unittest
 import nbformat
 
 # El guardado por API de Drive ya no está en 05_ResNet50 (usa resultados.guardar_corrida); queda solo en
-# 06_ordenar_resultados_resnet50, para ordenar corridas viejas. Estos tests cubren esa copia.
-NOTEBOOK = Path(__file__).resolve().parents[1] / 'notebooks/06_ordenar_resultados_resnet50.ipynb'
+# 07_ordenar_resultados_resnet50, para ordenar corridas viejas. Estos tests cubren esa copia.
+NOTEBOOK = Path(__file__).resolve().parents[1] / 'notebooks/07_ordenar_resultados_resnet50.ipynb'
 nb = nbformat.read(NOTEBOOK, as_version=4)
 drive = types.ModuleType('drive_v2')
 exec(next(c.source for c in nb.cells if c.cell_type == 'code' and 'class RespaldoDrive:' in c.source), drive.__dict__)
