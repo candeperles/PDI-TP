@@ -3,19 +3,30 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 
+from . import aumentacion
 
-def dataset(tabla, lado=256, batch=32, entrenamiento=False, semilla=42):
+
+def dataset(tabla, lado=256, batch=32, entrenamiento=False, semilla=42, pesos_muestra=None):
     """RGB 0..255 -> preprocess_input de ResNet; val conserva el orden del manifiesto."""
-    ds = tf.data.Dataset.from_tensor_slices((tabla.ruta.to_list(), tabla.y_original.to_numpy(dtype="float32")))
+    pesos = np.ones(len(tabla), dtype="float32") if pesos_muestra is None else np.asarray(pesos_muestra, dtype="float32")
+    if len(pesos) != len(tabla):
+        raise ValueError("pesos_muestra debe estar alineado con tabla")
+    ds = tf.data.Dataset.from_tensor_slices((
+        tabla.ruta.to_list(), tabla.y_original.to_numpy(dtype="float32"), pesos
+    ))
     if entrenamiento:
         ds = ds.shuffle(len(tabla), seed=semilla, reshuffle_each_iteration=True)
 
-    def leer(ruta, etiqueta):
+    def leer(ruta, etiqueta, peso):
         imagen = tf.io.decode_png(tf.io.read_file(ruta), channels=3)
         imagen = tf.image.resize(imagen, (lado, lado))
-        return imagen, tf.reshape(etiqueta, (1,))
+        return imagen, tf.reshape(etiqueta, (1,)), peso
 
-    return ds.map(leer, num_parallel_calls=tf.data.AUTOTUNE).batch(batch).prefetch(tf.data.AUTOTUNE)
+    ds = ds.map(leer, num_parallel_calls=tf.data.AUTOTUNE)
+    if entrenamiento:
+        ds = ds.map(lambda imagen, etiqueta, peso: (aumentacion.google_maps(imagen), etiqueta, peso),
+                    num_parallel_calls=tf.data.AUTOTUNE)
+    return ds.batch(batch).prefetch(tf.data.AUTOTUNE)
 
 
 def construir(lado=256, preentrenado=True, augmentation=True, semilla=42):
@@ -24,11 +35,7 @@ def construir(lado=256, preentrenado=True, augmentation=True, semilla=42):
     base.trainable = not preentrenado
     entrada = keras.Input((lado, lado, 3), name="rgb_0_255")
     x = entrada
-    if augmentation:
-        x = keras.Sequential([
-            keras.layers.RandomFlip("horizontal_and_vertical", seed=semilla),
-            keras.layers.RandomRotation(0.25, seed=semilla + 1),
-        ], name="augmentation")(x)
+    # La aumentación común se aplica en el dataset de entrenamiento.
     # ResNet espera BGR centrado en medias ImageNet. No dividir por 255.
     x = keras.applications.resnet.preprocess_input(x)
     # ImageNet: BatchNorm en inferencia incluso durante fine-tuning.
@@ -56,7 +63,7 @@ def entrenar(modelo, train_ds, val_ds, salida, epocas, lr, pesos):
     """Guarda mejor modelo completo, última época y CSV de progreso en Drive/local."""
     salida.mkdir(parents=True, exist_ok=False)
     compilar(modelo, lr)
-    historia = modelo.fit(train_ds, validation_data=val_ds, epochs=epocas, class_weight=pesos,
+    historia = modelo.fit(train_ds, validation_data=val_ds, epochs=epocas,
         callbacks=[
             keras.callbacks.ModelCheckpoint(str(salida / "mejor.keras"), monitor="val_loss", save_best_only=True),
             keras.callbacks.ModelCheckpoint(str(salida / "ultimo.keras")),

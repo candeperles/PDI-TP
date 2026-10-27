@@ -34,7 +34,9 @@ def fuente(nombre: str) -> str:
         return "solarpanels_hd"
     if nombre.startswith("PV01"):
         return "PV01"
-    if nombre.startswith("kingston"):
+    if nombre.startswith("kingston2"):
+        return "kingston2"
+    if nombre.startswith("kingston_"):
         return "kingston"
     return "geo"
 
