@@ -1,6 +1,6 @@
 # Ítem 2: ResNet50
 
-Abrir `notebooks/05_ResNet50_Colab_v2.ipynb` en Colab con GPU T4 y completar `INTEGRANTE`.
+Abrir `notebooks/05_ResNet50_Colab_v2.ipynb` en Colab con GPU T4 y ejecutar todo.
 Monta Drive con `entorno.preparar` (como el resto de los notebooks) y guarda cada variante con el
 formato común `resultados/<modelo>/<modo>/` (ver README, *Dónde quedan los resultados*).
 El dataset y el split son los mismos del resto del trabajo.
@@ -27,7 +27,7 @@ Cada variante queda en Drive en `resultados/resnet50/<modo>/` (`imagenet_cabeza`
 `imagenet_finetuning`, `aleatorio`) y el baseline en `resultados/baseline/siempre_con_paneles/`.
 Dentro: `mejor.keras` (pesos evaluados), `ultimo.keras` (para reanudar), `historia.csv`, curvas,
 matriz de confusión, `metricas.json` (globales, por fuente y sin N06/N16), `predicciones_val.csv`
-(predicción contra el real) y `config.json` (parámetros, versiones, huella de datos e integrante).
+(predicción contra el real) y `config.json` (parámetros, versiones y huella de datos).
 El manifiesto y las cajas derivadas quedan en `analisis/resnet50/`. No se borra nada en Drive:
 `REPETIR = True` archiva la variante anterior como `<modo>__anterior_<fecha>`.
 Para cargar un modelo, usar `keras.models.load_model(ruta)` e ingresar RGB 0..255;

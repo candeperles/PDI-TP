@@ -3,7 +3,7 @@
 - Descarga el dataset si no está (scripts/download_data.py).
 - En Colab monta Google Drive (`drive.mount`) y usa la carpeta compartida del equipo, así los
   resultados no se pierden si se corta la sesión. Es el único mecanismo de acceso a Drive del repo.
-- Los resultados se organizan por modelo y modo (ver pdi_tp/resultados.py), no por integrante.
+- Los resultados se organizan por modelo y modo (ver pdi_tp/resultados.py), sin nombres de personas.
 - Avisa si no hay GPU.
 """
 import shutil
@@ -14,7 +14,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DRIVE_MOUNT = Path("/content/drive")
-# Carpeta compartida del equipo (ver README: cada integrante agrega un acceso directo en "Mi unidad").
+# Carpeta compartida del equipo (ver README: cada persona agrega un acceso directo en "Mi unidad").
 DRIVE_DIR = DRIVE_MOUNT / "MyDrive" / "PDI-TP"
 
 
@@ -24,7 +24,6 @@ def en_colab() -> bool:
 
 @dataclass
 class Rutas:
-    integrante: str
     repo: Path
     datos: Path
     imagenes: Path
@@ -35,11 +34,9 @@ class Rutas:
     cache: Path | None = None  # archivos intermedios reutilizables (features, folds); no son resultados
 
 
-def preparar(integrante: str, usar_drive: bool = True) -> Rutas:
-    integrante = integrante.strip().lower()
-    if not integrante or integrante == "nombre":
-        raise ValueError("Poné tu nombre en INTEGRANTE: queda registrado como autor de cada corrida.")
-
+def preparar(usar_drive: bool = True) -> Rutas:
+    if not isinstance(usar_drive, bool):
+        raise TypeError("preparar() ya no recibe el nombre del integrante: llamar entorno.preparar().")
     datos = REPO_ROOT / "data" / "grupo_5"
     if not datos.is_dir():
         subprocess.run([sys.executable, str(REPO_ROOT / "scripts" / "download_data.py")], check=True)
@@ -64,7 +61,6 @@ def preparar(integrante: str, usar_drive: bool = True) -> Rutas:
         carpeta.mkdir(parents=True, exist_ok=True)
 
     rutas = Rutas(
-        integrante=integrante,
         repo=REPO_ROOT,
         datos=datos,
         imagenes=datos / "images",

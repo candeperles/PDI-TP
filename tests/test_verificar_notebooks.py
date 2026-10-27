@@ -11,7 +11,7 @@ verificar = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(verificar)
 
 ENTRENAMIENTO_OK = (
-    'INTEGRANTE = "nombre"\n'
+    "rutas = entorno.preparar()\n"
     "modelo = keras.applications.MobileNetV2()\n"
     "resultados.guardar_corrida(rutas, carpeta, archivos, prob, params)\n"
 )
@@ -35,10 +35,10 @@ class VerificadorTest(unittest.TestCase):
     def test_cumple(self):
         self.assertEqual(self.notebook(ENTRENAMIENTO_OK), [])
 
-    def test_rechaza_salidas_nombre_fijo_y_guardado_viejo(self):
+    def test_rechaza_salidas_integrante_y_guardado_viejo(self):
         problemas = "\n".join(self.notebook(
-            'INTEGRANTE = "pia"\nmodel.fit(x)\nresultados.guardar_experimento(rutas, "a", {}, {})\n', salidas=True))
-        for esperado in ("salidas", "nombre fijo", "guardar_experimento", "guardar_corrida"):
+            'INTEGRANTE = "nombre"\nmodel.fit(x)\nresultados.guardar_experimento(rutas, "a", {}, {})\n', salidas=True))
+        for esperado in ("salidas", "INTEGRANTE", "guardar_experimento", "guardar_corrida"):
             self.assertIn(esperado, problemas)
 
     def test_rechaza_api_de_drive_y_borrados(self):

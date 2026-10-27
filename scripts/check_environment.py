@@ -23,7 +23,6 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 def verificar(nombre_notebook: str = "01_exploracion.ipynb") -> None:
     salida = REPO_ROOT / "resultados" / "verificacion"
     salida.mkdir(parents=True, exist_ok=True)
-    os.environ["PDI_INTEGRANTE"] = "verificacion"
     os.environ["PYTHONUTF8"] = "1"
     os.environ.setdefault("IPYTHONDIR", str(salida / "ipython"))
     os.environ.setdefault("JUPYTER_RUNTIME_DIR", str(salida / "runtime"))

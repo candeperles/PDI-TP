@@ -49,7 +49,7 @@ py -3.14 -m venv .venv
 Si el lanzador `py` no está disponible, crear el entorno con la ruta del ejecutable de Python, por ejemplo
 `& "$env:LOCALAPPDATA\Python\pythoncore-3.14-64\python.exe" -m venv .venv`.
 
-En Jupyter, abrir el notebook, completar `INTEGRANTE` y ejecutar todo. Funciona tanto si Jupyter se
+En Jupyter, abrir el notebook y ejecutar todo. Funciona tanto si Jupyter se
 inicia desde la raíz como desde `notebooks/`. En local, los resultados van a `resultados_locales/` dentro del repo
 (ignorado por Git), con la misma estructura que en Drive (`resultados/<modelo>/<modo>/`, `analisis/`, `cache/`).
 
@@ -114,7 +114,7 @@ Escribe `splits/train.txt` y `splits/val.txt`. El criterio está documentado en 
 |---|---|
 | `No existe /content/drive/MyDrive/PDI-TP` | Falta el acceso directo a la carpeta compartida, o se montó Drive con otra cuenta. Ver *Puesta en marcha* en el README. |
 | "Desaparecieron" los resultados del resto | Colab está usando otra carpeta `PDI-TP` (duplicada en tu Drive) u otra cuenta. Correr `!ls /content/drive/MyDrive` y revisar. En Drive, el panel *Actividad* de la carpeta muestra quién movió o borró algo. |
-| `Poné tu nombre en INTEGRANTE` | Quedó `INTEGRANTE = "nombre"`: poner el tuyo (y volver a dejar `"nombre"` antes de subirlo). |
+| `preparar() ya no recibe el nombre del integrante` | El notebook es de una versión vieja: borrar la línea `INTEGRANTE = ...` y llamar `entorno.preparar()`. |
 | `La corrida ... no cumple el formato` | `guardar_corrida` encontró algo incompleto (casi siempre: no se guardaron los pesos dentro de la carpeta antes de llamarla). El mensaje dice qué falta. |
 | `Las predicciones tienen que ser exactamente las 162 imágenes de val` | Se predijo sobre otro conjunto o faltan imágenes: predecir sobre `split.cargar_split(rutas)["val"]`. |
 | El commit se cancela con una lista de ✗ | El verificador encontró notebooks que no cumplen las normas: corregir lo que indica. |

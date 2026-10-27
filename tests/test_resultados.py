@@ -27,7 +27,7 @@ class ResultadosTest(unittest.TestCase):
         for nombre in VAL:
             stem = Path(nombre).stem
             (labels / f"{stem}.txt").write_text("0 0.5 0.5 0.1 0.1\n" if stem in CON_PANELES else "")
-        self.rutas = Rutas("prueba", raiz, raiz, raiz / "images", labels, raiz / "resultados", raiz / "resultados")
+        self.rutas = Rutas(raiz, raiz, raiz / "images", labels, raiz / "resultados", raiz / "resultados")
         resultados.split.SPLITS_DIR = raiz / "splits"
         self.addCleanup(setattr, resultados.split, "SPLITS_DIR", resultados.split.SPLITS_DIR)
 
@@ -47,7 +47,8 @@ class ResultadosTest(unittest.TestCase):
         self.assertEqual(dict(zip(pred.archivo, pred.y_real)), {VAL[0]: 1, VAL[1]: 0, VAL[2]: 1})
         self.assertEqual(metricas["matriz_confusion"], [[1, 0], [0, 2]])
         config = json.loads((carpeta / "config.json").read_text())
-        self.assertEqual((config["modelo"], config["modo"], config["integrante"]), ("modelo-x", "modo_a", "prueba"))
+        self.assertEqual((config["modelo"], config["modo"]), ("modelo-x", "modo_a"))
+        self.assertNotIn("integrante", config)
         self.assertEqual(json.loads((carpeta / "metricas.json").read_text())["extra"], {"epocas": 3})
 
     def test_sin_pesos_frena_salvo_que_se_declare(self):

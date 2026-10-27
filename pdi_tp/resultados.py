@@ -1,9 +1,9 @@
 """Forma única de guardar los resultados de un modelo. Todos los notebooks que entrenan la usan.
 
-Cada corrida queda en una carpeta por **modelo** y **modo** (no por integrante):
+Cada corrida queda en una carpeta por **modelo** y **modo** (sin nombres de personas):
 
     resultados/<modelo>/<modo>/
-        config.json            qué se corrió: modelo, modo, parámetros, integrante, fecha, commit del repo
+        config.json            qué se corrió: modelo, modo, parámetros, fecha y commit del repo
         metricas.json          métricas sobre val (las que pide la consigna) + extras del notebook
         predicciones_val.csv   predicción contra el real, una fila por imagen de val:
                                archivo, fuente, y_real, probabilidad, prediccion, acierto
@@ -148,7 +148,6 @@ def guardar_corrida(rutas: Rutas, carpeta: Path, archivos, probabilidad, params:
     config = {
         "modelo": modelo,
         "modo": modo,
-        "integrante": rutas.integrante,
         "fecha": datetime.now().isoformat(timespec="seconds"),
         "commit": _commit(rutas),
         "sin_pesos": bool(sin_pesos),
@@ -205,13 +204,13 @@ def cargar_corridas(rutas: Rutas) -> pd.DataFrame:
     for carpeta in _corridas(rutas):
         config = json.loads((carpeta / "config.json").read_text())
         metricas = json.loads((carpeta / "metricas.json").read_text())
-        fila = {"modelo": config["modelo"], "modo": config["modo"], "integrante": config.get("integrante"),
-                "fecha": config.get("fecha"), "completa": not verificar_corrida(carpeta)}
+        fila = {"modelo": config["modelo"], "modo": config["modo"], "fecha": config.get("fecha"),
+                "completa": not verificar_corrida(carpeta)}
         fila.update({k: v for k, v in metricas.items() if k not in ("por_fuente", "extra")})
         fila.update({f"params.{k}": v for k, v in config.get("params", {}).items()})
         filas.append(fila)
     if not filas:
-        return pd.DataFrame(columns=["modelo", "modo", "integrante", "fecha", "completa"])
+        return pd.DataFrame(columns=["modelo", "modo", "fecha", "completa"])
     return pd.DataFrame(filas).sort_values(["modelo", "modo"]).reset_index(drop=True)
 
 
