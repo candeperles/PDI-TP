@@ -27,6 +27,8 @@ _PV01 = re.compile(r"PV01_(\d+)_(\d+)$")
 _KINGSTON = re.compile(r"kingston_(\d+)_\d+_\d+_\d+$")
 _KINGSTON2 = re.compile(r"kingston2_(\d+)_(\d+)_\d+$")
 _GEO = re.compile(r"\d+_unknown_(-?[\d.]+)_(-?[\d.]+)_\d+_\d+$")
+# Rectángulo que contiene a Jamaica: (latitud mín., máx.), (longitud mín., máx.).
+_JAMAICA = ((17.6, 18.6), (-78.5, -76.1))
 
 
 def fuente(nombre: str) -> str:
@@ -37,6 +39,17 @@ def fuente(nombre: str) -> str:
     if nombre.startswith("kingston"):
         return "kingston"
     return "geo"
+
+
+def es_jamaica(nombre: str) -> bool:
+    """Imágenes de Jamaica (kingston, kingston2 y geo): capturas tipo Google Maps, como las del test."""
+    nombre = Path(nombre).stem
+    if fuente(nombre) == "kingston":
+        return True
+    if m := _GEO.match(nombre):
+        (lat_min, lat_max), (lon_min, lon_max) = _JAMAICA
+        return lat_min <= float(m[1]) <= lat_max and lon_min <= float(m[2]) <= lon_max
+    return False
 
 
 def _ubicacion(nombre: str) -> tuple[str, float, float, float, float]:

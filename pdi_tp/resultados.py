@@ -4,7 +4,8 @@ Cada corrida queda en una carpeta por **modelo** y **modo** (sin nombres de pers
 
     resultados/<modelo>/<modo>/
         config.json            qué se corrió: modelo, modo, parámetros, fecha y commit del repo
-        metricas.json          métricas sobre val (las que pide la consigna) + extras del notebook
+        metricas.json          métricas sobre val (las que pide la consigna), por fuente, solo Jamaica
+                               (ver docs/evaluacion_jamaica.md) + extras del notebook
         predicciones_val.csv   predicción contra el real, una fila por imagen de val:
                                archivo, fuente, y_real, probabilidad, prediccion, acierto
         <pesos>                el modelo entrenado (.keras, .pt, .joblib, ...), salvo corridas sin pesos
@@ -97,6 +98,15 @@ def _metricas(y: np.ndarray, p: np.ndarray, umbral: float) -> dict:
     return {k: (float(v) if isinstance(v, (float, np.floating)) else v) for k, v in metricas.items()}
 
 
+def metricas_jamaica(predicciones: pd.DataFrame, umbral: float) -> dict | None:
+    """Métricas solo sobre las imágenes de val de Jamaica (el test es de Kingston). None si no hay ninguna."""
+    jamaica = predicciones["archivo"].map(split.es_jamaica).to_numpy(dtype=bool)
+    if not jamaica.any():
+        return None
+    return _metricas(predicciones["y_real"].to_numpy()[jamaica],
+                     predicciones["probabilidad"].to_numpy()[jamaica], umbral)
+
+
 def _commit(rutas: Rutas):
     try:
         return subprocess.run(["git", "-C", str(rutas.repo), "rev-parse", "HEAD"],
@@ -142,6 +152,7 @@ def guardar_corrida(rutas: Rutas, carpeta: Path, archivos, probabilidad, params:
     metricas = _metricas(y, p, umbral)
     metricas["por_fuente"] = {f: _metricas(g["y_real"].to_numpy(), g["probabilidad"].to_numpy(), umbral)
                               for f, g in predicciones.groupby("fuente")}
+    metricas["jamaica"] = metricas_jamaica(predicciones, umbral)
     if metricas_extra:
         metricas["extra"] = metricas_extra
 
@@ -199,14 +210,22 @@ def _corridas(rutas: Rutas):
 
 
 def cargar_corridas(rutas: Rutas) -> pd.DataFrame:
-    """Todas las corridas del equipo, una fila por modelo/modo, con las métricas en columnas."""
+    """Todas las corridas del equipo, una fila por modelo/modo, con las métricas en columnas.
+
+    Las columnas `jamaica.<métrica>` se recalculan desde predicciones_val.csv: así también las tienen las
+    corridas guardadas antes de que existieran.
+    """
     filas = []
     for carpeta in _corridas(rutas):
         config = json.loads((carpeta / "config.json").read_text())
         metricas = json.loads((carpeta / "metricas.json").read_text())
         fila = {"modelo": config["modelo"], "modo": config["modo"], "fecha": config.get("fecha"),
                 "completa": not verificar_corrida(carpeta)}
-        fila.update({k: v for k, v in metricas.items() if k not in ("por_fuente", "extra")})
+        fila.update({k: v for k, v in metricas.items() if k not in ("por_fuente", "jamaica", "extra")})
+        if (carpeta / "predicciones_val.csv").is_file():
+            predicciones = pd.read_csv(carpeta / "predicciones_val.csv")
+            jamaica = metricas_jamaica(predicciones, metricas.get("umbral", 0.5)) or {}
+            fila.update({f"jamaica.{k}": v for k, v in jamaica.items() if k != "umbral"})
         fila.update({f"params.{k}": v for k, v in config.get("params", {}).items()})
         filas.append(fila)
     if not filas:

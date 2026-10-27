@@ -85,6 +85,35 @@ class ResultadosTest(unittest.TestCase):
         self.assertEqual(tabla.f1_macro.tolist(), [1.0, 1.0])
         self.assertEqual(len(resultados.cargar_predicciones(self.rutas)), 6)
 
+    def test_es_jamaica_por_nombre_y_coordenadas(self):
+        es_jamaica = resultados.split.es_jamaica
+        self.assertTrue(es_jamaica("kingston_139_0_1_23.png"))
+        self.assertTrue(es_jamaica("kingston2_71_59_10"))
+        self.assertTrue(es_jamaica("2163483_unknown_17.96567005007602_-77.24333773013821_0_1.png"))
+        self.assertFalse(es_jamaica("2163483_unknown_-34.6_-58.4_0_1.png"))
+        self.assertFalse(es_jamaica("PV01_325222_1204189.png"))
+        self.assertFalse(es_jamaica("solarpanels_hd_1__x0_0_y0_0_dxdy_832_0_0.png"))
+
+    def test_metricas_jamaica_solo_con_imagenes_de_jamaica(self):
+        # Solo kingston_1_0_0_0 es de Jamaica (sin paneles): con p=0.2 acierta; el resto no cuenta.
+        metricas = resultados.guardar_corrida(self.rutas, self.corrida(), VAL, [0.1, 0.2, 0.1], {})
+        self.assertEqual(metricas["jamaica"]["n"], 1)
+        self.assertEqual(metricas["jamaica"]["matriz_confusion"], [[1, 0], [0, 0]])
+        self.assertEqual(metricas["jamaica"]["recall_sin_paneles"], 1.0)
+        self.assertAlmostEqual(metricas["accuracy"], 1 / 3)
+
+    def test_cargar_corridas_recalcula_jamaica_en_corridas_viejas(self):
+        carpeta = self.corrida()
+        resultados.guardar_corrida(self.rutas, carpeta, VAL, [0.1, 0.9, 0.1], {})
+        archivo = carpeta / "metricas.json"
+        metricas = json.loads(archivo.read_text())
+        del metricas["jamaica"]  # como una corrida guardada antes de este cambio
+        archivo.write_text(json.dumps(metricas))
+        fila = resultados.cargar_corridas(self.rutas).iloc[0]
+        self.assertEqual(fila["jamaica.n"], 1)
+        self.assertEqual(fila["jamaica.recall_sin_paneles"], 0.0)
+        self.assertEqual(fila["jamaica.matriz_confusion"], [[0, 1], [0, 0]])
+
 
 if __name__ == "__main__":
     unittest.main()
