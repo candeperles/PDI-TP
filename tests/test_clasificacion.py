@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 
 from pdi_tp import clasificacion as clf
+from pdi_tp import split
 
 
 class ClasificacionTest(unittest.TestCase):
@@ -28,6 +29,21 @@ class ClasificacionTest(unittest.TestCase):
         self.assertEqual(clf.pesos_clase([0, 1, 1, 1]), {0: 2, 1: 2 / 3})
         with self.assertRaises(ValueError):
             clf.pesos_clase([1, 1])
+
+    def test_pesos_muestra_balancean_fuente_y_clase(self):
+        fuentes = ["PV01", "PV01", "kingston", "kingston", "kingston2"]
+        y = [1, 1, 1, 0, 0]
+        pesos = clf.pesos_muestra_fuente_clase(fuentes, y)
+        self.assertAlmostEqual(pesos[0], pesos[1])
+        self.assertAlmostEqual(pesos[2], pesos[3])
+        self.assertGreater(pesos[3], pesos[0])
+        for grupo in ("PV01::1", "kingston::1", "kingston::0", "kingston2::0"):
+            mascara = np.array([f"{f}::{c}" for f, c in zip(fuentes, y)]) == grupo
+            self.assertAlmostEqual(float(pesos[mascara].sum()), len(y) / 4)
+
+    def test_fuentes_kingston_separadas(self):
+        self.assertEqual(split.fuente("kingston_123_456_7"), "kingston")
+        self.assertEqual(split.fuente("kingston2_123_456_7"), "kingston2")
 
     def test_error_nuevo_impide_preparar(self):
         informe = SimpleNamespace(

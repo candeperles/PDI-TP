@@ -60,6 +60,30 @@ def pesos_clase(y):
     return {int(c): float(len(y) / (2 * n)) for c, n in zip(valores, cantidades)}
 
 
+def pesos_muestra_fuente_clase(fuentes, y):
+    """Devuelve pesos que balancean clase y, dentro de ella, cada fuente.
+
+    Se usa únicamente sobre train: así una fuente con muchos negativos no hace que
+    el modelo aprenda que el aspecto de Kingston equivale a "sin paneles".
+    Cada clase presente aporta la misma masa total y sus fuentes también.
+    """
+    fuentes = np.asarray(fuentes, dtype=str)
+    y = np.asarray(y, dtype=int)
+    if fuentes.ndim != 1 or y.ndim != 1 or len(fuentes) != len(y) or len(y) == 0:
+        raise ValueError("fuentes e y deben ser vectores no vacíos y alineados.")
+    if not np.isin(y, [0, 1]).all():
+        raise ValueError("y debe contener únicamente las clases 0 y 1.")
+    pesos = np.zeros(len(y), dtype=float)
+    clases = np.unique(y)
+    for clase in clases:
+        mascara_clase = y == clase
+        fuentes_clase, cantidades = np.unique(fuentes[mascara_clase], return_counts=True)
+        masa_por_fuente = len(y) / (len(clases) * len(fuentes_clase))
+        for fuente, cantidad in zip(fuentes_clase, cantidades):
+            pesos[mascara_clase & (fuentes == fuente)] = masa_por_fuente / cantidad
+    return pesos
+
+
 def evaluar(y, probabilidades, umbral=0.5):
     y, p = np.asarray(y), np.asarray(probabilidades, dtype=float).reshape(-1)
     if y.ndim != 1 or len(y) == 0 or len(y) != len(p) or not np.isin(y, [0, 1]).all():
