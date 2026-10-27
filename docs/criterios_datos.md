@@ -45,7 +45,7 @@ de `PV01`, `geo` o `kingston`, cuya confianza de origen no está documentada aqu
 ## Aplicación y pendientes
 
 Los criterios se aplican ahora al manifiesto binario y los metadatos de cajas de
-`05_ResNet50_Colab_v2.ipynb`, sin modificar originales. No se generó un dataset
+`05_clasificacion_resnet50.ipynb`, sin modificar originales. No se generó un dataset
 derivado de detección. La auditoría original sigue informando una anotación inválida.
 Pendientes: segunda revisión de N06/N16 con mayor contexto y confirmar con la
 cátedra si esperan conservar la incertidumbre de origen como etiquetas separadas.

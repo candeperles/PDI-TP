@@ -38,7 +38,7 @@ PROHIBIDOS = {
 }
 # Herramientas viejas que se conservan pero NO son para entrenar: no se les aplican las reglas 2 y 3.
 EXCEPCIONES = {
-    "notebooks/06_ordenar_resultados_resnet50.ipynb":
+    "notebooks/07_ordenar_resultados_resnet50.ipynb":
         "herramienta vieja: ordena en Drive corridas de ResNet50 hechas con la API (formato anterior); "
         "no entrena ni genera resultados",
 }

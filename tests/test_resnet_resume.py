@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-NB = json.loads((ROOT / 'notebooks/05_ResNet50_Colab_v2.ipynb').read_text(encoding='utf-8'))
+NB = json.loads((ROOT / 'notebooks/05_clasificacion_resnet50.ipynb').read_text(encoding='utf-8'))
 SOURCE = next(''.join(c['source']) for c in NB['cells']
               if c['cell_type'] == 'code' and 'def entrenar(' in ''.join(c['source']))
 

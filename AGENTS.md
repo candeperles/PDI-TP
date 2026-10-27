@@ -44,7 +44,7 @@ No desactivar, aflojar ni esquivar el verificador. Si algo legítimo no entra en
 5. **Cada notebook está en la tabla del README** con su botón de Colab
    (`https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/<ruta>`).
 
-Única excepción documentada (`EXCEPCIONES` en el verificador): `06_ordenar_resultados_resnet50`, herramienta
+Única excepción documentada (`EXCEPCIONES` en el verificador): `07_ordenar_resultados_resnet50`, herramienta
 vieja que ordena corridas de ResNet50 hechas con la API de Drive. No usarla como modelo para notebooks nuevos
 ni agregar excepciones sin acuerdo del equipo.
 
