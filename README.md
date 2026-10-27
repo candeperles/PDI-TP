@@ -3,14 +3,13 @@
 > [!CAUTION]
 > ## ⚠️ LOS RESULTADOS DE CLASIFICACIÓN TODAVÍA NO SON COMPARABLES ENTRE MODELOS
 >
-> **1. Bug en `02_clasificacion_efficientnet`: el modo "fine-tuning" no hace fine-tuning.**
-> En `entrenar()`, `congelado = weights == 'imagenet' and not fine_tune` da `False` cuando `fine_tune=True`,
-> así que el extractor arranca **descongelado** y se entrena toda la red con `Adam(1e-3)` desde la primera
-> época. No es el esquema de la consigna (primero la cabeza con el extractor congelado, después descongelar
-> con LR ~1e-5). Ese experimento mide otra cosa y, con LR alto, probablemente destruye los pesos de ImageNet.
+> **1. ✅ Corregido: el fine-tuning de `02_clasificacion_efficientnet` arrancaba descongelado.** Antes el
+> extractor se entrenaba entero con `Adam(1e-3)` desde la primera época; ahora sigue el esquema de la
+> consigna (cabeza con el extractor congelado y después extractor con `Adam(1e-5)`).
+> **Las corridas de EfficientNet hechas antes del arreglo no valen: volver a correrlo con `REPETIR = True`.**
 >
-> **2. EfficientNet no usa pesos de clase.** Imprime "Pesos de clase" pero nunca los pasa a `fit`. Con el
-> desbalance 85/15 queda en desventaja frente a MobileNetV2 y ResNet50, que sí los usan.
+> **2. ✅ Corregido: EfficientNet no usaba pesos de clase.** Ahora los usa, igual que MobileNetV2 y ResNet50
+> (mismo aviso: volver a correrlo).
 >
 > **3. Cada modelo se entrena con una receta distinta.** Si un modelo le gana a otro no se puede saber si es
 > por la arquitectura o por todo lo demás:
@@ -20,19 +19,19 @@
 > | Tamaño de entrada | 256 | 224 | 256 |
 > | Batch | 32 | 32 | 16 |
 > | Augmentation | flip horizontal, rotación ±18°, zoom 10 % | rotaciones de 90°, flip, brillo/contraste | flip h+v, rotación ±90° |
-> | Pesos de clase | **no** | sí | sí |
+> | Pesos de clase | sí (corregido) | sí | sí |
 > | Épocas (cabeza + fine-tuning / aleatorio) | 10 + 10 / 10 | 15 + 15 / 40 | 10 + 10 / 20 |
 > | Early stopping (paciencia) | 3 | 6 | 5 |
 > | LR aleatorio | 1e-3 | 1e-3 | 1e-4 |
-> | Qué se descongela en fine-tuning | todo, desde el inicio (bug) | desde la capa 100, o todo | solo el bloque conv5 |
+> | Qué se descongela en fine-tuning | todo el extractor, después de la cabeza | desde la capa 100, o todo | solo el bloque conv5 |
 > | Dropout | 0.3 | 0.2 | 0.3 |
 >
 > **4. Val elige el modelo y también lo evalúa.** Los tres usan early stopping o el mejor checkpoint según
 > `val_loss` y después reportan métricas sobre ese mismo val: los números son optimistas. Como la consigna
 > solo pide train/val es aceptable, pero hay que decirlo en el informe y aplicarlo igual en todos.
 >
-> **Para que la comparación valga:** corregir 1 y 2 y fijar una receta común (tamaño, augmentation, pesos de
-> clase, épocas, paciencia y LR) para las tres redes, cambiando solo la arquitectura.
+> **Para que la comparación valga:** volver a correr EfficientNet y fijar una receta común (tamaño,
+> augmentation, épocas, paciencia y LR) para las tres redes, cambiando solo la arquitectura.
 > *La forma de guardar resultados ya está unificada (ver [Dónde quedan los resultados](#dónde-quedan-los-resultados)).*
 
 Trabajo práctico de **Procesamiento de Imágenes** (grupo 5). Consigna:
@@ -61,7 +60,7 @@ precisión-recall para detección. Se entrega un informe con comparaciones y con
 |---|---|---|
 | Exploración del dataset | `01_exploracion` | Hecho |
 | Validación del dataset y revisión de anotaciones | `02_validacion_datos`, `03_revision_anotaciones` | Hecho; criterios en [docs/criterios_datos.md](docs/criterios_datos.md) |
-| Clasificación: EfficientNetB0 | `02_clasificacion_efficientnet` | En curso · **con bugs (ver cartel)** |
+| Clasificación: EfficientNetB0 | `02_clasificacion_efficientnet` | En curso · bugs corregidos, **volver a correr** |
 | Clasificación: MobileNetV2 | `04_clasificacion_mobilenetv2` | En curso |
 | Clasificación: ResNet50 | `05_ResNet50_Colab_v2` | En curso |
 | Receta común de clasificación | — | Pendiente (ver cartel) |
@@ -126,7 +125,7 @@ precisión-recall para detección. Se entrega un informe con comparaciones y con
 
 | Notebook | |
 |---|---|
-| `02_clasificacion_efficientnet` — EfficientNetB0 (**ver bugs en el cartel**) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/02_clasificacion_efficientnet.ipynb) |
+| `02_clasificacion_efficientnet` — EfficientNetB0: congelado, fine-tuning y pesos aleatorios (**volver a correr, ver cartel**) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/02_clasificacion_efficientnet.ipynb) |
 | `04_clasificacion_mobilenetv2` — MobileNetV2: congelado, fine-tuning y sin preentrenamiento | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/04_clasificacion_mobilenetv2.ipynb) |
 | `05_ResNet50_Colab_v2` — ResNet50: congelado, fine-tuning de conv5 y pesos aleatorios | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/05_ResNet50_Colab_v2.ipynb) |
 
