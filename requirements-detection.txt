@@ -1,0 +1,8 @@
+# Entorno separado: Colab con GPU T4. No instalar requirements.txt ni TensorFlow.
+# PyTorch/torchvision se resuelven con la GPU de Colab; versiones efectivas en config.json.
+ultralytics==8.3.221
+numpy>=1.26,<2.3
+pandas>=2.2,<3
+Pillow>=11,<13
+matplotlib>=3.9,<4
+scikit-learn>=1.5,<2

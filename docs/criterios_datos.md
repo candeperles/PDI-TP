@@ -45,8 +45,12 @@ de `PV01`, `geo` o `kingston`, cuya confianza de origen no está documentada aqu
 ## Aplicación y pendientes
 
 Los criterios se aplican ahora al manifiesto binario y los metadatos de cajas de
-`05_clasificacion_resnet50.ipynb`, sin modificar originales. No se generó un dataset
-derivado de detección. La auditoría original sigue informando una anotación inválida.
+`05_clasificacion_resnet50.ipynb`, sin modificar originales. El nuevo notebook
+`08_deteccion_yolov8n.ipynb` prepara una copia local derivada de detección al ejecutarse:
+imágenes RGB, clase única 0 (`panel`), etiquetas vacías para negativos y exclusión solo
+de Z01/línea 1. Conserva las cajas pequeñas y exporta la clase/confianza original por caja.
+No incorpora imágenes nuevas ni modifica el split. La auditoría original sigue informando
+una anotación inválida. Ver [detección con YOLOv8n](deteccion_yolov8n.md).
 Pendientes: segunda revisión de N06/N16 con mayor contexto y confirmar con la
 cátedra si esperan conservar la incertidumbre de origen como etiquetas separadas.
 La fusión definida aquí representa la tarea física de detectar paneles.
