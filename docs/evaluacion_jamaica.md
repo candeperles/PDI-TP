@@ -40,13 +40,33 @@ Para medir con las 172 imágenes y no solo con 23:
 3. Juntar las predicciones de los 5 folds: queda una predicción por cada una de las 172 imágenes, sin que
    ningún modelo haya visto la imagen ni sus vecinas.
 4. Reportar recall con paneles, recall sin paneles y F1 macro, más el umbral elegido sobre esas predicciones
-   (tarea de @Sciordia11 en el issue #7).
+   (tarea de @Sciordia11 en el issue #7). Para esto alcanza con pasarle esas predicciones a
+   `umbral.tabla_jamaica` (ver "Umbral de decisión" abajo).
 
 **Costo:** 5 entrenamientos por configuración. Para los linear probes del notebook extra son segundos; para
 las CNN en Colab conviene hacerlo solo con la receta común y las variantes finalistas, no con todas.
 
 **Qué no cambia:** el split oficial sigue igual y las métricas de val del formato común se siguen
 reportando como hasta ahora. Esto es una evaluación adicional.
+
+## Umbral de decisión (implementado)
+
+Con umbral 0.5 y un train con 85 % con paneles, los modelos tienden a decir "con paneles" de más, y el test
+va a tener mayoría sin paneles. `pdi_tp/umbral.py` elige el umbral para Jamaica y mide qué gana:
+
+- **Criterio: balanced accuracy** (promedio del acierto de cada clase). No depende de la proporción de clases,
+  así que sirve aunque el test tenga otra proporción que val. La F1 macro sí depende: se reporta pero no se
+  usa para elegir. Los candidatos van de 0.05 a 0.95 de a 0.05; si empatan varios, se toma el medio del tramo.
+- **Estimación honesta:** elegir el umbral y medir sobre las mismas imágenes da un número optimista. Por eso
+  se deja afuera un grupo espacial por vez, se elige el umbral con el resto y se aplica al grupo que quedó
+  afuera (columnas `*_cv`). El umbral para el test (`umbral`) se elige con todas las imágenes.
+- **Dónde se ve:** `umbral.tabla_jamaica(resultados.cargar_predicciones(rutas))` da una fila por modelo/modo
+  de todo el equipo. La sección *Kingston* del notebook `04_clasificacion_mobilenetv2` la muestra.
+- **No cambia las corridas:** el umbral guardado en `metricas.json` sigue siendo 0.5. Es una evaluación
+  adicional.
+
+Hoy usa las 23 imágenes de Jamaica de val (9 grupos espaciales), así que es ruidosa. Cuando existan las
+predicciones fuera de fold del paso 2, se le pasan esas y mide con las 172.
 
 ## Paso 3 (cuando lleguen las capturas nuevas): test propio de Kingston
 
