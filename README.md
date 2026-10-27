@@ -60,7 +60,8 @@ precisión-recall para detección. Se entrega un informe con comparaciones y con
 | Clasificación: ResNet50 | `05_clasificacion_resnet50` | En curso |
 | Clasificación: EfficientNetB0 | `06_clasificacion_efficientnet` | En curso · bugs corregidos, **volver a correr** |
 | Receta común de clasificación | — | Pendiente: acordarla en equipo (ver cartel) |
-| Detección: YOLOv8n / YOLO11n | — | Pendiente (todavía no arrancó) |
+| Detección: YOLOv8n | `08_deteccion_yolov8n` | Notebook preparado; entrenamiento y resultados pendientes |
+| Detección: YOLO11n | — | Pendiente |
 | Detector como clasificador y comparación final | — | Pendiente |
 | Informe | — | Pendiente |
 | Página interactiva para el cierre | — | Idea: un módulo que muestre cómo se generan las cajas (candidatas → filtrado → finales) y otro con la red calculando en vivo (mapas de activación capa por capa). Se arma al final, con los resultados reales |
@@ -125,6 +126,15 @@ No hay que poner ningún nombre: los resultados se guardan por modelo y modo, no
 | `04_clasificacion_mobilenetv2` — MobileNetV2: congelado, fine-tuning y sin preentrenamiento | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/04_clasificacion_mobilenetv2.ipynb) |
 | `05_clasificacion_resnet50` — ResNet50: congelado, fine-tuning de conv5 y pesos aleatorios | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/05_clasificacion_resnet50.ipynb) |
 | `06_clasificacion_efficientnet` — EfficientNetB0: congelado, fine-tuning y pesos aleatorios (**volver a correr, ver cartel**) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/06_clasificacion_efficientnet.ipynb) |
+
+**Detección (consigna)**
+
+| Notebook | |
+|---|---|
+| `08_deteccion_yolov8n` — YOLOv8n: red completa y backbone congelado, mAP en val/Jamaica y detector como clasificador | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/08_deteccion_yolov8n.ipynb) |
+
+Usar una sesión nueva de Colab con GPU T4 y `requirements-detection.txt` (PyTorch).
+Solo usa el dataset existente y el split fijo. Guía: [detección con YOLOv8n](docs/deteccion_yolov8n.md).
 
 **Extra: modelos adicionales (fuera de la consigna)**
 
