@@ -3,7 +3,7 @@
 > [!CAUTION]
 > ## ⚠️ LOS RESULTADOS DE CLASIFICACIÓN TODAVÍA NO SON COMPARABLES ENTRE MODELOS
 >
-> **1. ✅ Corregido: el fine-tuning de `02_clasificacion_efficientnet` arrancaba descongelado.** Antes el
+> **1. ✅ Corregido: el fine-tuning de `06_clasificacion_efficentnet` arrancaba descongelado.** Antes el
 > extractor se entrenaba entero con `Adam(1e-3)` desde la primera época; ahora sigue el esquema de la
 > consigna (cabeza con el extractor congelado y después extractor con `Adam(1e-5)`).
 > **Las corridas de EfficientNet hechas antes del arreglo no valen: volver a correrlo con `REPETIR = True`.**
@@ -60,7 +60,7 @@ precisión-recall para detección. Se entrega un informe con comparaciones y con
 |---|---|---|
 | Exploración del dataset | `01_exploracion` | Hecho |
 | Validación del dataset y revisión de anotaciones | `02_validacion_datos`, `03_revision_anotaciones` | Hecho; criterios en [docs/criterios_datos.md](docs/criterios_datos.md) |
-| Clasificación: EfficientNetB0 | `02_clasificacion_efficientnet` | En curso · bugs corregidos, **volver a correr** |
+| Clasificación: EfficientNetB0 | `06_clasificacion_efficentnet` | En curso · bugs corregidos, **volver a correr** |
 | Clasificación: MobileNetV2 | `04_clasificacion_mobilenetv2` | En curso |
 | Clasificación: ResNet50 | `05_ResNet50_Colab_v2` | En curso |
 | Receta común de clasificación | — | Pendiente: acordarla en equipo (ver cartel) |
@@ -126,7 +126,7 @@ No hay que poner ningún nombre: los resultados se guardan por modelo y modo, no
 
 | Notebook | |
 |---|---|
-| `02_clasificacion_efficientnet` — EfficientNetB0: congelado, fine-tuning y pesos aleatorios (**volver a correr, ver cartel**) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/02_clasificacion_efficientnet.ipynb) |
+| `06_clasificacion_efficentnet` — EfficientNetB0: congelado, fine-tuning y pesos aleatorios (**volver a correr, ver cartel**) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/06_clasificacion_efficentnet.ipynb) |
 | `04_clasificacion_mobilenetv2` — MobileNetV2: congelado, fine-tuning y sin preentrenamiento | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/04_clasificacion_mobilenetv2.ipynb) |
 | `05_ResNet50_Colab_v2` — ResNet50: congelado, fine-tuning de conv5 y pesos aleatorios | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/05_ResNet50_Colab_v2.ipynb) |
 
