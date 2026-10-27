@@ -1,7 +1,8 @@
 # Evaluación sobre Jamaica (propuesta)
 
 El test va a ser solo de Kingston, con capturas tipo Google Maps y mayoría de imágenes sin paneles (issue #7).
-Este documento propone cómo medir eso con lo que ya tenemos. **Es una propuesta para discutir en equipo:**
+Evalúa **clasificación y detección**, con la misma entrada que nuestro dataset (256×256, mismo zoom): no hay
+que cambiar el preprocesamiento. Este documento propone cómo medir eso con lo que ya tenemos. **Es una propuesta para discutir en equipo:**
 no cambia el split fijo.
 
 ## Qué imágenes cuentan como Jamaica
@@ -53,6 +54,24 @@ Las capturas nuevas de Kingston (tarea de @PiaAndreuccetti) dan la mejor estimac
 separan como **test propio que no se usa ni para entrenar ni para elegir umbral o modelo**, con una
 proporción de clases parecida a la que esperamos en el test (mayoría sin paneles). Se evalúa una sola vez,
 al final.
+
+## Detección
+
+Lo de arriba vale igual para el detector, con dos diferencias:
+
+- **Pocas cajas de Kingston:** 113 en 58 imágenes de train y 21 en 11 imágenes de val. Un mAP solo sobre
+  Jamaica de val es todavía más ruidoso que las métricas de clasificación.
+- **Las imágenes sin paneles de Jamaica** (`kingston2_*` y la mayoría de `geo`) entran al entrenamiento como
+  imágenes de fondo y ayudan a bajar los falsos positivos, que en un test con mayoría sin paneles pesan mucho.
+
+Qué tiene que reportar el notebook de detección (todavía no existe):
+
+1. mAP50 y mAP50-95 sobre todo val y **también solo sobre las imágenes de Jamaica de val** (por ejemplo, con
+   un segundo `data.yaml` que liste solo esas imágenes, elegidas con `split.es_jamaica`).
+2. El detector usado como clasificador se guarda con `resultados.guardar_corrida`, así que ya trae las
+   métricas `jamaica` sin hacer nada extra.
+3. Para la validación cruzada del paso 2 y el test propio del paso 3, las capturas nuevas tienen que venir
+   **con cajas** en formato YOLO, no solo con la etiqueta con/sin paneles.
 
 ## Para decidir en equipo
 
