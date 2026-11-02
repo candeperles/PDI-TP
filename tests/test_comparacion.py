@@ -81,7 +81,7 @@ class ComparacionTest(unittest.TestCase):
             "modelo": ["mobilenetv2", "mobilenetv2", "yolov8n", "baseline"],
             "modo": ["imagenet_congelado", "imagenet_fine_tuning", "coco_completo", "siempre_con_paneles"],
             "completa": [True, True, True, True], "fecha": None, "umbral": [0.5, 0.5, 0.25, 0.5],
-            "params.receta": ["comun_v2", None, None, None],
+            "params.receta": ["comun_v2", None, {"imgsz": 256}, "comun_v2"],
             **{m: 0.5 for m in comparacion.METRICAS}})
         tabla = comparacion.corridas_vigentes(corridas).set_index("corrida")
         self.assertEqual(tabla.vigente.to_dict(), {"mobilenetv2/imagenet_congelado": True,
@@ -89,6 +89,8 @@ class ComparacionTest(unittest.TestCase):
                                                    "yolov8n/coco_completo": True,
                                                    "baseline/siempre_con_paneles": True})
         self.assertEqual(tabla.loc["yolov8n/coco_completo", "familia"], "detector")
+        self.assertTrue(pd.isna(tabla.loc["yolov8n/coco_completo", "receta"]))
+        self.assertTrue(pd.isna(tabla.loc["baseline/siempre_con_paneles", "receta"]))
 
     def test_tabla_deteccion_lee_extra(self):
         with tempfile.TemporaryDirectory() as temporal:

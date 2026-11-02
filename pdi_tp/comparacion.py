@@ -47,8 +47,9 @@ def corridas_vigentes(corridas: pd.DataFrame, receta: str = RECETA_VIGENTE) -> p
     tabla = corridas[corridas["completa"]].copy()
     tabla.insert(0, "corrida", tabla["modelo"] + "/" + tabla["modo"])
     tabla.insert(1, "familia", tabla["modelo"].map(familia))
+    # La receta común es de las CNN: los detectores guardan otra cosa en `params.receta` y el baseline no tiene.
     recetas = tabla["params.receta"] if "params.receta" in tabla else pd.Series(None, index=tabla.index)
-    tabla.insert(2, "receta", recetas)
+    tabla.insert(2, "receta", recetas.where(tabla["familia"] == "clasificador"))
     tabla.insert(3, "vigente", (tabla["familia"] != "clasificador") | (tabla["receta"] == receta))
     columnas = ["corrida", "familia", "receta", "vigente", "modelo", "modo", "fecha", "umbral", *METRICAS,
                 *[f"jamaica.{m}" for m in METRICAS if f"jamaica.{m}" in tabla]]
