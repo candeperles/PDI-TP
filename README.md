@@ -10,30 +10,30 @@
 > correr con sus bugs corregidos: solo le falta, como a los otros dos, la receta nueva. MobileNetV2
 > `aleatorio` no se corrió nunca.
 >
-> **2. Cada modelo se entrena con una receta distinta.** Si un modelo le gana a otro no se puede saber si es
-> por la arquitectura o por todo lo demás:
+> **2. Los tres notebooks ya incorporan los parámetros de la receta común del issue #15.** Las corridas
+> guardadas usaron recetas anteriores; falta entrenar con la configuración actual que se muestra abajo:
 >
 > | | EfficientNetB0 | MobileNetV2 | ResNet50 |
 > |---|---|---|---|
-> | Tamaño de entrada | 256 | 224 | 256 |
+> | Tamaño de entrada | 256 | 256 | 256 |
 > | Batch | 32 | 32 | 32 |
 > | Augmentation | común: `aumentacion.google_maps` | común | común |
 > | Pesos | por fuente × clase | por fuente × clase | por fuente × clase |
-> | Épocas (cabeza + fine-tuning / aleatorio) | 10 + 10 / 10 | 15 + 15 / 40 | 15 + 20 / 60 |
-> | Early stopping (paciencia) | 3 | 6 | 5 (aleatorio: 10) |
-> | LR aleatorio | 1e-3 | 1e-3 | 1e-3 con reducción |
-> | Qué se descongela en fine-tuning | todo el extractor, después de la cabeza | desde la capa 100, o todo | todo el extractor, BatchNorm congeladas |
-> | Dropout | 0.3 | 0.2 | 0.3 |
+> | Épocas (cabeza + fine-tuning / aleatorio) | 15 + 20 / 60 | 15 + 20 / 60 | 15 + 20 / 60 |
+> | Early stopping (paciencia) | 5 (aleatorio: 10) | 5 (aleatorio: 10) | 5 (aleatorio: 10) |
+> | LR aleatorio | 1e-3 con reducción | 1e-3 con reducción | 1e-3 con reducción |
+> | Qué se descongela en fine-tuning | todo el extractor, BatchNorm congeladas | todo el extractor, BatchNorm congeladas | todo el extractor, BatchNorm congeladas |
+> | Dropout | 0.3 | 0.3 | 0.3 |
 >
-> ResNet50 ya implementa la receta del issue #15; falta entrenarlo en Colab con `REPETIR = True`.
+> Falta entrenar los tres en Colab con `REPETIR = True`.
 >
 > **3. Val elige el modelo y también lo evalúa.** Los tres usan early stopping o el mejor checkpoint según
 > `val_loss` y después reportan métricas sobre ese mismo val: los números son optimistas. Como la consigna
 > solo pide train/val es aceptable, pero hay que decirlo en el informe y aplicarlo igual en todos.
 >
-> **Para que la comparación valga:** fijar una receta común también para tamaño, épocas, paciencia y LR (la
-> augmentation y los pesos ya son comunes) y volver a correr las tres redes, cambiando solo la arquitectura.
-> La receta propuesta y qué cambiar en cada notebook están en el [issue #15](https://github.com/candeperles/PDI-TP/issues/15).
+> **Para que la comparación valga:** volver a correr las tres redes con la receta común, cambiando solo la
+> arquitectura, y comparar esas corridas nuevas. La receta y las tareas de entrenamiento y comparación
+> están en el [issue #15](https://github.com/candeperles/PDI-TP/issues/15).
 > *La forma de guardar resultados ya está unificada (ver [Dónde quedan los resultados](#dónde-quedan-los-resultados)).*
 
 Trabajo práctico de **Procesamiento de Imágenes** (grupo 5). Consigna:
@@ -62,10 +62,10 @@ precisión-recall para detección. Se entrega un informe con comparaciones y con
 |---|---|---|
 | Exploración del dataset | `01_exploracion` | Hecho |
 | Validación del dataset y revisión de anotaciones | `02_validacion_datos`, `03_revision_anotaciones` | Hecho; criterios en [docs/criterios_datos.md](docs/criterios_datos.md) |
-| Clasificación: MobileNetV2 | `04_clasificacion_mobilenetv2` | Corrido con la receta vieja: **volver a correr** (ver cartel). Falta `aleatorio` |
-| Clasificación: ResNet50 | `05_clasificacion_resnet50` | Corrido con la receta vieja: **volver a correr** (ver cartel) |
-| Clasificación: EfficientNetB0 | `06_clasificacion_efficientnet` | Corrido con los bugs corregidos pero con la receta vieja: **volver a correr** (ver cartel) |
-| Receta común de clasificación | — | **Pendiente, para tomar:** receta propuesta y cambios por notebook en el [issue #15](https://github.com/candeperles/PDI-TP/issues/15). Anotarse ahí y comentar antes de correr si algún valor no convence |
+| Clasificación: MobileNetV2 | `04_clasificacion_mobilenetv2` | Notebook actualizado a la receta del issue #15; **pendiente de entrenar en Colab con `REPETIR = True`**, incluido `aleatorio`, que no se corrió antes |
+| Clasificación: ResNet50 | `05_clasificacion_resnet50` | Notebook actualizado a la receta del issue #15; **pendiente de entrenar en Colab con `REPETIR = True`** |
+| Clasificación: EfficientNetB0 | `06_clasificacion_efficientnet` | Notebook actualizado a la receta del [issue #15](https://github.com/candeperles/PDI-TP/issues/15); **pendiente de entrenar en Colab con `REPETIR = True`**. Los resultados disponibles siguen siendo de la receta vieja |
+| Receta común de clasificación | — | Parámetros actualizados en los tres notebooks; falta entrenar los tres y comparar las corridas nuevas. Receta y tareas pendientes en el [issue #15](https://github.com/candeperles/PDI-TP/issues/15) |
 | Marca de agua de Google Maps (issue #7) | — | **Pendiente, para tomar.** Las imágenes de Jamaica traen el logo "Google" y el "Imagery ©2025 Airbus/Maxar", y el resto de las fuentes no: el modelo puede aprender "marca de agua → Jamaica → sin paneles", y el test de Kingston también la va a tener. Opciones: tapar esa zona en todas las imágenes (train, val y test) o pegar marcas de agua falsas en las otras fuentes como augmentation (`pdi_tp/aumentacion.py`). Primero ver en qué imágenes aparece y dónde. Medir el acierto con paneles en Jamaica antes y después |
 | Detección: YOLOv8n | `08_deteccion_yolov8n` | Hecho: `coco_completo` y `coco_backbone_congelado`, en Drive (27/10) |
 | Detección: YOLO11n | — | Pendiente |
