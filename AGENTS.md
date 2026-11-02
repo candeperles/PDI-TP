@@ -10,9 +10,8 @@ para las personas del equipo. Si una tarea choca con alguna de estas normas, fre
   resumen: `docs/alcance.md`.
 - Se entrena en **Google Colab con GPU T4**. Los resultados van a una carpeta compartida de Google Drive
   (`Mi unidad/PDI-TP/`); el repo tiene solo código, docs y el split.
-- **Leer el cartel del README antes de trabajar en clasificación:** hoy los modelos no son comparables entre
-  sí (recetas distintas, y las corridas de Drive son de antes de la receta nueva: hay que volver a correr
-  los tres).
+- **Clasificación usa una receta común** (sección *Receta común de clasificación* del README, issue #15): no
+  cambiar valores en un solo notebook. Solo valen para comparar las corridas con `receta: "comun_v2"`.
 
 ## Reglas duras (las controla `scripts/verificar_notebooks.py`)
 
