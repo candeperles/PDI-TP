@@ -51,7 +51,7 @@ informe. Para volver a correr un notebook sin mezclar resultados, ver
 | Clasificación: ResNet50 | `05_clasificacion_resnet50` | Receta común v2; **falta entrenar en Colab con `REPETIR = True`** |
 | Clasificación: EfficientNetB0 | `06_clasificacion_efficientnet` | Receta común v2; **falta entrenar en Colab con `REPETIR = True`** |
 | Receta común de clasificación | — | Hecha en los tres notebooks (ver [Receta común](#receta-común-de-clasificación)); falta entrenar y comparar |
-| Marca de agua de Google Maps (issue #7) | — | **Pendiente, para tomar.** Las imágenes de Jamaica traen el logo "Google" y el "Imagery ©2025 Airbus/Maxar", y el resto de las fuentes no: el modelo puede aprender "marca de agua → Jamaica → sin paneles", y el test de Kingston también la va a tener. Opciones: tapar esa zona en todas las imágenes (train, val y test) o pegar marcas de agua falsas en las otras fuentes como augmentation (`pdi_tp/aumentacion.py`). Primero ver en qué imágenes aparece y dónde. Medir el acierto con paneles en Jamaica antes y después |
+| Marca de agua de Google Maps (issue #7) | `11_marca_de_agua` | **Ubicada:** aparece en 49 de las 172 imágenes de Jamaica y en ninguna de las otras fuentes; ocupa desde la fila 222 para abajo (barra de atribución y logo). En todo el dataset, "marca → sin paneles" acierta el 63 % contra el 13 % sin marca, porque solo aparece en Jamaica. **Falta:** elegir entre tapar esa franja en todas las imágenes o pegar marcas falsas como augmentation, y medir el efecto en Jamaica |
 | Detección: YOLOv8n | `08_deteccion_yolov8n` | Hecho: `coco_completo` y `coco_backbone_congelado`, en Drive (27/10) |
 | Detección: YOLO11n | `09_deteccion_yolo11n` | Notebook listo, misma receta que YOLOv8n salvo el tamaño de entrada (640 en vez de 256); **falta entrenar en Colab** |
 | Detector como clasificador y comparación final | `10_comparacion_final` | Notebook listo: compara todas las corridas vigentes con intervalos bootstrap sobre val y Jamaica. Falta correrlo cuando estén los tres clasificadores y los dos YOLO |
@@ -109,6 +109,7 @@ No hay que poner ningún nombre: los resultados se guardan por modelo y modo, no
 | `01_exploracion` — EDA: balance de clases, fuentes, cajas, split | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/01_exploracion.ipynb) |
 | `02_validacion_datos` — validación de archivos, cajas, duplicados y split | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/02_validacion_datos.ipynb) |
 | `03_revision_anotaciones` — casos dudosos, muestra de negativos y criterios | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/03_revision_anotaciones.ipynb) |
+| `11_marca_de_agua` — dónde aparece la marca de agua de Google Maps, si se asocia con la clase y qué zona tapar (issue #7) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/11_marca_de_agua.ipynb) |
 
 **Clasificación (consigna, ítem 2)**
 
