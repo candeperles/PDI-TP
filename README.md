@@ -162,7 +162,7 @@ Mi unidad/PDI-TP/
 │   │   │   │                              probabilidad, prediccion, acierto (las 162 imágenes de val)
 │   │   │   ├── config.json             ← modelo, modo, parámetros, fecha y commit del repo
 │   │   │   └── historia.csv, curvas…   ← opcionales
-│   │   ├── imagenet_fine_tuning/
+│   │   ├── imagenet_finetuning/
 │   │   └── aleatorio/
 │   ├── efficientnetb0/
 │   ├── resnet50/
@@ -184,6 +184,10 @@ validación y la revisión de anotaciones no montan Drive: correrlos no crea nad
 - **Repetir un modo**: cada notebook tiene `REPETIR`. Con `False`, los modos ya completos se saltean y uno a
   medias se retoma; con `True` se entrena de nuevo y la carpeta anterior **se renombra**
   (`<modo>__anterior_<fecha>`), no se borra.
+- **Modos que se dejan de usar o cambian de nombre** (por ejemplo `mobilenetv2/imagenet_ft_completo`):
+  `REPETIR` no los toca, así que hay que renombrar a mano su carpeta en Drive agregándole `__anterior_<fecha>`.
+  Toda carpeta con `__anterior_` queda afuera de `cargar_corridas`, `cargar_predicciones` y las tablas de
+  comparación.
 - **Corridas hechas con el formato anterior** (carpetas por persona, JSON sueltos o el ZIP de ResNet50) no
   aparecen en `cargar_corridas`: para comparar, volver a correrlas con los notebooks actuales.
 - **Nada borra archivos de Drive** y todos los notebooks usan el mismo acceso (`drive.mount` dentro de
