@@ -3,9 +3,12 @@
 > [!CAUTION]
 > ## ⚠️ LOS RESULTADOS DE CLASIFICACIÓN TODAVÍA NO SON COMPARABLES ENTRE MODELOS
 >
-> **1. Falta volver a correr EfficientNet** (`06_clasificacion_efficientnet`) con `REPETIR = True`. Las
-> corridas hechas antes de corregir sus bugs (fine-tuning, pesos de clase y BatchNorm del modo `aleatorio`)
-> no valen.
+> **1. Hay que volver a correr los tres clasificadores** (`04`, `05` y `06`) con `REPETIR = True`. Las 9
+> corridas que hay en Drive son del 27/10 a la mañana, de antes del PR #10, que cambió la augmentation
+> (`aumentacion.google_maps`) y los pesos (por fuente × clase en vez de por clase). Con `REPETIR = False` se
+> saltean porque ya están completas, así que la receta nueva todavía no se entrenó. EfficientNet ya se volvió a
+> correr con sus bugs corregidos: solo le falta, como a los otros dos, la receta nueva. MobileNetV2
+> `aleatorio` no se corrió nunca.
 >
 > **2. Cada modelo se entrena con una receta distinta.** Si un modelo le gana a otro no se puede saber si es
 > por la arquitectura o por todo lo demás:
@@ -14,8 +17,8 @@
 > |---|---|---|---|
 > | Tamaño de entrada | 256 | 224 | 256 |
 > | Batch | 32 | 32 | 16 |
-> | Augmentation | flip horizontal, rotación ±18°, zoom 10 % | rotaciones de 90°, flip, brillo/contraste | flip h+v, rotación ±90° |
-> | Pesos de clase | sí | sí | sí |
+> | Augmentation | común: `aumentacion.google_maps` | común | común |
+> | Pesos | por fuente × clase | por fuente × clase | por fuente × clase |
 > | Épocas (cabeza + fine-tuning / aleatorio) | 10 + 10 / 10 | 15 + 15 / 40 | 10 + 10 / 20 |
 > | Early stopping (paciencia) | 3 | 6 | 5 |
 > | LR aleatorio | 1e-3 | 1e-3 | 1e-4 |
@@ -26,8 +29,8 @@
 > `val_loss` y después reportan métricas sobre ese mismo val: los números son optimistas. Como la consigna
 > solo pide train/val es aceptable, pero hay que decirlo en el informe y aplicarlo igual en todos.
 >
-> **Para que la comparación valga:** volver a correr EfficientNet y fijar una receta común (tamaño,
-> augmentation, épocas, paciencia y LR) para las tres redes, cambiando solo la arquitectura.
+> **Para que la comparación valga:** fijar una receta común también para tamaño, épocas, paciencia y LR (la
+> augmentation y los pesos ya son comunes) y volver a correr las tres redes, cambiando solo la arquitectura.
 > *La forma de guardar resultados ya está unificada (ver [Dónde quedan los resultados](#dónde-quedan-los-resultados)).*
 
 Trabajo práctico de **Procesamiento de Imágenes** (grupo 5). Consigna:
@@ -56,14 +59,14 @@ precisión-recall para detección. Se entrega un informe con comparaciones y con
 |---|---|---|
 | Exploración del dataset | `01_exploracion` | Hecho |
 | Validación del dataset y revisión de anotaciones | `02_validacion_datos`, `03_revision_anotaciones` | Hecho; criterios en [docs/criterios_datos.md](docs/criterios_datos.md) |
-| Clasificación: MobileNetV2 | `04_clasificacion_mobilenetv2` | En curso |
-| Clasificación: ResNet50 | `05_clasificacion_resnet50` | En curso |
-| Clasificación: EfficientNetB0 | `06_clasificacion_efficientnet` | En curso · bugs corregidos, **volver a correr** |
+| Clasificación: MobileNetV2 | `04_clasificacion_mobilenetv2` | Corrido con la receta vieja: **volver a correr** (ver cartel). Falta `aleatorio` |
+| Clasificación: ResNet50 | `05_clasificacion_resnet50` | Corrido con la receta vieja: **volver a correr** (ver cartel) |
+| Clasificación: EfficientNetB0 | `06_clasificacion_efficientnet` | Corrido con los bugs corregidos pero con la receta vieja: **volver a correr** (ver cartel) |
 | Receta común de clasificación | — | Pendiente: acordarla en equipo (ver cartel) |
 | Marca de agua de Google Maps (issue #7) | — | **Pendiente, para tomar.** Las imágenes de Jamaica traen el logo "Google" y el "Imagery ©2025 Airbus/Maxar", y el resto de las fuentes no: el modelo puede aprender "marca de agua → Jamaica → sin paneles", y el test de Kingston también la va a tener. Opciones: tapar esa zona en todas las imágenes (train, val y test) o pegar marcas de agua falsas en las otras fuentes como augmentation (`pdi_tp/aumentacion.py`). Primero ver en qué imágenes aparece y dónde. Medir el acierto con paneles en Jamaica antes y después |
-| Detección: YOLOv8n | `08_deteccion_yolov8n` | Notebook preparado; entrenamiento y resultados pendientes |
+| Detección: YOLOv8n | `08_deteccion_yolov8n` | Hecho: `coco_completo` y `coco_backbone_congelado`, en Drive (27/10) |
 | Detección: YOLO11n | — | Pendiente |
-| Detector como clasificador y comparación final | — | Pendiente |
+| Detector como clasificador y comparación final | — | YOLOv8n ya guarda sus predicciones como clasificador; falta la comparación final, después de volver a correr los clasificadores |
 | Informe | — | Pendiente |
 | Página interactiva para el cierre | — | Idea: un módulo que muestre cómo se generan las cajas (candidatas → filtrado → finales) y otro con la red calculando en vivo (mapas de activación capa por capa). Se arma al final, con los resultados reales |
 
@@ -125,7 +128,7 @@ No hay que poner ningún nombre: los resultados se guardan por modelo y modo, no
 |---|---|
 | `04_clasificacion_mobilenetv2` — MobileNetV2: congelado, fine-tuning y sin preentrenamiento | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/04_clasificacion_mobilenetv2.ipynb) |
 | `05_clasificacion_resnet50` — ResNet50: congelado, fine-tuning de conv5 y pesos aleatorios | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/05_clasificacion_resnet50.ipynb) |
-| `06_clasificacion_efficientnet` — EfficientNetB0: congelado, fine-tuning y pesos aleatorios (**volver a correr, ver cartel**) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/06_clasificacion_efficientnet.ipynb) |
+| `06_clasificacion_efficientnet` — EfficientNetB0: congelado, fine-tuning y pesos aleatorios (**volver a correr con la receta nueva, ver cartel**) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/06_clasificacion_efficientnet.ipynb) |
 
 **Detección (consigna)**
 

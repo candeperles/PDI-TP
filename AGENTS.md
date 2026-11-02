@@ -11,7 +11,8 @@ para las personas del equipo. Si una tarea choca con alguna de estas normas, fre
 - Se entrena en **Google Colab con GPU T4**. Los resultados van a una carpeta compartida de Google Drive
   (`Mi unidad/PDI-TP/`); el repo tiene solo código, docs y el split.
 - **Leer el cartel del README antes de trabajar en clasificación:** hoy los modelos no son comparables entre
-  sí (recetas distintas, y EfficientNet hay que volver a correrlo tras corregir sus bugs).
+  sí (recetas distintas, y las corridas de Drive son de antes de la receta nueva: hay que volver a correr
+  los tres).
 
 ## Reglas duras (las controla `scripts/verificar_notebooks.py`)
 
