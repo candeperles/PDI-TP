@@ -54,7 +54,7 @@ informe. Para volver a correr un notebook sin mezclar resultados, ver
 | Marca de agua de Google Maps (issue #7) | — | **Pendiente, para tomar.** Las imágenes de Jamaica traen el logo "Google" y el "Imagery ©2025 Airbus/Maxar", y el resto de las fuentes no: el modelo puede aprender "marca de agua → Jamaica → sin paneles", y el test de Kingston también la va a tener. Opciones: tapar esa zona en todas las imágenes (train, val y test) o pegar marcas de agua falsas en las otras fuentes como augmentation (`pdi_tp/aumentacion.py`). Primero ver en qué imágenes aparece y dónde. Medir el acierto con paneles en Jamaica antes y después |
 | Detección: YOLOv8n | `08_deteccion_yolov8n` | Hecho: `coco_completo` y `coco_backbone_congelado`, en Drive (27/10) |
 | Detección: YOLO11n | — | Pendiente |
-| Detector como clasificador y comparación final | — | YOLOv8n ya guarda sus predicciones como clasificador; falta la comparación final, después de volver a correr los clasificadores |
+| Detector como clasificador y comparación final | `10_comparacion_final` | Notebook listo: compara todas las corridas vigentes con intervalos bootstrap sobre val y Jamaica. Falta correrlo cuando estén los tres clasificadores y los dos YOLO |
 | Informe | — | Pendiente |
 | Página interactiva para el cierre | — | Idea: un módulo que muestre cómo se generan las cajas (candidatas → filtrado → finales) y otro con la red calculando en vivo (mapas de activación capa por capa). Se arma al final, con los resultados reales |
 
@@ -127,6 +127,14 @@ No hay que poner ningún nombre: los resultados se guardan por modelo y modo, no
 Usar una sesión nueva de Colab con GPU T4 y `requirements-detection.txt` (PyTorch).
 Solo usa el dataset existente y el split fijo. Guía: [detección con YOLOv8n](docs/deteccion_yolov8n.md).
 
+**Comparación final (consigna)**
+
+| Notebook | |
+|---|---|
+| `10_comparacion_final` — compara clasificadores y detectores usados como clasificadores sobre val y Jamaica, con intervalos bootstrap y diferencias pareadas, más el mAP de los detectores. No entrena: lee los resultados en solo lectura | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/10_comparacion_final.ipynb) |
+
+No necesita GPU. Correrlo cada vez que haya corridas nuevas: solo compara las CNN con `receta: "comun_v2"`.
+
 **Herramienta vieja (no usar para entrenar)**
 
 | Notebook | |
@@ -160,7 +168,8 @@ Mi unidad/PDI-TP/
 
 **Solo los notebooks que entrenan crean carpetas en Drive**, y recién cuando guardan algo. El EDA, la
 validación y la revisión de anotaciones no montan Drive: correrlos no crea nada en la carpeta compartida
-(sus reportes quedan solo en la sesión de Colab).
+(sus reportes quedan solo en la sesión de Colab). La comparación final sí monta Drive, pero en **solo
+lectura** (`entorno.preparar(solo_lectura=True)`): no puede crear ni guardar corridas ni escribir archivos.
 
 - **Siempre las mismas métricas, calculadas de la misma manera**, y `y_real` sale de las etiquetas del
   dataset, no del notebook. Si falta algo (pesos, una imagen de val, una columna), `guardar_corrida` frena

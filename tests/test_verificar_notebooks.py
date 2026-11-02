@@ -51,6 +51,15 @@ class VerificadorTest(unittest.TestCase):
         self.assertIn("usar_drive=False", "\n".join(self.notebook("rutas = entorno.preparar()\nprint(1)\n")))
         self.assertEqual(self.notebook("rutas = entorno.preparar(usar_drive=False)\nprint(1)\n"), [])
 
+    def test_solo_lectura_monta_drive_pero_no_escribe_ni_entrena(self):
+        lectura = "rutas = entorno.preparar(solo_lectura=True)\ntabla = resultados.cargar_corridas(rutas)\n"
+        self.assertEqual(self.notebook(lectura), [])
+        for agregado, esperado in [("tabla.to_csv('x.csv')\n", ".to_csv("), ("fig.savefig('x.png')\n", ".savefig("),
+                                   ("resultados.carpeta_corrida(rutas, 'a', 'b')\n", "carpeta_corrida("),
+                                   ("modelo.fit(x)\n", "no entrenan")]:
+            with self.subTest(agregado=agregado):
+                self.assertIn(esperado, "\n".join(self.notebook(lectura + agregado)))
+
     def test_excepcion_solo_libera_la_regla_de_drive(self):
         ruta = RAIZ / next(iter(verificar.EXCEPCIONES))
         readme = (RAIZ / "README.md").read_text(encoding="utf-8")

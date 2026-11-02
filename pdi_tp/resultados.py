@@ -53,6 +53,12 @@ def ruta_corrida(rutas: Rutas, modelo: str, modo: str) -> Path:
     return rutas.resultados_equipo / _validar_nombre("modelo", modelo) / _validar_nombre("modo", modo)
 
 
+def _exigir_escritura(rutas: Rutas) -> None:
+    if getattr(rutas, "solo_lectura", False):
+        raise PermissionError("Este notebook abrió los resultados en solo lectura (entorno.preparar(solo_lectura=True)): "
+                              "no puede crear ni guardar corridas.")
+
+
 def carpeta_corrida(rutas: Rutas, modelo: str, modo: str, reiniciar: bool = False) -> Path:
     """Crea (si hace falta) y devuelve la carpeta de la corrida.
 
@@ -60,6 +66,7 @@ def carpeta_corrida(rutas: Rutas, modelo: str, modo: str, reiniciar: bool = Fals
     `<modo>__anterior_<fecha>` (no se borra nada) y se empieza una vacía.
     Sin reiniciar, una carpeta incompleta se reutiliza (permite reanudar checkpoints).
     """
+    _exigir_escritura(rutas)
     carpeta = ruta_corrida(rutas, modelo, modo)
     if reiniciar and carpeta.is_dir() and any(carpeta.iterdir()):
         archivo = carpeta.with_name(f"{modo}{ARCHIVADA}{datetime.now():%Y%m%d_%H%M%S}")
@@ -125,6 +132,7 @@ def guardar_corrida(rutas: Rutas, carpeta: Path, archivos, probabilidad, params:
     - Los pesos del modelo tienen que estar guardados dentro de `carpeta` antes de llamar
       (salvo `sin_pesos=True`, p. ej. un baseline o un zero-shot).
     """
+    _exigir_escritura(rutas)
     carpeta = Path(carpeta)
     modelo, modo = carpeta.parent.name, carpeta.name
     if carpeta.parent.parent != rutas.resultados_equipo:

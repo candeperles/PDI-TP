@@ -4,7 +4,9 @@
 - En Colab monta Google Drive (`drive.mount`) y usa la carpeta compartida del equipo, así los
   resultados no se pierden si se corta la sesión. Es el único mecanismo de acceso a Drive del repo.
   Los notebooks que no entrenan (EDA, validación, revisión) llaman `preparar(usar_drive=False)`:
-  no montan Drive ni crean nada en la carpeta compartida.
+  no montan Drive ni crean nada en la carpeta compartida. Los que solo leen resultados del equipo (la
+  comparación final) llaman `preparar(solo_lectura=True)`: montan Drive, pero `resultados` no les deja
+  crear ni guardar corridas, y el verificador no les deja escribir archivos.
 - No crea carpetas: cada una se crea recién al guardar algo adentro (en la práctica, al guardar un modelo).
 - Los resultados se organizan por modelo y modo (ver pdi_tp/resultados.py), sin nombres de personas.
 - Avisa si no hay GPU.
@@ -35,10 +37,11 @@ class Rutas:
     resultados: Path  # igual a resultados_equipo; se conserva por compatibilidad
     analisis: Path | None = None  # tablas auxiliares de los notebooks (en Drive, solo los que entrenan)
     cache: Path | None = None  # archivos intermedios reutilizables (features, folds); no son resultados
+    solo_lectura: bool = False  # True: se pueden leer resultados, pero no crear ni guardar corridas
 
 
-def preparar(usar_drive: bool = True) -> Rutas:
-    if not isinstance(usar_drive, bool):
+def preparar(usar_drive: bool = True, solo_lectura: bool = False) -> Rutas:
+    if not isinstance(usar_drive, bool) or not isinstance(solo_lectura, bool):
         raise TypeError("preparar() ya no recibe el nombre del integrante: llamar entorno.preparar().")
     datos = REPO_ROOT / "data" / "grupo_5"
     if not datos.is_dir():
@@ -70,6 +73,7 @@ def preparar(usar_drive: bool = True) -> Rutas:
         resultados=resultados,
         analisis=base / "analisis",
         cache=base / "cache",
+        solo_lectura=solo_lectura,
     )
     _resumen(rutas)
     return rutas

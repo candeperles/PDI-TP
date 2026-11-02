@@ -11,7 +11,8 @@ Normas:
 4. Todo notebook que entrena un modelo guarda con `resultados.guardar_corrida(...)`
    (carpeta resultados/<modelo>/<modo>/ con pesos, métricas y predicción contra el real).
    Los que no entrenan no montan Drive (`entorno.preparar(usar_drive=False)`): solo los modelos crean
-   carpetas en la carpeta compartida.
+   carpetas en la carpeta compartida. Excepción: los que solo leen resultados del equipo (comparación
+   final) usan `entorno.preparar(solo_lectura=True)`, y entonces no pueden entrenar ni escribir archivos.
 5. Cada notebook está enlazado en el README con su botón de Colab.
 
 Excepciones: notebooks que no entrenan ni generan resultados y quedan por compatibilidad. Se listan en
@@ -44,6 +45,10 @@ EXCEPCIONES = {
 }
 # Señales de que el notebook entrena un modelo.
 ENTRENA = ("keras.applications", "torchvision.models", "from ultralytics", ".fit(", ".train(", "torch.optim")
+SOLO_LECTURA = "solo_lectura=True"
+# Lo que un notebook de solo lectura no puede hacer: crear o modificar archivos.
+ESCRITURA = ("guardar_corrida(", "carpeta_corrida(", ".mkdir(", ".to_csv(", ".to_json(", ".write_text(",
+             ".write_bytes(", ".savefig(", ".save(", ".rename(", ".unlink(", "shutil.", "open(")
 
 
 def verificar(ruta: Path, readme: str) -> list[str]:
@@ -71,9 +76,13 @@ def verificar(ruta: Path, readme: str) -> list[str]:
         entrena = any(s in todo for s in ENTRENA)
         if entrena and "resultados.guardar_corrida(" not in todo:
             problemas.append("entrena un modelo pero no guarda con resultados.guardar_corrida(...)")
-        if not entrena and "entorno.preparar(" in todo and "usar_drive=False" not in todo:
-            problemas.append("no entrena pero monta Drive: usar entorno.preparar(usar_drive=False) "
-                             "(solo los modelos crean carpetas en Drive)")
+        if SOLO_LECTURA in todo:
+            if entrena:
+                problemas.append("entorno.preparar(solo_lectura=True) es para notebooks que no entrenan")
+            problemas += [f"usa `{e}` pero abrió los resultados en solo lectura" for e in ESCRITURA if e in todo]
+        elif not entrena and "entorno.preparar(" in todo and "usar_drive=False" not in todo:
+            problemas.append("no entrena pero monta Drive: usar entorno.preparar(usar_drive=False), o "
+                             "entorno.preparar(solo_lectura=True) si solo lee resultados")
     if COLAB + relativa not in readme:
         problemas.append(f"no está enlazado en el README (falta el botón de Colab a {relativa})")
     return problemas
