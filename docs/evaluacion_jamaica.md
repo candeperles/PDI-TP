@@ -51,8 +51,8 @@ reportando como hasta ahora. Esto es una evaluación adicional.
 
 ## Umbral de decisión (implementado)
 
-Con umbral 0.5 y un train con 85 % con paneles, los modelos tienden a decir "con paneles" de más, y el test
-va a tener mayoría sin paneles. `pdi_tp/umbral.py` elige el umbral para Jamaica y mide qué gana:
+Train tiene 85 % con paneles y el test va a tener mayoría sin paneles: 0.5 no tiene por qué ser el mejor
+umbral para Kingston. `pdi_tp/umbral.py` elige el umbral para Jamaica y mide si mejora algo:
 
 - **Criterio: balanced accuracy** (promedio del acierto de cada clase). No depende de la proporción de clases,
   así que sirve aunque el test tenga otra proporción que val. La F1 macro sí depende: se reporta pero no se
@@ -67,6 +67,38 @@ va a tener mayoría sin paneles. `pdi_tp/umbral.py` elige el umbral para Jamaica
 
 Hoy usa las 23 imágenes de Jamaica de val (9 grupos espaciales), así que es ruidosa. Cuando existan las
 predicciones fuera de fold del paso 2, se le pasan esas y mide con las 172.
+
+### Resultado (27/10/2026): se deja 0.5
+
+Balanced accuracy sobre las 23 imágenes de Jamaica de val (11 con paneles, 12 sin), con las corridas
+guardadas en Drive a esa fecha. Val también se usó para elegir época y modo, así que todo es algo optimista.
+
+| Corrida | Acierto con / sin (0.5) | Bal. acc. 0.5 | Bal. acc. umbral elegido (honesta) | Umbral según el grupo |
+|---|---|---|---|---|
+| resnet50 / imagenet_cabeza | 0.73 / 1.00 | 0.864 | 0.818 | 0.53 – 0.70 |
+| mobilenetv2 / imagenet_fine_tuning | 0.73 / 0.92 | 0.822 | 0.689 | 0.25 – 0.80 |
+| resnet50 / imagenet_finetuning | 0.73 / 0.83 | 0.780 | 0.780 | 0.30 – 0.78 |
+| mobilenetv2 / imagenet_congelado | 0.73 / 0.83 | 0.780 | 0.602 | 0.23 – 0.83 |
+| mobilenetv2 / imagenet_ft_completo | 0.64 / 0.83 | 0.735 | 0.644 | 0.18 – 0.75 |
+| efficientnetb0 / imagenet_congelado | 0.64 / 0.83 | 0.735 | 0.481 | 0.10 – 0.78 |
+| efficientnetb0 / imagenet_finetuning | 0.55 / 0.92 | 0.731 | 0.470 | 0.15 – 0.78 |
+| resnet50 / aleatorio | 0.45 / 0.67 | 0.561 | 0.564 | 0.35 – 0.58 |
+| baseline / siempre_con_paneles | 1.00 / 0.00 | 0.500 | 0.500 | 0.50 |
+| efficientnetb0 / aleatorio | 1.00 / 0.00 | 0.500 | 0.447 | 0.35 – 0.80 |
+
+- **En Jamaica los modelos se pierden paneles:** con 0.5 aciertan casi todas las imágenes sin paneles y entre
+  el 45 % y el 73 % de las que tienen. Coincide con el diagnóstico del issue #7 ("parece Kingston → no tiene
+  paneles").
+- **Elegir el umbral no mejora:** la estimación honesta es igual o peor que 0.5 en todas las corridas
+  (salvo resnet50/aleatorio, que es ruido), y el umbral elegido cambia mucho según el grupo que queda afuera.
+  Con 23 imágenes, el umbral "óptimo" se ajusta a esas imágenes y no generaliza.
+- **Ningún modelo se separa claramente:** una imagen mueve la balanced accuracy unos 0.04, que es la
+  diferencia entre los dos primeros.
+- **Decisión:** se usa 0.5. El problema de Kingston se ataca con el entrenamiento (balanceo por fuente y más
+  capturas de Kingston), no con el umbral. Revisar el umbral cuando haya predicciones sobre las 172 imágenes
+  o un test propio de Kingston, y después del balanceo por fuente, que cambia las probabilidades.
+- Las corridas de EfficientNet pueden ser anteriores a los arreglos de fine-tuning, pesos de clase y
+  BatchNorm: revisar la fecha en su `config.json` antes de sacar conclusiones sobre ese modelo.
 
 ## Paso 3 (cuando lleguen las capturas nuevas): test propio de Kingston
 
