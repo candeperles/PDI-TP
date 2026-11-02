@@ -63,9 +63,6 @@ Las carpetas se crean recién cuando algo se guarda adentro.
 | `requirements-lock.txt` | Snapshot completo (con dependencias transitivas) del entorno verificado en Windows / Python 3.14. En otras plataformas usar `requirements-dev.txt`. |
 | `requirements-training.txt` | Entrenamiento con TensorFlow. Lo instalan los notebooks de clasificación en Colab. **No mezclar con `requirements.txt`**: sus versiones de NumPy son incompatibles con TensorFlow. |
 
-El notebook extra (`notebooks/extras/modelos_adicionales.ipynb`) usa PyTorch: en Colab solo instala
-`ultralytics`; en local hace falta además `pip install torch torchvision transformers ultralytics`.
-
 ## Verificaciones
 
 En Windows reemplazar `.venv/bin/python` por `.\.venv\Scripts\python.exe`.
