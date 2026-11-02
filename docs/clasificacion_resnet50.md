@@ -1,13 +1,13 @@
 # Ítem 2: ResNet50
 
-Abrir `notebooks/05_ResNet50_Colab_v2.ipynb` en Colab con GPU T4 y ejecutar todo.
+Abrir `notebooks/05_clasificacion_resnet50.ipynb` en Colab con GPU T4 y ejecutar todo.
 Monta Drive con `entorno.preparar` (como el resto de los notebooks que entrenan) y guarda cada variante con el
 formato común `resultados/<modelo>/<modo>/` (ver README, *Dónde quedan los resultados*).
 El dataset y el split son los mismos del resto del trabajo.
 
 Se implementaron tres experimentos: ImageNet con extractor congelado, ajuste fino
-de conv5 desde el mejor modelo congelado y entrenamiento desde pesos aleatorios.
-Todos usan entrada 256×256, aumentos de entrenamiento, pesos de clase calculados
+de todo el extractor (BatchNorm congeladas) desde el mejor modelo congelado y entrenamiento desde pesos aleatorios.
+Todos usan entrada 256×256, aumentos de entrenamiento, pesos de muestra por fuente × clase calculados
 solo con train y umbral 0.5. El detalle de arquitectura, LR y épocas está en el notebook.
 La implementación sigue las guías oficiales de
 [ResNet](https://keras.io/api/applications/resnet/resnet_models/) y
@@ -23,7 +23,7 @@ Las métricas sobre las 162 imágenes y la selección por `val_loss` usan la ref
 original **provisional**; el informe incluye además métricas sin estos dos casos.
 No se cambió el split ni se resolvieron sus dudas semánticas por entrenamiento.
 
-Cada variante queda en Drive en `resultados/resnet50/<modo>/` (`imagenet_cabeza`,
+Cada variante queda en Drive en `resultados/resnet50/<modo>/` (`imagenet_congelado`,
 `imagenet_finetuning`, `aleatorio`) y el baseline en `resultados/baseline/siempre_con_paneles/`.
 Dentro: `mejor.keras` (pesos evaluados), `ultimo.keras` (para reanudar), `historia.csv`, curvas,
 matriz de confusión, `metricas.json` (globales, por fuente y sin N06/N16), `predicciones_val.csv`
@@ -50,3 +50,25 @@ continúa desde `ultimo.keras` y conserva el optimizador Adam, el historial y el
 checkpoint anterior. No se reinicia la etapa ni se repiten las épocas ya registradas.
 Si historial y checkpoint no coinciden, se detiene sin sobrescribirlos. Las variantes ya completas
 se reutilizan.
+
+## Receta común del issue #15 (pendiente de entrenamiento)
+
+Entrada 256×256, batch 32, dropout 0.3, semilla 42 y augmentation
+`aumentacion.google_maps`. No se aplica `class_weight`: los pesos por fuente × clase
+viajan en el dataset como pesos de muestra, calculados solo con train.
+
+| Modo | LR inicial | Épocas máximas | Paciencia |
+|---|---|---|---|
+| `imagenet_congelado` | 1e-3 | 15 | 5 |
+| `imagenet_finetuning` | 1e-5 | 20 adicionales | 5 |
+| `aleatorio` | 1e-3 | 60 | 10 |
+
+El modo aleatorio reduce el LR por 0.5 tras 3 épocas sin mejorar `val_loss`.
+La reanudación conserva el LR del optimizador y reconstruye la espera del scheduler.
+La parada temprana restaura los mejores pesos; también se carga explícitamente
+`mejor.keras` antes de evaluar o iniciar fine-tuning.
+Los params usan `img_size`, `batch_size`, `dropout`, `lr`, `epocas_max`,
+`paciencia`, `umbral` y `semilla` en los tres modos.
+
+Volver a correr con `REPETIR = True`: las corridas anteriores no son comparables
+con esta receta. No se ejecutó entrenamiento como parte de esta modificación.

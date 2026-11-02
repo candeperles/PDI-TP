@@ -29,7 +29,7 @@ def dataset(tabla, lado=256, batch=32, entrenamiento=False, semilla=42, pesos_mu
     return ds.batch(batch).prefetch(tf.data.AUTOTUNE)
 
 
-def construir(lado=256, preentrenado=True, augmentation=True, semilla=42):
+def construir(lado=256, preentrenado=True, dropout=0.3, semilla=42):
     base = keras.applications.ResNet50(include_top=False,
         weights="imagenet" if preentrenado else None, input_shape=(lado, lado, 3))
     base.trainable = not preentrenado
@@ -42,16 +42,16 @@ def construir(lado=256, preentrenado=True, augmentation=True, semilla=42):
     # Desde cero: BatchNorm debe aprender sus estadísticas.
     x = base(x, training=False) if preentrenado else base(x)
     x = keras.layers.GlobalAveragePooling2D()(x)
-    x = keras.layers.Dropout(0.3, seed=semilla + 2)(x)
+    x = keras.layers.Dropout(dropout, seed=semilla + 2)(x)
     salida = keras.layers.Dense(1, activation="sigmoid", name="con_paneles")(x)
     return keras.Model(entrada, salida, name="clasificador_resnet50"), base
 
 
 def descongelar(base):
-    """Ajusta el último bloque residual conv5; mantiene BatchNormalization congelada."""
+    """Ajusta todo el extractor; mantiene BatchNormalization congelada."""
     base.trainable = True
     for capa in base.layers:
-        capa.trainable = capa.name.startswith("conv5_") and not isinstance(capa, keras.layers.BatchNormalization)
+        capa.trainable = not isinstance(capa, keras.layers.BatchNormalization)
 
 
 def compilar(modelo, lr):

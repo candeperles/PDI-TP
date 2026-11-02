@@ -16,14 +16,16 @@
 > | | EfficientNetB0 | MobileNetV2 | ResNet50 |
 > |---|---|---|---|
 > | Tamaño de entrada | 256 | 224 | 256 |
-> | Batch | 32 | 32 | 16 |
+> | Batch | 32 | 32 | 32 |
 > | Augmentation | común: `aumentacion.google_maps` | común | común |
 > | Pesos | por fuente × clase | por fuente × clase | por fuente × clase |
-> | Épocas (cabeza + fine-tuning / aleatorio) | 10 + 10 / 10 | 15 + 15 / 40 | 10 + 10 / 20 |
-> | Early stopping (paciencia) | 3 | 6 | 5 |
-> | LR aleatorio | 1e-3 | 1e-3 | 1e-4 |
-> | Qué se descongela en fine-tuning | todo el extractor, después de la cabeza | desde la capa 100, o todo | solo el bloque conv5 |
+> | Épocas (cabeza + fine-tuning / aleatorio) | 10 + 10 / 10 | 15 + 15 / 40 | 15 + 20 / 60 |
+> | Early stopping (paciencia) | 3 | 6 | 5 (aleatorio: 10) |
+> | LR aleatorio | 1e-3 | 1e-3 | 1e-3 con reducción |
+> | Qué se descongela en fine-tuning | todo el extractor, después de la cabeza | desde la capa 100, o todo | todo el extractor, BatchNorm congeladas |
 > | Dropout | 0.3 | 0.2 | 0.3 |
+>
+> ResNet50 ya implementa la receta del issue #15; falta entrenarlo en Colab con `REPETIR = True`.
 >
 > **3. Val elige el modelo y también lo evalúa.** Los tres usan early stopping o el mejor checkpoint según
 > `val_loss` y después reportan métricas sobre ese mismo val: los números son optimistas. Como la consigna
@@ -128,7 +130,7 @@ No hay que poner ningún nombre: los resultados se guardan por modelo y modo, no
 | Notebook | |
 |---|---|
 | `04_clasificacion_mobilenetv2` — MobileNetV2: congelado, fine-tuning y sin preentrenamiento | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/04_clasificacion_mobilenetv2.ipynb) |
-| `05_clasificacion_resnet50` — ResNet50: congelado, fine-tuning de conv5 y pesos aleatorios | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/05_clasificacion_resnet50.ipynb) |
+| `05_clasificacion_resnet50` — ResNet50: congelado, fine-tuning de todo el extractor y pesos aleatorios | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/05_clasificacion_resnet50.ipynb) |
 | `06_clasificacion_efficientnet` — EfficientNetB0: congelado, fine-tuning y pesos aleatorios (**volver a correr con la receta nueva, ver cartel**) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/06_clasificacion_efficientnet.ipynb) |
 
 **Detección (consigna)**
