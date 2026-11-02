@@ -3,8 +3,7 @@
 Todo sale de los resultados guardados con el formato común (pdi_tp/resultados.py); acá no se entrena nada.
 
 - Solo se comparan corridas **vigentes**: las CNN con la receta común actual (`params.receta`) y los
-  detectores (con su propia receta; hoy YOLO11n entrena con imgsz 640 y YOLOv8n con 256, así que la
-  diferencia entre los dos no es solo la arquitectura).
+  detectores (con su propia receta, la misma para YOLOv8n y YOLO11n: ver los notebooks 08 y 09).
 - Cada corrida se mide con su propio umbral (0.5 las CNN, 0.25 los YOLO). El puntaje de un YOLO es la
   máxima confianza de sus cajas, no una probabilidad calibrada: el AUC no depende del umbral y es la
   comparación más justa entre familias.
