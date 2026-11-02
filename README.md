@@ -31,6 +31,7 @@
 >
 > **Para que la comparación valga:** fijar una receta común también para tamaño, épocas, paciencia y LR (la
 > augmentation y los pesos ya son comunes) y volver a correr las tres redes, cambiando solo la arquitectura.
+> La receta propuesta y qué cambiar en cada notebook están en el [issue #15](https://github.com/candeperles/PDI-TP/issues/15).
 > *La forma de guardar resultados ya está unificada (ver [Dónde quedan los resultados](#dónde-quedan-los-resultados)).*
 
 Trabajo práctico de **Procesamiento de Imágenes** (grupo 5). Consigna:
@@ -62,7 +63,7 @@ precisión-recall para detección. Se entrega un informe con comparaciones y con
 | Clasificación: MobileNetV2 | `04_clasificacion_mobilenetv2` | Corrido con la receta vieja: **volver a correr** (ver cartel). Falta `aleatorio` |
 | Clasificación: ResNet50 | `05_clasificacion_resnet50` | Corrido con la receta vieja: **volver a correr** (ver cartel) |
 | Clasificación: EfficientNetB0 | `06_clasificacion_efficientnet` | Corrido con los bugs corregidos pero con la receta vieja: **volver a correr** (ver cartel) |
-| Receta común de clasificación | — | Pendiente: acordarla en equipo (ver cartel) |
+| Receta común de clasificación | — | **Pendiente, para tomar:** receta propuesta y cambios por notebook en el [issue #15](https://github.com/candeperles/PDI-TP/issues/15). Anotarse ahí y comentar antes de correr si algún valor no convence |
 | Marca de agua de Google Maps (issue #7) | — | **Pendiente, para tomar.** Las imágenes de Jamaica traen el logo "Google" y el "Imagery ©2025 Airbus/Maxar", y el resto de las fuentes no: el modelo puede aprender "marca de agua → Jamaica → sin paneles", y el test de Kingston también la va a tener. Opciones: tapar esa zona en todas las imágenes (train, val y test) o pegar marcas de agua falsas en las otras fuentes como augmentation (`pdi_tp/aumentacion.py`). Primero ver en qué imágenes aparece y dónde. Medir el acierto con paneles en Jamaica antes y después |
 | Detección: YOLOv8n | `08_deteccion_yolov8n` | Hecho: `coco_completo` y `coco_backbone_congelado`, en Drive (27/10) |
 | Detección: YOLO11n | — | Pendiente |
