@@ -37,6 +37,17 @@ class ResultadosTest(unittest.TestCase):
             (carpeta / "modelo.keras").write_bytes(b"pesos")
         return carpeta
 
+    def test_solo_lectura_no_crea_ni_guarda_corridas(self):
+        carpeta = self.corrida()
+        lectura = Rutas(*[getattr(self.rutas, c) for c in ("repo", "datos", "imagenes", "labels",
+                                                           "resultados_equipo", "resultados")], solo_lectura=True)
+        with self.assertRaises(PermissionError):
+            resultados.carpeta_corrida(lectura, "modelo-x", "modo_b")
+        with self.assertRaises(PermissionError):
+            resultados.guardar_corrida(lectura, carpeta, archivos=VAL, probabilidad=[0.9, 0.1, 0.8], params={})
+        self.assertFalse((self.rutas.resultados_equipo / "modelo-x" / "modo_b").exists())
+        self.assertFalse((carpeta / "metricas.json").exists())
+
     def test_guarda_formato_completo_con_y_real_del_dataset(self):
         carpeta = self.corrida()
         metricas = resultados.guardar_corrida(self.rutas, carpeta, VAL[::-1], [0.9, 0.2, 0.8], {"lr": 1e-3},
