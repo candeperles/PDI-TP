@@ -65,7 +65,6 @@ precisión-recall para detección. Se entrega un informe con comparaciones y con
 | Detector como clasificador y comparación final | — | Pendiente |
 | Informe | — | Pendiente |
 | Página interactiva para el cierre | — | Idea: un módulo que muestre cómo se generan las cajas (candidatas → filtrado → finales) y otro con la red calculando en vivo (mapas de activación capa por capa). Se arma al final, con los resultados reales |
-| *Extra (fuera de la consigna)*: modelos adicionales | `extras/modelos_adicionales` | En curso |
 
 ## Datos
 
@@ -135,18 +134,6 @@ No hay que poner ningún nombre: los resultados se guardan por modelo y modo, no
 
 Usar una sesión nueva de Colab con GPU T4 y `requirements-detection.txt` (PyTorch).
 Solo usa el dataset existente y el split fijo. Guía: [detección con YOLOv8n](docs/deteccion_yolov8n.md).
-
-**Extra: modelos adicionales (fuera de la consigna)**
-
-No es parte de lo que pide la consigna: es un agregado para comparar los modelos obligatorios con otros
-enfoques, usando el mismo split.
-
-| Notebook | |
-|---|---|
-| `extras/modelos_adicionales` — **EXTRA**: DINOv2 y CLIP (features congeladas y zero-shot), fine-tuning de ConvNeXt-Tiny / EfficientNetV2-S y YOLO11s como clasificador, con comparador final | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/extras/modelos_adicionales.ipynb) |
-
-Elige todo con validación cruzada de 5 folds dentro de train (agrupada por zona espacial) y evalúa una
-sola vez en `val` al final (`EVALUAR_TEST = True`).
 
 **Herramienta vieja (no usar para entrenar)**
 
@@ -305,7 +292,6 @@ sus cambios se pierden al unir. Si dos personas tienen que tocar el mismo notebo
 ├── data/                  dataset (no se versiona; lo baja scripts/download_data.py)
 ├── docs/                  consigna, alcance, criterios de datos, revisiones y notas por modelo
 ├── notebooks/             un notebook por etapa / modelo (sin salidas)
-│   └── extras/            trabajo adicional, fuera de la consigna
 ├── pdi_tp/                código compartido: entorno (setup y Drive), datos, split, resultados (formato
 │                          común), validación, revisión, clasificación
 ├── scripts/               descarga del dataset, split, verificador de notebooks y otras verificaciones
