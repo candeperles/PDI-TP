@@ -56,14 +56,16 @@ class EfficientNetTest(unittest.TestCase):
 
     def test_epocas_y_callbacks_segun_modo(self):
         self.espacio['construir_modelo'] = Mock(return_value=self.modelo)
-        for nombre, epocas, paciencia in [('imagenet_congelado', 15, 5), ('aleatorio', 60, 10)]:
+        for nombre, epocas, paciencia, inicio in [('imagenet_congelado', 30, 10, 0), ('aleatorio', 60, 10, 20)]:
             with self.subTest(modo=nombre):
                 config = self.espacio['EXPERIMENTOS'][nombre]
                 self.espacio['entrenar'](config)
                 self.assertEqual(self.modelo.fit.call_args.kwargs['epochs'], epocas)
                 self.keras.callbacks.EarlyStopping.assert_called_with(
-                    monitor='val_loss', patience=paciencia, restore_best_weights=True)
+                    monitor='val_loss', patience=paciencia, restore_best_weights=True, start_from_epoch=inicio)
                 self.keras.optimizers.Adam.assert_called_with(1e-3)
+                self.espacio['construir_modelo'].assert_called_with(
+                    config['pesos'], 0.9 if nombre == 'aleatorio' else None)
                 if nombre == 'aleatorio':
                     self.keras.callbacks.ReduceLROnPlateau.assert_called_once_with(
                         monitor='val_loss', factor=0.5, patience=3)
@@ -93,6 +95,20 @@ class EfficientNetTest(unittest.TestCase):
         self.assertEqual(self.modelo.fit.call_args.kwargs['epochs'], 20)
         self.keras.optimizers.Adam.assert_called_once_with(1e-5)
         self.keras.callbacks.ReduceLROnPlateau.assert_not_called()
+
+    def test_momentum_batchnorm_solo_si_se_pide(self):
+        normalizacion, convolucion = BatchNormSimulada(), SimpleNamespace()
+        extractor = Mock(layers=[normalizacion, convolucion])
+        self.keras.applications = SimpleNamespace(EfficientNetB0=Mock(return_value=extractor))
+        self.keras.Input = Mock()
+        self.keras.Model = Mock()
+        self.espacio['layers'] = SimpleNamespace(GlobalAveragePooling2D=Mock(), Dropout=Mock(), Dense=Mock(),
+                                                 BatchNormalization=BatchNormSimulada)
+        self.espacio['construir_modelo'](None)
+        self.assertFalse(hasattr(normalizacion, 'momentum'))
+        self.espacio['construir_modelo'](None, 0.9)
+        self.assertEqual(normalizacion.momentum, 0.9)
+        self.assertFalse(hasattr(convolucion, 'momentum'))
 
     def test_batchnorm_entrena_desde_cero_y_usa_inferencia_con_imagenet(self):
         extractor = Mock()
@@ -150,11 +166,12 @@ class EfficientNetTest(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, 'Interrupción simulada'):
                 self.espacio['ejecutar_experimentos']()
             self.assertEqual(resultados.guardar_corrida.call_count, 2)
-            for nombre, lr, epocas in [('imagenet_congelado', 1e-3, 15), ('imagenet_finetuning', 1e-5, 20)]:
+            for nombre, lr, epocas in [('imagenet_congelado', 1e-3, 30), ('imagenet_finetuning', 1e-5, 20)]:
                 params = json.loads((raiz / 'efficientnetb0' / nombre / 'config.json').read_text())['params']
                 self.assertEqual([params[clave] for clave in ['img_size', 'batch_size', 'dropout',
                                                              'lr', 'epocas_max', 'paciencia', 'umbral', 'semilla']],
-                                 [256, 32, 0.3, lr, epocas, 5, 0.5, 42])
+                                 [256, 32, 0.3, lr, epocas, 10, 0.5, 42])
+                self.assertEqual(params['receta'], 'comun_v2')
                 self.assertEqual(params['epocas_ejecutadas'], 1)
                 self.assertNotIn('class_weight', params)
             self.assertFalse((raiz / 'efficientnetb0' / 'aleatorio' / 'config.json').exists())

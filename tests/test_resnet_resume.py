@@ -31,12 +31,16 @@ class ReduceLROnPlateau:
         self.wait = 0
 
 
+class Callback:
+    def __init__(self): pass
+
+
 class ResumeTest(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
         self.folder = Path(self.tmp.name)
-        self.callbacks = SimpleNamespace(EarlyStopping=EarlyStopping, ReduceLROnPlateau=ReduceLROnPlateau,
+        self.callbacks = SimpleNamespace(EarlyStopping=EarlyStopping, ReduceLROnPlateau=ReduceLROnPlateau, Callback=Callback,
             TerminateOnNaN=Mock(), ModelCheckpoint=Mock(), CSVLogger=Mock())
         self.original = Mock()
         self.loaded = Mock()
@@ -45,7 +49,7 @@ class ResumeTest(unittest.TestCase):
         self.env = dict(np=np, pd=pd, json=json, keras=self.keras, compilar=Mock(),
             salida=self.folder)
         tree = ast.parse(SOURCE)
-        tree.body = [n for n in tree.body if isinstance(n, (ast.FunctionDef, ast.ClassDef)) and n.name in ('entrenar', 'ParadaReanudada', 'ReduccionReanudada')]
+        tree.body = [n for n in tree.body if isinstance(n, (ast.FunctionDef, ast.ClassDef)) and n.name in ('entrenar', 'ParadaReanudada', 'ReduccionReanudada', 'MejorDesde')]
         exec(compile(tree, 'resume', 'exec'), self.env)
         self.entrenar = self.env['entrenar']
     def anterior(self):
@@ -65,7 +69,8 @@ class ResumeTest(unittest.TestCase):
         self.keras.models.load_model.assert_called_once_with(self.folder / 'ultimo.keras')
         self.assertEqual(self.loaded.fit.call_args.kwargs['initial_epoch'], 2)
         self.callbacks.CSVLogger.assert_called_once_with(str(self.folder / 'historia.csv'), append=True)
-        self.assertEqual(self.callbacks.ModelCheckpoint.call_args_list[0].kwargs['initial_value_threshold'], 0.2)
+        mejor = next(c for c in self.loaded.fit.call_args.kwargs['callbacks'] if isinstance(c, self.env['MejorDesde']))
+        self.assertEqual(mejor.best, 0.2)
         self.assertEqual(json.loads((self.folder / 'completado.json').read_text())['epocas'], 3)
         self.loaded.load_weights.assert_called_once_with(self.folder / 'mejor.keras')
     def test_finaliza_sin_repetir_si_alcanzo_epocas(self):
@@ -91,6 +96,30 @@ class ResumeTest(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, 'falta un checkpoint'):
             self.ejecutar()
         self.assertEqual((self.folder / 'historia.csv').read_bytes(), original)
+    def test_mejor_ignora_epocas_anteriores_al_inicio(self):
+        modelo = Mock()
+        callback = self.env['MejorDesde']('mejor.keras', [0.1, 0.5], inicio=2)
+        callback.model = modelo
+        callback.on_epoch_end(1, {'val_loss': 0.05})
+        modelo.save.assert_not_called()
+        callback.on_epoch_end(2, {'val_loss': 0.4})
+        modelo.save.assert_called_once_with('mejor.keras')
+        self.assertEqual(callback.best, 0.4)
+
+    def test_parada_con_inicio_cuenta_solo_desde_esa_epoca(self):
+        callback = self.env['ParadaReanudada']([0.1, 0.5, 0.4, 0.45], paciencia=10, inicio=1)
+        callback.on_train_begin()
+        self.assertEqual(callback.start_from_epoch, 1)
+        self.assertEqual(callback.best, 0.4)
+        self.assertEqual(callback.wait, 1)
+
+    def test_reanuda_antes_del_inicio_sin_mejor_checkpoint(self):
+        pd.DataFrame(dict(epoch=[0, 1], val_loss=[0.2, 0.3])).to_csv(self.folder / 'historia.csv', index=False)
+        (self.folder / 'ultimo.keras').write_bytes(b'checkpoint')
+        self.loaded.fit.return_value = SimpleNamespace(history={'loss': [0.3], 'val_loss': [0.3]})
+        self.entrenar(self.original, [1, 2, 3], [], self.folder, 60, 1e-3, paciencia=10, inicio_parada=20)
+        self.loaded.fit.assert_called_once()
+
     def test_parada_conserva_mejor_valor_y_paciencia(self):
         callback = self.env['ParadaReanudada']([0.5, 0.2, 0.3, 0.4])
         callback.on_train_begin()

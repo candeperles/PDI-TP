@@ -1,41 +1,5 @@
 # PDI-TP · Paneles solares: clasificación y detección
 
-> [!CAUTION]
-> ## ⚠️ LOS RESULTADOS DE CLASIFICACIÓN TODAVÍA NO SON COMPARABLES ENTRE MODELOS
->
-> **1. Hay que volver a correr los tres clasificadores** (`04`, `05` y `06`) con `REPETIR = True`. Las 9
-> corridas que hay en Drive son del 27/10 a la mañana, de antes del PR #10, que cambió la augmentation
-> (`aumentacion.google_maps`) y los pesos (por fuente × clase en vez de por clase). Con `REPETIR = False` se
-> saltean porque ya están completas, así que la receta nueva todavía no se entrenó. EfficientNet ya se volvió a
-> correr con sus bugs corregidos: solo le falta, como a los otros dos, la receta nueva. MobileNetV2
-> `aleatorio` no se corrió nunca.
->
-> **2. Los tres notebooks ya incorporan los parámetros de la receta común del issue #15.** Las corridas
-> guardadas usaron recetas anteriores; falta entrenar con la configuración actual que se muestra abajo:
->
-> | | EfficientNetB0 | MobileNetV2 | ResNet50 |
-> |---|---|---|---|
-> | Tamaño de entrada | 256 | 256 | 256 |
-> | Batch | 32 | 32 | 32 |
-> | Augmentation | común: `aumentacion.google_maps` | común | común |
-> | Pesos | por fuente × clase | por fuente × clase | por fuente × clase |
-> | Épocas (cabeza + fine-tuning / aleatorio) | 15 + 20 / 60 | 15 + 20 / 60 | 15 + 20 / 60 |
-> | Early stopping (paciencia) | 5 (aleatorio: 10) | 5 (aleatorio: 10) | 5 (aleatorio: 10) |
-> | LR aleatorio | 1e-3 con reducción | 1e-3 con reducción | 1e-3 con reducción |
-> | Qué se descongela en fine-tuning | todo el extractor, BatchNorm congeladas | todo el extractor, BatchNorm congeladas | todo el extractor, BatchNorm congeladas |
-> | Dropout | 0.3 | 0.3 | 0.3 |
->
-> Falta entrenar los tres en Colab con `REPETIR = True`.
->
-> **3. Val elige el modelo y también lo evalúa.** Los tres usan early stopping o el mejor checkpoint según
-> `val_loss` y después reportan métricas sobre ese mismo val: los números son optimistas. Como la consigna
-> solo pide train/val es aceptable, pero hay que decirlo en el informe y aplicarlo igual en todos.
->
-> **Para que la comparación valga:** volver a correr las tres redes con la receta común, cambiando solo la
-> arquitectura, y comparar esas corridas nuevas. La receta y las tareas de entrenamiento y comparación
-> están en el [issue #15](https://github.com/candeperles/PDI-TP/issues/15).
-> *La forma de guardar resultados ya está unificada (ver [Dónde quedan los resultados](#dónde-quedan-los-resultados)).*
-
 Trabajo práctico de **Procesamiento de Imágenes** (grupo 5). Consigna:
 [docs/Consigna_Paneles_Solares.pdf](docs/Consigna_Paneles_Solares.pdf) · resumen de requisitos:
 [docs/alcance.md](docs/alcance.md) · instalación, trabajo en local y verificaciones:
@@ -56,16 +20,37 @@ dónde hay generación propia. El mismo dataset se resuelve de dos maneras y se 
 Métricas: matriz de confusión, accuracy, precision, recall y F1 para clasificación; mAP50, mAP50-95 y curva
 precisión-recall para detección. Se entrega un informe con comparaciones y conclusiones.
 
+## Receta común de clasificación
+
+Las tres redes se entrenan con la misma receta y cambian solo la arquitectura, para que la comparación valga
+(detalle y discusión en el [issue #15](https://github.com/candeperles/PDI-TP/issues/15)). Cada corrida guarda
+`receta: "comun_v2"` en su `config.json`.
+
+| | `imagenet_congelado` | `imagenet_finetuning` | `aleatorio` |
+|---|---|---|---|
+| Qué se entrena | solo la cabeza | todo el extractor menos BatchNorm, desde la mejor cabeza | toda la red desde cero |
+| LR (Adam) | 1e-3 | 1e-5 | 1e-3, a la mitad tras 3 épocas sin mejorar |
+| Épocas máximas | 30 | 20 adicionales | 60 |
+| Early stopping (`val_loss`) | paciencia 10 | paciencia 10 | paciencia 10, cuenta desde la época 20 |
+| Momentum de BatchNorm | el de cada red | el de cada red | 0.9 |
+
+Común a todos: entrada 256×256 (el tamaño original), batch 32, dropout 0.3, umbral 0.5, semilla 42,
+`aumentacion.google_maps` y pesos de muestra por fuente × clase. El preprocesado es el de cada red.
+
+**Val elige el checkpoint y también se usa para reportar**, así que las métricas son optimistas: decirlo en el
+informe. Para volver a correr un notebook sin mezclar resultados, ver
+[Dónde quedan los resultados](#dónde-quedan-los-resultados).
+
 ## Estado
 
 | Etapa | Notebook | Estado |
 |---|---|---|
 | Exploración del dataset | `01_exploracion` | Hecho |
 | Validación del dataset y revisión de anotaciones | `02_validacion_datos`, `03_revision_anotaciones` | Hecho; criterios en [docs/criterios_datos.md](docs/criterios_datos.md) |
-| Clasificación: MobileNetV2 | `04_clasificacion_mobilenetv2` | Notebook actualizado a la receta del issue #15; **pendiente de entrenar en Colab con `REPETIR = True`**, incluido `aleatorio`, que no se corrió antes |
-| Clasificación: ResNet50 | `05_clasificacion_resnet50` | Notebook actualizado a la receta del issue #15; **pendiente de entrenar en Colab con `REPETIR = True`** |
-| Clasificación: EfficientNetB0 | `06_clasificacion_efficientnet` | Notebook actualizado a la receta del [issue #15](https://github.com/candeperles/PDI-TP/issues/15); **pendiente de entrenar en Colab con `REPETIR = True`**. Los resultados disponibles siguen siendo de la receta vieja |
-| Receta común de clasificación | — | Parámetros actualizados en los tres notebooks; falta entrenar los tres y comparar las corridas nuevas. Receta y tareas pendientes en el [issue #15](https://github.com/candeperles/PDI-TP/issues/15) |
+| Clasificación: MobileNetV2 | `04_clasificacion_mobilenetv2` | Receta común v2; **falta entrenar en Colab con `REPETIR = True`** (las corridas del 2/11 usaron la primera versión de la receta) |
+| Clasificación: ResNet50 | `05_clasificacion_resnet50` | Receta común v2; **falta entrenar en Colab con `REPETIR = True`** |
+| Clasificación: EfficientNetB0 | `06_clasificacion_efficientnet` | Receta común v2; **falta entrenar en Colab con `REPETIR = True`** |
+| Receta común de clasificación | — | Hecha en los tres notebooks (ver [Receta común](#receta-común-de-clasificación)); falta entrenar y comparar |
 | Marca de agua de Google Maps (issue #7) | — | **Pendiente, para tomar.** Las imágenes de Jamaica traen el logo "Google" y el "Imagery ©2025 Airbus/Maxar", y el resto de las fuentes no: el modelo puede aprender "marca de agua → Jamaica → sin paneles", y el test de Kingston también la va a tener. Opciones: tapar esa zona en todas las imágenes (train, val y test) o pegar marcas de agua falsas en las otras fuentes como augmentation (`pdi_tp/aumentacion.py`). Primero ver en qué imágenes aparece y dónde. Medir el acierto con paneles en Jamaica antes y después |
 | Detección: YOLOv8n | `08_deteccion_yolov8n` | Hecho: `coco_completo` y `coco_backbone_congelado`, en Drive (27/10) |
 | Detección: YOLO11n | — | Pendiente |
@@ -131,7 +116,7 @@ No hay que poner ningún nombre: los resultados se guardan por modelo y modo, no
 |---|---|
 | `04_clasificacion_mobilenetv2` — MobileNetV2: congelado, fine-tuning y sin preentrenamiento | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/04_clasificacion_mobilenetv2.ipynb) |
 | `05_clasificacion_resnet50` — ResNet50: congelado, fine-tuning de todo el extractor y pesos aleatorios | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/05_clasificacion_resnet50.ipynb) |
-| `06_clasificacion_efficientnet` — EfficientNetB0: congelado, fine-tuning y pesos aleatorios (**volver a correr con la receta nueva, ver cartel**) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/06_clasificacion_efficientnet.ipynb) |
+| `06_clasificacion_efficientnet` — EfficientNetB0: congelado, fine-tuning y pesos aleatorios | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/06_clasificacion_efficientnet.ipynb) |
 
 **Detección (consigna)**
 

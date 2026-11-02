@@ -59,11 +59,12 @@ viajan en el dataset como pesos de muestra, calculados solo con train.
 
 | Modo | LR inicial | Épocas máximas | Paciencia |
 |---|---|---|---|
-| `imagenet_congelado` | 1e-3 | 15 | 5 |
-| `imagenet_finetuning` | 1e-5 | 20 adicionales | 5 |
-| `aleatorio` | 1e-3 | 60 | 10 |
+| `imagenet_congelado` | 1e-3 | 30 | 10 |
+| `imagenet_finetuning` | 1e-5 | 20 adicionales | 10 |
+| `aleatorio` | 1e-3 | 60 | 10, desde la época 20 |
 
-El modo aleatorio reduce el LR por 0.5 tras 3 épocas sin mejorar `val_loss`.
+El modo aleatorio reduce el LR por 0.5 tras 3 épocas sin mejorar `val_loss`, usa momentum 0.9 en BatchNorm
+y no cuenta las primeras 20 épocas ni para la parada ni para elegir `mejor.keras`.
 La reanudación conserva el LR del optimizador y reconstruye la espera del scheduler.
 La parada temprana restaura los mejores pesos; también se carga explícitamente
 `mejor.keras` antes de evaluar o iniciar fine-tuning.
