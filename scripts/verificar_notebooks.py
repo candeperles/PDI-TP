@@ -36,8 +36,9 @@ PROHIBIDOS = {
     '"trashed": True': "mandar archivos a la papelera desde código",
     "rmtree(": "borrar carpetas desde un notebook",
 }
-# Señales de que el notebook entrena un modelo.
-ENTRENA = ("keras.applications", "torchvision.models", "from ultralytics", ".fit(", ".train(", "torch.optim")
+# Señales de que el notebook entrena un modelo. Importar Ultralytics no cuenta: cargar un YOLO guardado para
+# predecir no es entrenar, y entrenarlo ya se detecta con `.train(`.
+ENTRENA = ("keras.applications", "torchvision.models", ".fit(", ".train(", "torch.optim")
 SOLO_LECTURA = "solo_lectura=True"
 # Lo que un notebook de solo lectura no puede hacer: crear o modificar archivos.
 ESCRITURA = ("guardar_corrida(", "carpeta_corrida(", ".mkdir(", ".to_csv(", ".to_json(", ".write_text(",
