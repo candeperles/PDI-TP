@@ -20,7 +20,7 @@ Las dos variantes parten independientemente de `yolov8n.pt` (COCO):
 | `coco_backbone_congelado` | Se congelan los módulos 0–9 del backbone (`freeze=10`) |
 
 Ultralytics mantiene fija la proyección DFL en ambas variantes. Se usa la misma receta:
-256 px, batch 16, máximo 50 épocas, paciencia 10 y AdamW con LR inicial 0.001.
+640 px (las imágenes son de 256 y Ultralytics las agranda; hasta el 2/11 se usó 256), batch 16, máximo 50 épocas, paciencia 10 y AdamW con LR inicial 0.001.
 Los parámetros explícitos están en `RECETA` y se registran en `config.json`; la receta
 efectiva de Ultralytics queda en `entrenamiento/args.yaml`.
 Es un primer experimento; no implica que estos hiperparámetros sean óptimos.

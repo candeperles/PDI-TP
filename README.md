@@ -52,8 +52,8 @@ informe. Para volver a correr un notebook sin mezclar resultados, ver
 | Clasificación: EfficientNetB0 | `06_clasificacion_efficientnet` | Receta común v2; **falta entrenar en Colab con `REPETIR = True`** |
 | Receta común de clasificación | — | Hecha en los tres notebooks (ver [Receta común](#receta-común-de-clasificación)); falta entrenar y comparar |
 | Marca de agua de Google Maps (issue #7) | — | **Pendiente, para tomar.** Las imágenes de Jamaica traen el logo "Google" y el "Imagery ©2025 Airbus/Maxar", y el resto de las fuentes no: el modelo puede aprender "marca de agua → Jamaica → sin paneles", y el test de Kingston también la va a tener. Opciones: tapar esa zona en todas las imágenes (train, val y test) o pegar marcas de agua falsas en las otras fuentes como augmentation (`pdi_tp/aumentacion.py`). Primero ver en qué imágenes aparece y dónde. Medir el acierto con paneles en Jamaica antes y después |
-| Detección: YOLOv8n | `08_deteccion_yolov8n` | Hecho: `coco_completo` y `coco_backbone_congelado`, en Drive (27/10) |
-| Detección: YOLO11n | `09_deteccion_yolo11n` | Notebook listo, misma receta que YOLOv8n salvo el tamaño de entrada (640 en vez de 256); **falta entrenar en Colab** |
+| Detección: YOLOv8n | `08_deteccion_yolov8n` | Corrido a 256 px (27/10); **volver a correr a 640 con `REPETIR = True`**, igual que YOLO11n |
+| Detección: YOLO11n | `09_deteccion_yolo11n` | Notebook listo, misma receta que YOLOv8n (640 px); **falta entrenar en Colab** |
 | Detector como clasificador y comparación final | `10_comparacion_final` | Notebook listo: compara todas las corridas vigentes con intervalos bootstrap sobre val y Jamaica. Falta correrlo cuando estén los tres clasificadores y los dos YOLO |
 | Informe | — | Pendiente |
 | Página interactiva para el cierre | — | Idea: un módulo que muestre cómo se generan las cajas (candidatas → filtrado → finales) y otro con la red calculando en vivo (mapas de activación capa por capa). Se arma al final, con los resultados reales |
@@ -123,11 +123,11 @@ No hay que poner ningún nombre: los resultados se guardan por modelo y modo, no
 | Notebook | |
 |---|---|
 | `08_deteccion_yolov8n` — YOLOv8n: red completa y backbone congelado, mAP en val/Jamaica y detector como clasificador | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/08_deteccion_yolov8n.ipynb) |
-| `09_deteccion_yolo11n` — YOLO11n: lo mismo que el 08, con la misma receta salvo el tamaño de entrada (640 en vez de 256) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/09_deteccion_yolo11n.ipynb) |
+| `09_deteccion_yolo11n` — YOLO11n: lo mismo que el 08, con la misma receta (640 px) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/09_deteccion_yolo11n.ipynb) |
 
 Usar una sesión nueva de Colab con GPU T4 y `requirements-detection.txt` (PyTorch).
 Solo usa el dataset existente y el split fijo. Guía: [detección con YOLOv8n](docs/deteccion_yolov8n.md); vale también para YOLO11n,
-salvo que congelar el backbone es `freeze=11` (módulos 0–10) en vez de `freeze=10` y que entrena a 640 px.
+salvo que congelar el backbone es `freeze=11` (módulos 0–10) en vez de `freeze=10`.
 
 **Comparación final (consigna)**
 
