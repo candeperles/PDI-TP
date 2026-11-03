@@ -221,12 +221,6 @@ no depende de sus distintos umbrales. Las diferencias se calculan sobre las mism
 intervalo incluye 0, no afirmar superioridad. Val también eligió checkpoints y el bootstrap no elimina
 ese optimismo. Con solo 23 imágenes de Jamaica, diferencias pequeñas pueden ser ruido.
 
-**Herramienta vieja (no usar para entrenar)**
-
-| Notebook | |
-|---|---|
-| `07_ordenar_resultados_resnet50` — ⚠️ **HERRAMIENTA VIEJA**: solo ordena en Drive corridas de ResNet50 hechas con la versión anterior (API de Drive, formato ZIP). No entrena ni genera resultados. Es una excepción documentada del verificador | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/07_ordenar_resultados_resnet50.ipynb) |
-
 ## Dónde quedan los resultados
 
 **Todos los notebooks que entrenan guardan igual: una carpeta por modelo y por modo**, nunca por persona. Lo hace
@@ -279,7 +273,7 @@ las métricas de detección también quedan en `metricas.json`, dentro de `extra
 - **Corridas hechas con el formato anterior** (carpetas por persona, JSON sueltos o el ZIP de ResNet50) no
   aparecen en `cargar_corridas`: para comparar, volver a correrlas con los notebooks actuales.
 - **Nada borra archivos de Drive** y todos los notebooks usan el mismo acceso (`drive.mount` dentro de
-  `entorno.preparar`). La única excepción es la herramienta vieja `07_ordenar_resultados_resnet50`.
+  `entorno.preparar`).
 
 ### Repetir o recuperar un entrenamiento
 

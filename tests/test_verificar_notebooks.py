@@ -60,12 +60,6 @@ class VerificadorTest(unittest.TestCase):
             with self.subTest(agregado=agregado):
                 self.assertIn(esperado, "\n".join(self.notebook(lectura + agregado)))
 
-    def test_excepcion_solo_libera_la_regla_de_drive(self):
-        ruta = RAIZ / next(iter(verificar.EXCEPCIONES))
-        readme = (RAIZ / "README.md").read_text(encoding="utf-8")
-        self.assertEqual(verificar.verificar(ruta, readme), [])
-        self.assertIn("README", "\n".join(verificar.verificar(ruta, readme="")))
-
     def test_exige_enlace_en_readme(self):
         ruta = self.dir / "prueba.ipynb"
         self.notebook(ENTRENAMIENTO_OK)

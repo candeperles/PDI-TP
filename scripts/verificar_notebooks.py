@@ -15,8 +15,7 @@ Normas:
    final) usan `entorno.preparar(solo_lectura=True)`, y entonces no pueden entrenar ni escribir archivos.
 5. Cada notebook está enlazado en el README con su botón de Colab.
 
-Excepciones: notebooks que no entrenan ni generan resultados y quedan por compatibilidad. Se listan en
-EXCEPCIONES con el motivo; se les sigue exigiendo 1 y 5. No agregar excepciones sin acuerdo del equipo.
+Las reglas se aplican a todos los notebooks. No agregar excepciones sin acuerdo del equipo.
 """
 import json
 import sys
@@ -36,12 +35,6 @@ PROHIBIDOS = {
     "'trashed': True": "mandar archivos a la papelera desde código",
     '"trashed": True': "mandar archivos a la papelera desde código",
     "rmtree(": "borrar carpetas desde un notebook",
-}
-# Herramientas viejas que se conservan pero NO son para entrenar: no se les aplican las reglas 2 y 3.
-EXCEPCIONES = {
-    "notebooks/07_ordenar_resultados_resnet50.ipynb":
-        "herramienta vieja: ordena en Drive corridas de ResNet50 hechas con la API (formato anterior); "
-        "no entrena ni genera resultados",
 }
 # Señales de que el notebook entrena un modelo.
 ENTRENA = ("keras.applications", "torchvision.models", "from ultralytics", ".fit(", ".train(", "torch.optim")
@@ -69,20 +62,19 @@ def verificar(ruta: Path, readme: str) -> list[str]:
             problemas.append(f"celda {i}: tiene salidas (Colab: Editar → Borrar todos los resultados)")
     todo = "\n".join(codigo)
     relativa = ruta.resolve().relative_to(RAIZ).as_posix()
-    if relativa not in EXCEPCIONES:
-        for patron, motivo in PROHIBIDOS.items():
-            if patron in todo:
-                problemas.append(f"usa `{patron}`: {motivo}")
-        entrena = any(s in todo for s in ENTRENA)
-        if entrena and "resultados.guardar_corrida(" not in todo:
-            problemas.append("entrena un modelo pero no guarda con resultados.guardar_corrida(...)")
-        if SOLO_LECTURA in todo:
-            if entrena:
-                problemas.append("entorno.preparar(solo_lectura=True) es para notebooks que no entrenan")
-            problemas += [f"usa `{e}` pero abrió los resultados en solo lectura" for e in ESCRITURA if e in todo]
-        elif not entrena and "entorno.preparar(" in todo and "usar_drive=False" not in todo:
-            problemas.append("no entrena pero monta Drive: usar entorno.preparar(usar_drive=False), o "
-                             "entorno.preparar(solo_lectura=True) si solo lee resultados")
+    for patron, motivo in PROHIBIDOS.items():
+        if patron in todo:
+            problemas.append(f"usa `{patron}`: {motivo}")
+    entrena = any(s in todo for s in ENTRENA)
+    if entrena and "resultados.guardar_corrida(" not in todo:
+        problemas.append("entrena un modelo pero no guarda con resultados.guardar_corrida(...)")
+    if SOLO_LECTURA in todo:
+        if entrena:
+            problemas.append("entorno.preparar(solo_lectura=True) es para notebooks que no entrenan")
+        problemas += [f"usa `{e}` pero abrió los resultados en solo lectura" for e in ESCRITURA if e in todo]
+    elif not entrena and "entorno.preparar(" in todo and "usar_drive=False" not in todo:
+        problemas.append("no entrena pero monta Drive: usar entorno.preparar(usar_drive=False), o "
+                         "entorno.preparar(solo_lectura=True) si solo lee resultados")
     if COLAB + relativa not in readme:
         problemas.append(f"no está enlazado en el README (falta el botón de Colab a {relativa})")
     return problemas
@@ -102,8 +94,6 @@ def main(argumentos: list[str]) -> int:
             print(f"✗ {nombre}")
             for p in problemas:
                 print(f"    - {p}")
-        elif nombre.as_posix() in EXCEPCIONES:
-            print(f"⚠ {nombre} (excepción: {EXCEPCIONES[nombre.as_posix()]})")
         else:
             print(f"✓ {nombre}")
     if fallas:
