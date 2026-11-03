@@ -95,6 +95,7 @@ registrar la receta y la fecha de la corrida consultada.
 | Detección: YOLOv8n | `08_deteccion_yolov8n` | Dos modos implementados con entrada de **640 px**, evaluación en val/Jamaica y salida como clasificador |
 | Detección: YOLO11n | `09_deteccion_yolo11n` | Dos modos implementados con la **misma receta de 640 px** que YOLOv8n; cambia la arquitectura y la cantidad de módulos del backbone congelados |
 | Detector como clasificador y comparación final | `10_comparacion_final` | Implementado; se puede ejecutar con las corridas disponibles, informa cuáles faltan y calcula intervalos bootstrap y diferencias pareadas sobre val y Jamaica |
+| Galería de errores | `13_galeria_errores` | Visor de imagen completa y zoom común: anotaciones y cajas predichas lado a lado, confianza/IoU, omisiones, detecciones sin correspondencia y cajas cercanas mal ajustadas; incluye decisiones de las CNN |
 | Informe | — | Pendiente |
 | Página interactiva para el cierre | — | Idea: un módulo que muestre cómo se generan las cajas (candidatas → filtrado → finales) y otro con la red calculando en vivo (mapas de activación capa por capa). Se arma al final, con los resultados reales |
 
@@ -154,7 +155,7 @@ modo, fecha y configuración; no inferirlo de estos antecedentes.
    Los notebooks de datos y la comparación final no necesitan GPU.
 3. *Entorno de ejecución → Ejecutar todas*. La celda de setup clona o actualiza el repo, instala
    las dependencias que corresponden y descarga el dataset si falta. Los notebooks que entrenan montan
-   Drive; `10_comparacion_final` también lo monta, en solo lectura. Los de datos usan
+   Drive; los que leen resultados (`10`, `12` y `13`) también lo montan, en solo lectura. Los de datos usan
    `entorno.preparar(usar_drive=False)`. Si Colab pide reiniciar por cambios de paquetes, reiniciar y volver
    a correr desde el setup.
 
@@ -209,6 +210,7 @@ detecciones). Ese puntaje no es una probabilidad calibrada. La evaluación de ca
 |---|---|
 | `10_comparacion_final` — compara clasificadores y detectores usados como clasificadores sobre val y Jamaica, con intervalos bootstrap y diferencias pareadas, más el mAP de los detectores. No entrena: lee los resultados en solo lectura | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/10_comparacion_final.ipynb) |
 | `12_marca_de_agua_efecto` — si los modelos ya entrenados usan la marca de agua: tapa la marca en Jamaica y la pega en imágenes de otras fuentes, cada prueba con su control, y mide cuánto cambia la probabilidad (issue #7). No entrena: lee los modelos en solo lectura, una sesión por familia (CNN o YOLO) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/12_marca_de_agua_efecto.ipynb) |
+| `13_galeria_errores` — muestra la imagen con las cajas anotadas y predichas, un zoom de cada error y las decisiones de las CNN; permite filtrar Jamaica, modelo, confianza y tipo de error. Sin GPU, en solo lectura | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/13_galeria_errores.ipynb) |
 
 No necesita GPU. Correrlo cada vez que haya corridas nuevas: incluye las CNN completas con
 `params.receta = "comun_v2"`, los detectores completos y el baseline disponible. Las CNN de otra receta
@@ -221,6 +223,16 @@ sin paneles, AUC e intervalos del 95 %. Para comparar CNN y detectores, mirar es
 no depende de sus distintos umbrales. Las diferencias se calculan sobre las mismas imágenes: si su
 intervalo incluye 0, no afirmar superioridad. Val también eligió checkpoints y el bootstrap no elimina
 ese optimismo. Con solo 23 imágenes de Jamaica, diferencias pequeñas pueden ser ruido.
+
+**Revisar dónde falla cada modelo:** ejecutar `13_galeria_errores` sin GPU. Lee `cajas_val.csv` y
+`predicciones_val.csv` de las corridas completas; no necesita cargar pesos ni volver a hacer inferencia.
+Muestra la misma imagen y el mismo zoom para la referencia y hasta dos detectores. Las cajas llevan
+identificador, confianza y, si hay correspondencia, IoU. Se pueden ver omisiones, falsas detecciones,
+duplicados y cajas cercanas con IoU insuficiente, además de errores de presencia de las CNN. N06/N16
+quedan ocultos por defecto por su referencia provisional. Las CNN requieren `comun_v2` y los YOLO, 640 px;
+una opción permite inspeccionar detectores históricos con otra resolución, sin tratarlos como una
+comparación de arquitecturas. Si falta una exportación de cajas, se informa; no se interpreta como cero
+detecciones. Las cuentas por caja son diagnósticas y no reemplazan el mAP.
 
 ## Dónde quedan los resultados
 
@@ -255,8 +267,9 @@ Mi unidad/PDI-TP/
 
 **Solo los notebooks que entrenan crean carpetas en Drive**, y recién cuando guardan algo. El EDA, la
 validación y la revisión de anotaciones no montan Drive: correrlos no crea nada en la carpeta compartida
-(sus reportes quedan solo en la sesión de Colab). La comparación final sí monta Drive, pero en **solo
-lectura** (`entorno.preparar(solo_lectura=True)`): no puede crear ni guardar corridas ni escribir archivos.
+(sus reportes quedan solo en la sesión de Colab). La comparación final, el diagnóstico de marca de agua
+y la galería de errores sí montan Drive, pero en **solo lectura** (`entorno.preparar(solo_lectura=True)`):
+no pueden crear ni guardar corridas ni escribir archivos.
 Los YOLO agregan `modelo.pt`, `metricas_deteccion.json`, `cajas_val.csv`, checkpoints y gráficas de cajas;
 las métricas de detección también quedan en `metricas.json`, dentro de `extra.deteccion`.
 
@@ -334,7 +347,8 @@ según la regla de arriba). Para eso el agente necesita `git` y, para abrir el P
 2. piden el nombre de quien los corre (`INTEGRANTE`): ya no se usa;
 3. montan Drive a mano, usan la API de Drive, borran archivos o usan la forma vieja de guardar;
 4. entrenan un modelo y no guardan con `resultados.guardar_corrida(...)`, o usan un acceso a Drive que no
-   corresponde: los de datos llaman `entorno.preparar(usar_drive=False)` y la comparación final,
+   corresponde: los de datos llaman `entorno.preparar(usar_drive=False)` y los que leen resultados
+   (comparación final, diagnóstico de marca de agua y galería de errores),
    `entorno.preparar(solo_lectura=True)` (sin entrenar ni escribir archivos);
 5. no están enlazados en este README con su botón de Colab.
 
