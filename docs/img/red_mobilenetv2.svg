@@ -1,0 +1,207 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1340" height="790" viewBox="0 0 1340 790" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" role="img">
+<title>MobileNetV2: qué se entrena en cada modo</title>
+<defs><marker id="f" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5"/></marker></defs>
+<rect x="0.5" y="0.5" width="1339" height="789" rx="14" fill="#FFFFFF" stroke="#D3D1C7"/>
+<text x="40" y="38" font-size="22" font-weight="600" fill="#2C2C2A" text-anchor="start" dominant-baseline="central">MobileNetV2: qué se entrena y qué queda fijo</text>
+<text x="40" y="66" font-size="14" font-weight="400" fill="#5F5E5A" text-anchor="start" dominant-baseline="central">Entrada 256×256 · 17 bloques residuales invertidos · 52 capas BatchNorm · salida del extractor 8×8×1280</text>
+<rect x="40" y="175" width="80" height="80" rx="4" fill="#FFFFFF" stroke="#B4B2A9" stroke-width="1" />
+<line x1="66.66666666666667" y1="175" x2="66.66666666666667" y2="255" stroke="#D3D1C7"/>
+<line x1="40" y1="201.66666666666666" x2="120" y2="201.66666666666666" stroke="#D3D1C7"/>
+<line x1="93.33333333333334" y1="175" x2="93.33333333333334" y2="255" stroke="#D3D1C7"/>
+<line x1="40" y1="228.33333333333334" x2="120" y2="228.33333333333334" stroke="#D3D1C7"/>
+<rect x="72" y="182" width="20" height="14" fill="#5F5E5A" opacity="0.6"/>
+<rect x="48" y="229" width="14" height="14" fill="#5F5E5A" opacity="0.6"/>
+<text x="80" y="277" font-size="14" font-weight="600" fill="#2C2C2A" text-anchor="middle" dominant-baseline="central">Entrada</text>
+<text x="80" y="295" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">256×256×3</text>
+<line x1="124" y1="215" x2="146" y2="215" stroke="#5F5E5A" stroke-width="1.2" marker-end="url(#f)"/>
+<rect x="150" y="185" width="150" height="60" rx="8" fill="#FFFFFF" stroke="#B4B2A9" stroke-width="1" />
+<text x="225" y="205" font-size="14" font-weight="600" fill="#2C2C2A" text-anchor="middle" dominant-baseline="central">Preprocesado</text>
+<text x="225" y="227" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">Escala a [−1, 1]</text>
+<line x1="304" y1="215" x2="322" y2="215" stroke="#5F5E5A" stroke-width="1.2" marker-end="url(#f)"/>
+<rect x="328" y="92" width="748" height="250" rx="10" fill="none" stroke="#534AB7" stroke-dasharray="5 4" opacity="0.7"/>
+<text x="702.0" y="110" font-size="14" font-weight="600" fill="#3C3489" text-anchor="middle" dominant-baseline="central">Extractor convolucional (sin la capa de clasificación de ImageNet)</text>
+<rect x="362.3888888888889" y="161.0" width="12" height="120" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="366.3888888888889" y="157.0" width="12" height="120" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="382.3888888888889" y="156.0" width="5" height="120" rx="1.5" fill="#F5C4B3" stroke="#993C1D" stroke-width="1" />
+<text x="374.8888888888889" y="290" font-size="13" font-weight="600" fill="#2C2C2A" text-anchor="middle" dominant-baseline="central">Conv 3×3</text>
+<text x="374.8888888888889" y="308" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">128×128</text>
+<text x="374.8888888888889" y="324" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">32 canales</text>
+<rect x="444.16666666666663" y="161.0" width="12" height="120" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="448.16666666666663" y="157.0" width="12" height="120" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="464.16666666666663" y="156.0" width="5" height="120" rx="1.5" fill="#F5C4B3" stroke="#993C1D" stroke-width="1" />
+<text x="456.66666666666663" y="290" font-size="13" font-weight="600" fill="#2C2C2A" text-anchor="middle" dominant-baseline="central">1 bloque</text>
+<text x="456.66666666666663" y="308" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">128×128</text>
+<text x="456.66666666666663" y="324" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">16 canales</text>
+<rect x="525.9444444444445" y="173.0" width="12" height="96" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="529.9444444444445" y="169.0" width="12" height="96" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="545.9444444444445" y="168.0" width="5" height="96" rx="1.5" fill="#F5C4B3" stroke="#993C1D" stroke-width="1" />
+<text x="538.4444444444445" y="290" font-size="13" font-weight="600" fill="#2C2C2A" text-anchor="middle" dominant-baseline="central">2 bloques</text>
+<text x="538.4444444444445" y="308" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">64×64</text>
+<text x="538.4444444444445" y="324" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">24 canales</text>
+<rect x="607.7222222222222" y="183.0" width="12" height="76" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="611.7222222222222" y="179.0" width="12" height="76" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="627.7222222222222" y="178.0" width="5" height="76" rx="1.5" fill="#F5C4B3" stroke="#993C1D" stroke-width="1" />
+<text x="620.2222222222222" y="290" font-size="13" font-weight="600" fill="#2C2C2A" text-anchor="middle" dominant-baseline="central">3 bloques</text>
+<text x="620.2222222222222" y="308" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">32×32</text>
+<text x="620.2222222222222" y="324" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">32 canales</text>
+<rect x="687.5" y="192.0" width="12" height="58" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="691.5" y="188.0" width="12" height="58" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="695.5" y="184.0" width="12" height="58" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="711.5" y="185.0" width="5" height="58" rx="1.5" fill="#F5C4B3" stroke="#993C1D" stroke-width="1" />
+<text x="702.0" y="290" font-size="13" font-weight="600" fill="#2C2C2A" text-anchor="middle" dominant-baseline="central">4 bloques</text>
+<text x="702.0" y="308" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">16×16</text>
+<text x="702.0" y="324" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">64 canales</text>
+<rect x="767.2777777777778" y="192.0" width="12" height="58" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="771.2777777777778" y="188.0" width="12" height="58" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="775.2777777777778" y="184.0" width="12" height="58" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="779.2777777777778" y="180.0" width="12" height="58" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="795.2777777777778" y="183.0" width="5" height="58" rx="1.5" fill="#F5C4B3" stroke="#993C1D" stroke-width="1" />
+<text x="783.7777777777778" y="290" font-size="13" font-weight="600" fill="#2C2C2A" text-anchor="middle" dominant-baseline="central">3 bloques</text>
+<text x="783.7777777777778" y="308" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">16×16</text>
+<text x="783.7777777777778" y="324" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">96 canales</text>
+<rect x="849.0555555555555" y="199.0" width="12" height="44" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="853.0555555555555" y="195.0" width="12" height="44" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="857.0555555555555" y="191.0" width="12" height="44" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="861.0555555555555" y="187.0" width="12" height="44" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="877.0555555555555" y="190.0" width="5" height="44" rx="1.5" fill="#F5C4B3" stroke="#993C1D" stroke-width="1" />
+<text x="865.5555555555555" y="290" font-size="13" font-weight="600" fill="#2C2C2A" text-anchor="middle" dominant-baseline="central">3 bloques</text>
+<text x="865.5555555555555" y="308" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">8×8</text>
+<text x="865.5555555555555" y="324" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">160 canales</text>
+<rect x="928.8333333333333" y="199.0" width="12" height="44" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="932.8333333333333" y="195.0" width="12" height="44" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="936.8333333333333" y="191.0" width="12" height="44" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="940.8333333333333" y="187.0" width="12" height="44" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="944.8333333333333" y="183.0" width="12" height="44" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="960.8333333333333" y="188.0" width="5" height="44" rx="1.5" fill="#F5C4B3" stroke="#993C1D" stroke-width="1" />
+<text x="947.3333333333333" y="290" font-size="13" font-weight="600" fill="#2C2C2A" text-anchor="middle" dominant-baseline="central">1 bloque</text>
+<text x="947.3333333333333" y="308" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">8×8</text>
+<text x="947.3333333333333" y="324" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">320 canales</text>
+<rect x="1006.6111111111111" y="199.0" width="12" height="44" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="1010.6111111111111" y="195.0" width="12" height="44" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="1014.6111111111111" y="191.0" width="12" height="44" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="1018.6111111111111" y="187.0" width="12" height="44" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="1022.6111111111111" y="183.0" width="12" height="44" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="1026.611111111111" y="179.0" width="12" height="44" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="1030.611111111111" y="175.0" width="12" height="44" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<rect x="1046.611111111111" y="184.0" width="5" height="44" rx="1.5" fill="#F5C4B3" stroke="#993C1D" stroke-width="1" />
+<text x="1029.111111111111" y="290" font-size="13" font-weight="600" fill="#2C2C2A" text-anchor="middle" dominant-baseline="central">Conv 1×1</text>
+<text x="1029.111111111111" y="308" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">8×8</text>
+<text x="1029.111111111111" y="324" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">1280 canales</text>
+<rect x="1090" y="92" width="220" height="250" rx="10" fill="none" stroke="#993556" stroke-dasharray="5 4" opacity="0.7"/>
+<text x="1200" y="110" font-size="14" font-weight="600" fill="#72243E" text-anchor="middle" dominant-baseline="central">Cabeza</text>
+<line x1="1051.611111111111" y1="215" x2="1143" y2="152" stroke="#B4B2A9" stroke-width="0.6"/>
+<line x1="1051.611111111111" y1="215" x2="1143" y2="170" stroke="#B4B2A9" stroke-width="0.6"/>
+<line x1="1051.611111111111" y1="215" x2="1143" y2="188" stroke="#B4B2A9" stroke-width="0.6"/>
+<line x1="1051.611111111111" y1="215" x2="1143" y2="206" stroke="#B4B2A9" stroke-width="0.6"/>
+<line x1="1051.611111111111" y1="215" x2="1143" y2="224" stroke="#B4B2A9" stroke-width="0.6"/>
+<line x1="1051.611111111111" y1="215" x2="1143" y2="242" stroke="#B4B2A9" stroke-width="0.6"/>
+<line x1="1051.611111111111" y1="215" x2="1143" y2="260" stroke="#B4B2A9" stroke-width="0.6"/>
+<line x1="1051.611111111111" y1="215" x2="1143" y2="278" stroke="#B4B2A9" stroke-width="0.6"/>
+<line x1="1157" y1="152" x2="1245" y2="215" stroke="#993556" stroke-width="1.2" opacity="0.8"/>
+<line x1="1157" y1="170" x2="1245" y2="215" stroke="#993556" stroke-width="1.2" opacity="0.8"/>
+<line x1="1157" y1="206" x2="1245" y2="215" stroke="#993556" stroke-width="1.2" opacity="0.8"/>
+<line x1="1157" y1="224" x2="1245" y2="215" stroke="#993556" stroke-width="1.2" opacity="0.8"/>
+<line x1="1157" y1="260" x2="1245" y2="215" stroke="#993556" stroke-width="1.2" opacity="0.8"/>
+<line x1="1157" y1="278" x2="1245" y2="215" stroke="#993556" stroke-width="1.2" opacity="0.8"/>
+<circle cx="1150" cy="152" r="7" fill="#FFFFFF" stroke="#5F5E5A" stroke-width="1" />
+<circle cx="1150" cy="170" r="7" fill="#FFFFFF" stroke="#5F5E5A" stroke-width="1" />
+<circle cx="1150" cy="188" r="7" fill="#FFFFFF" stroke="#5F5E5A" stroke-width="1" stroke-dasharray="2 2" opacity="0.45"/>
+<circle cx="1150" cy="206" r="7" fill="#FFFFFF" stroke="#5F5E5A" stroke-width="1" />
+<circle cx="1150" cy="224" r="7" fill="#FFFFFF" stroke="#5F5E5A" stroke-width="1" />
+<circle cx="1150" cy="242" r="7" fill="#FFFFFF" stroke="#5F5E5A" stroke-width="1" stroke-dasharray="2 2" opacity="0.45"/>
+<circle cx="1150" cy="260" r="7" fill="#FFFFFF" stroke="#5F5E5A" stroke-width="1" />
+<circle cx="1150" cy="278" r="7" fill="#FFFFFF" stroke="#5F5E5A" stroke-width="1" />
+<circle cx="1265" cy="215" r="20" fill="#FBEAF0" stroke="#993556" stroke-width="1.2"/>
+<text x="1265" y="215" font-size="18" font-weight="600" fill="#72243E" text-anchor="middle" dominant-baseline="central">σ</text>
+<text x="1150" y="290" font-size="13" font-weight="600" fill="#2C2C2A" text-anchor="middle" dominant-baseline="central">Pooling global</text>
+<text x="1150" y="308" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">1280 valores</text>
+<text x="1150" y="324" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">+ dropout 0.3</text>
+<text x="1265" y="290" font-size="13" font-weight="600" fill="#2C2C2A" text-anchor="middle" dominant-baseline="central">Densa</text>
+<text x="1265" y="308" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">1 neurona</text>
+<text x="1265" y="324" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">P(con paneles)</text>
+<text x="40" y="385" font-size="14" font-weight="600" fill="#2C2C2A" text-anchor="start" dominant-baseline="central">Bloque residual invertido:</text>
+<rect x="291" y="370" width="130.39999999999998" height="30" rx="6" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<text x="356.2" y="385" font-size="12" font-weight="400" fill="#3C3489" text-anchor="middle" dominant-baseline="central">1×1 expande ×6</text>
+<rect x="425.4" y="370" width="5" height="30" rx="1.5" fill="#F5C4B3" stroke="#993C1D" stroke-width="1" />
+<line x1="432.4" y1="385" x2="450.4" y2="385" stroke="#5F5E5A" stroke-width="1.2" marker-end="url(#f)"/>
+<rect x="454.4" y="370" width="122.8" height="30" rx="6" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<text x="515.8" y="385" font-size="12" font-weight="400" fill="#3C3489" text-anchor="middle" dominant-baseline="central">3×3 depthwise</text>
+<rect x="581.1999999999999" y="370" width="5" height="30" rx="1.5" fill="#F5C4B3" stroke="#993C1D" stroke-width="1" />
+<line x1="588.2" y1="385" x2="606.2" y2="385" stroke="#5F5E5A" stroke-width="1.2" marker-end="url(#f)"/>
+<rect x="610.2" y="370" width="115.19999999999999" height="30" rx="6" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<text x="667.8000000000001" y="385" font-size="12" font-weight="400" fill="#3C3489" text-anchor="middle" dominant-baseline="central">1×1 proyecta</text>
+<rect x="729.4000000000001" y="370" width="5" height="30" rx="1.5" fill="#F5C4B3" stroke="#993C1D" stroke-width="1" />
+<path d="M283 385 L283 415 L748.4000000000001 415 L748.4000000000001 389" fill="none" stroke="#5F5E5A" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#f)"/>
+<text x="760.4000000000001" y="385" font-size="18" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">⊕</text>
+<text x="778.4000000000001" y="385" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="start" dominant-baseline="central">atajo: suma la entrada si la forma coincide</text>
+<text x="40" y="435" font-size="12" font-weight="600" fill="#5F5E5A" text-anchor="start" dominant-baseline="central">Leyenda:</text>
+<rect x="104" y="428" width="14" height="14" rx="3" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<text x="124" y="435" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="start" dominant-baseline="central">convolución (pesos)</text>
+<rect x="287" y="428" width="14" height="14" rx="3" fill="#F5C4B3" stroke="#993C1D" stroke-width="1" />
+<text x="307" y="435" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="start" dominant-baseline="central">BatchNorm</text>
+<rect x="400" y="428" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#B4B2A9" stroke-width="1" />
+<text x="420" y="435" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="start" dominant-baseline="central">sin parámetros</text>
+<rect x="548" y="428" width="14" height="14" rx="3" fill="#FBEAF0" stroke="#993556" stroke-width="1" />
+<text x="568" y="435" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="start" dominant-baseline="central">cabeza: pooling, dropout y densa</text>
+<text x="40" y="480" font-size="16" font-weight="600" fill="#2C2C2A" text-anchor="start" dominant-baseline="central">Qué se entrena en cada modo</text>
+<text x="50" y="510" font-size="13" font-weight="600" fill="#2C2C2A" text-anchor="start" dominant-baseline="central">Modo</text>
+<rect x="490" y="504" width="12" height="12" rx="2" fill="#FFFFFF" stroke="#B4B2A9" stroke-width="1" />
+<text x="508" y="510" font-size="13" font-weight="600" fill="#2C2C2A" text-anchor="start" dominant-baseline="central">Preprocesado</text>
+<rect x="640" y="504" width="12" height="12" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1" />
+<text x="658" y="510" font-size="13" font-weight="600" fill="#2C2C2A" text-anchor="start" dominant-baseline="central">Convoluciones</text>
+<rect x="810" y="504" width="12" height="12" rx="2" fill="#F5C4B3" stroke="#993C1D" stroke-width="1" />
+<text x="828" y="510" font-size="13" font-weight="600" fill="#2C2C2A" text-anchor="start" dominant-baseline="central">BatchNorm</text>
+<rect x="980" y="504" width="12" height="12" rx="2" fill="#FBEAF0" stroke="#993556" stroke-width="1" />
+<text x="998" y="510" font-size="13" font-weight="600" fill="#2C2C2A" text-anchor="start" dominant-baseline="central">Cabeza</text>
+<text x="1130" y="510" font-size="13" font-weight="600" fill="#2C2C2A" text-anchor="start" dominant-baseline="central">Parámetros entrenables</text>
+<line x1="40" y1="528" x2="1300" y2="528" stroke="#E5E3DC"/>
+<text x="50" y="546" font-size="14" font-weight="600" fill="#2C2C2A" text-anchor="start" dominant-baseline="central">imagenet_congelado</text>
+<text x="50" y="566" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="start" dominant-baseline="central">pesos ImageNet · 30 épocas máx., lr 1e-3</text>
+<rect x="486" y="538" width="138" height="36" rx="6" fill="#FFFFFF" stroke="#B4B2A9" stroke-width="1" />
+<text x="555.0" y="556" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">Sin parámetros</text>
+<rect x="636" y="538" width="158" height="36" rx="6" fill="#F1EFE8" stroke="#888780" stroke-width="1" />
+<text x="715.0" y="556" font-size="13" font-weight="400" fill="#444441" text-anchor="middle" dominant-baseline="central">Fijas</text>
+<rect x="806" y="538" width="158" height="36" rx="6" fill="#F1EFE8" stroke="#888780" stroke-width="1" />
+<text x="885.0" y="556" font-size="13" font-weight="400" fill="#444441" text-anchor="middle" dominant-baseline="central">Fija</text>
+<rect x="976" y="538" width="138" height="36" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1" />
+<text x="1045.0" y="556" font-size="13" font-weight="600" fill="#085041" text-anchor="middle" dominant-baseline="central">Se entrena</text>
+<text x="1130" y="556" font-size="14" font-weight="600" fill="#2C2C2A" text-anchor="start" dominant-baseline="central">1.281</text>
+<line x1="40" y1="584" x2="1300" y2="584" stroke="#E5E3DC"/>
+<text x="50" y="602" font-size="14" font-weight="600" fill="#2C2C2A" text-anchor="start" dominant-baseline="central">imagenet_finetuning · etapa 1</text>
+<text x="50" y="622" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="start" dominant-baseline="central">pesos ImageNet · 30 épocas máx., lr 1e-3</text>
+<rect x="486" y="594" width="138" height="36" rx="6" fill="#FFFFFF" stroke="#B4B2A9" stroke-width="1" />
+<text x="555.0" y="612" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">Sin parámetros</text>
+<rect x="636" y="594" width="158" height="36" rx="6" fill="#F1EFE8" stroke="#888780" stroke-width="1" />
+<text x="715.0" y="612" font-size="13" font-weight="400" fill="#444441" text-anchor="middle" dominant-baseline="central">Fijas</text>
+<rect x="806" y="594" width="158" height="36" rx="6" fill="#F1EFE8" stroke="#888780" stroke-width="1" />
+<text x="885.0" y="612" font-size="13" font-weight="400" fill="#444441" text-anchor="middle" dominant-baseline="central">Fija</text>
+<rect x="976" y="594" width="138" height="36" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1" />
+<text x="1045.0" y="612" font-size="13" font-weight="600" fill="#085041" text-anchor="middle" dominant-baseline="central">Se entrena</text>
+<text x="1130" y="612" font-size="14" font-weight="600" fill="#2C2C2A" text-anchor="start" dominant-baseline="central">1.281</text>
+<line x1="40" y1="640" x2="1300" y2="640" stroke="#E5E3DC"/>
+<text x="50" y="658" font-size="14" font-weight="600" fill="#2C2C2A" text-anchor="start" dominant-baseline="central">imagenet_finetuning · etapa 2</text>
+<text x="50" y="678" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="start" dominant-baseline="central">sigue de la mejor cabeza · 20 épocas más, lr 1e-5</text>
+<rect x="486" y="650" width="138" height="36" rx="6" fill="#FFFFFF" stroke="#B4B2A9" stroke-width="1" />
+<text x="555.0" y="668" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">Sin parámetros</text>
+<rect x="636" y="650" width="158" height="36" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1" />
+<text x="715.0" y="668" font-size="13" font-weight="600" fill="#085041" text-anchor="middle" dominant-baseline="central">Se entrenan</text>
+<rect x="806" y="650" width="158" height="36" rx="6" fill="#F1EFE8" stroke="#888780" stroke-width="1" />
+<text x="885.0" y="668" font-size="13" font-weight="400" fill="#444441" text-anchor="middle" dominant-baseline="central">Fija, en inferencia</text>
+<rect x="976" y="650" width="138" height="36" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1" />
+<text x="1045.0" y="668" font-size="13" font-weight="600" fill="#085041" text-anchor="middle" dominant-baseline="central">Se entrena</text>
+<text x="1130" y="668" font-size="14" font-weight="600" fill="#2C2C2A" text-anchor="start" dominant-baseline="central">2.191.041</text>
+<line x1="40" y1="696" x2="1300" y2="696" stroke="#E5E3DC"/>
+<text x="50" y="714" font-size="14" font-weight="600" fill="#2C2C2A" text-anchor="start" dominant-baseline="central">aleatorio</text>
+<text x="50" y="734" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="start" dominant-baseline="central">pesos al azar · 60 épocas máx., lr 1e-3 decreciente</text>
+<rect x="486" y="706" width="138" height="36" rx="6" fill="#FFFFFF" stroke="#B4B2A9" stroke-width="1" />
+<text x="555.0" y="724" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">Sin parámetros</text>
+<rect x="636" y="706" width="158" height="36" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1" />
+<text x="715.0" y="724" font-size="13" font-weight="600" fill="#085041" text-anchor="middle" dominant-baseline="central">Se entrenan</text>
+<rect x="806" y="706" width="158" height="36" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1" />
+<text x="885.0" y="724" font-size="13" font-weight="600" fill="#085041" text-anchor="middle" dominant-baseline="central">Se entrena, mom. 0.9</text>
+<rect x="976" y="706" width="138" height="36" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1" />
+<text x="1045.0" y="724" font-size="13" font-weight="600" fill="#085041" text-anchor="middle" dominant-baseline="central">Se entrena</text>
+<text x="1130" y="724" font-size="14" font-weight="600" fill="#2C2C2A" text-anchor="start" dominant-baseline="central">2.225.153</text>
+<line x1="40" y1="752" x2="1300" y2="752" stroke="#E5E3DC"/>
+<text x="40" y="776" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="start" dominant-baseline="central">Extractor: 2.257.984 parámetros, de los cuales 34.112 son medias y varianzas de BatchNorm (no se aprenden por gradiente). Cabeza: 1.281 (1280 pesos + 1 sesgo).</text>
+</svg>
