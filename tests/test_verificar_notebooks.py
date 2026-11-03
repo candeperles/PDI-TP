@@ -56,9 +56,16 @@ class VerificadorTest(unittest.TestCase):
         self.assertEqual(self.notebook(lectura), [])
         for agregado, esperado in [("tabla.to_csv('x.csv')\n", ".to_csv("), ("fig.savefig('x.png')\n", ".savefig("),
                                    ("resultados.carpeta_corrida(rutas, 'a', 'b')\n", "carpeta_corrida("),
-                                   ("modelo.fit(x)\n", "no entrenan")]:
+                                   ("modelo.fit(x)\n", "no entrenan"),
+                                   ("modelo = YOLO('a.pt')\nmodelo.train(data='d.yaml')\n", "no entrenan")]:
             with self.subTest(agregado=agregado):
                 self.assertIn(esperado, "\n".join(self.notebook(lectura + agregado)))
+
+    def test_solo_lectura_puede_cargar_modelos_para_predecir(self):
+        lectura = ("rutas = entorno.preparar(solo_lectura=True)\nfrom ultralytics import YOLO\n"
+                   "detector = YOLO('modelo.pt')\nsalidas = detector.predict(imagenes)\n"
+                   "red = keras.models.load_model('modelo.keras', compile=False)\nprob = red.predict(imagenes)\n")
+        self.assertEqual(self.notebook(lectura), [])
 
     def test_exige_enlace_en_readme(self):
         ruta = self.dir / "prueba.ipynb"
