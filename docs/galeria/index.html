@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Galería de errores · PDI grupo 5</title>
+  <link rel="stylesheet" href="galeria.css">
+  <script src="galeria.js" defer></script>
+</head>
+<body>
+<div id="pdi-galeria-demo" aria-label="Vista previa interactiva de la galería de cajas">
+  <div class="pdi-app">
+    <header class="pdi-header">
+      <div class="pdi-brand"><span class="pdi-symbol"><span aria-hidden="true">P</span></span><span>PDI <span class="pdi-slash">/</span> Paneles solares</span></div>
+      <span class="pdi-demo"><span></span> Maqueta · cajas simuladas</span>
+    </header>
+    <div class="pdi-heading"><div><div class="pdi-eyebrow">REVISIÓN VISUAL</div><h1>Galería de errores</h1></div><span class="pdi-readonly"><span aria-hidden="true"></span> Solo lectura</span></div>
+    <div class="pdi-data-source">
+      <div><strong>Imágenes del dataset local</strong><p>Las cajas de predicción son simuladas. Para revisar resultados reales, usá el <a href="https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/13_galeria_errores.ipynb" target="_blank" rel="noopener">notebook de la galería</a>.</p><p class="pdi-file-status" aria-live="polite">Buscando las imágenes en data/grupo_5/images/…</p></div>
+      <div class="pdi-file-actions"><button type="button" class="pdi-choose-folder">Elegir carpeta de imágenes</button><button type="button" class="pdi-choose-files">Elegir archivos</button><input class="pdi-folder-input" type="file" accept="image/png" webkitdirectory multiple hidden><input class="pdi-files-input" type="file" accept="image/png" multiple hidden></div>
+    </div>
+    <div class="pdi-layout">
+      <aside class="pdi-library" aria-label="Ejemplos para explorar">
+        <div class="pdi-library-head"><h2>Casos</h2><span class="pdi-number pdi-total">4</span></div>
+        <label class="pdi-filter-label">Tipo de ejemplo<select class="pdi-filter" aria-label="Filtrar por tipo de ejemplo"><option value="todos">Todos los ejemplos</option><option value="desplazada">Caja desplazada</option><option value="omitida">Panel omitido</option><option value="falsa">Falsa detección</option><option value="correcta">Coincidencia</option></select></label>
+        <div class="pdi-thumbnails" aria-label="Seleccionar imagen"></div>
+        <div class="pdi-library-foot"><span aria-hidden="true"></span><span>Imágenes reales de Jamaica<br><span class="pdi-muted">Superposiciones de demostración</span></span></div>
+      </aside>
+      <main class="pdi-workspace">
+        <div class="pdi-case-heading"><div class="pdi-case-text"><h2 class="pdi-case-title">Caja desplazada</h2><div class="pdi-filename"></div></div><div class="pdi-pagination"><span class="pdi-page pdi-number"></span><button type="button" class="pdi-icon-button pdi-prev" aria-label="Ejemplo anterior"><span aria-hidden="true">←</span></button><button type="button" class="pdi-icon-button pdi-next" aria-label="Ejemplo siguiente"><span aria-hidden="true">→</span></button></div></div>
+        <div class="pdi-toolbar">
+          <div class="pdi-views" role="group" aria-label="Modo de comparación"><button type="button" class="pdi-view" data-view="comparar" aria-pressed="true"><span aria-hidden="true"></span> Lado a lado</button><button type="button" class="pdi-view" data-view="superponer" aria-pressed="false"><span aria-hidden="true"></span> Superponer</button></div>
+          <button type="button" class="pdi-zoom" aria-pressed="false"><span class="pdi-zoom-label">Acercar al error</span></button>
+        </div>
+        <div class="pdi-panels" data-mode="comparar">
+          <section class="pdi-panel pdi-reference-panel"><div class="pdi-panel-head"><span><span class="pdi-dot pdi-ref-dot"></span> Anotación original</span><span class="pdi-real-count pdi-number"></span></div><div class="pdi-image-stage pdi-stage-ref"></div><div class="pdi-panel-foot"><span>Referencia del dataset</span><span class="pdi-scale pdi-number">256 × 256 px</span></div></section>
+          <section class="pdi-panel pdi-prediction-panel"><div class="pdi-panel-head"><span><span class="pdi-dot pdi-pred-dot"></span> <span class="pdi-pred-title">Predicción simulada</span></span><span class="pdi-simulated-tag">DEMO</span></div><div class="pdi-image-stage pdi-stage-pred"></div><div class="pdi-panel-foot"><span class="pdi-pred-count pdi-number"></span><span class="pdi-zoom-value pdi-number">1.0×</span></div></section>
+        </div>
+        <div class="pdi-bottom-bar"><div class="pdi-layers"><label class="cursor-interaction"><input type="checkbox" class="pdi-check-ref" checked><span class="pdi-legend-box pdi-ref-box"></span> Anotación</label><label class="cursor-interaction"><input type="checkbox" class="pdi-check-pred" checked><span class="pdi-legend-box pdi-pred-box"></span> Predicción demo</label></div><label class="pdi-label-toggle"><input type="checkbox" class="pdi-check-label" checked> Identificadores</label></div>
+        <div class="pdi-case-detail" aria-live="polite"><div><span class="pdi-detail-marker"></span><span class="pdi-detail-text"></span></div><span class="pdi-overlap pdi-number"></span></div>
+      </main>
+    </div>
+    <noscript>Activá JavaScript para usar la galería.</noscript>
+    <footer class="pdi-footer"><span>GRUPO 5 <span class="pdi-footer-dot">·</span> Procesamiento de Imágenes</span><span>Demostración del visor</span></footer>
+  </div>
+  </div>
+<script id="pdi-datos-demo" type="application/json">
+[
+  {
+    "id": "desplazada",
+    "nombre": "Caja desplazada",
+    "archivo": "kingston_145_3_0_12.png",
+    "fuente": "Kingston",
+    "color": "#ffd06d",
+    "referencia": [
+      [
+        0.357422,
+        0.486328,
+        0.222656,
+        0.417969
+      ]
+    ],
+    "prediccion": [
+      [
+        0.479883,
+        0.486328,
+        0.222656,
+        0.417969
+      ]
+    ],
+    "principal": 0,
+    "foco": [
+      0.246094,
+      0.277343,
+      0.591211,
+      0.695312
+    ],
+    "iou": 0.2903225806451611,
+    "detalle": "La caja simulada quedó desplazada hacia la derecha."
+  },
+  {
+    "id": "omitida",
+    "nombre": "Panel omitido",
+    "archivo": "kingston_145_3_0_14.png",
+    "fuente": "Kingston",
+    "color": "#d6a4f7",
+    "referencia": [
+      [
+        0.722656,
+        0.640625,
+        0.296875,
+        0.375
+      ]
+    ],
+    "prediccion": [],
+    "principal": 0,
+    "foco": [
+      0.574218,
+      0.453125,
+      0.871094,
+      0.828125
+    ],
+    "iou": null,
+    "detalle": "La anotación R1 no tiene una caja simulada que la cubra."
+  },
+  {
+    "id": "falsa",
+    "nombre": "Falsa detección",
+    "archivo": "kingston2_1_33_0.png",
+    "fuente": "Kingston",
+    "color": "#ff7870",
+    "referencia": [],
+    "prediccion": [
+      [
+        0.56,
+        0.4,
+        0.25,
+        0.2
+      ]
+    ],
+    "principal": 0,
+    "foco": [
+      0.435,
+      0.3,
+      0.685,
+      0.5
+    ],
+    "iou": null,
+    "detalle": "Caja de ejemplo en una imagen sin anotaciones de paneles."
+  },
+  {
+    "id": "correcta",
+    "nombre": "Coincidencia",
+    "archivo": "kingston_145_3_0_22.png",
+    "fuente": "Kingston",
+    "color": "#63d4a1",
+    "referencia": [
+      [
+        0.185547,
+        0.46875,
+        0.371094,
+        0.390625
+      ],
+      [
+        0.908203,
+        0.058594,
+        0.175781,
+        0.109375
+      ]
+    ],
+    "prediccion": [
+      [
+        0.185547,
+        0.46875,
+        0.371094,
+        0.390625
+      ],
+      [
+        0.908203,
+        0.058594,
+        0.175781,
+        0.109375
+      ]
+    ],
+    "principal": 0,
+    "foco": [
+      0.0,
+      0.273438,
+      0.371094,
+      0.664062
+    ],
+    "iou": 1.0,
+    "detalle": "La caja simulada coincide con la anotación de referencia."
+  }
+]
+</script>
+</body>
+</html>

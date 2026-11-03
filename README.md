@@ -234,6 +234,11 @@ una opción permite inspeccionar detectores históricos con otra resolución, si
 comparación de arquitecturas. Si falta una exportación de cajas, se informa; no se interpreta como cero
 detecciones. Las cuentas por caja son diagnósticas y no reemplazan el mAP.
 
+**Vista web de demostración:** [galería con filtros, superposición y zoom](docs/galeria/README.md).
+Con el repo descargado, abrir `docs/galeria/index.html` en el navegador. Usa las imágenes del dataset
+local o permite elegir su carpeta; no hace falta servidor. Las cajas predichas son **simuladas** para
+mostrar el visor. Para revisar resultados reales, se mantiene el notebook `13_galeria_errores` de arriba.
+
 ## Dónde quedan los resultados
 
 **Todos los notebooks que entrenan guardan igual: una carpeta por modelo y por modo**, nunca por persona. Lo hace
