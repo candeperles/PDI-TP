@@ -124,11 +124,11 @@ No hay que poner ningún nombre: los resultados se guardan por modelo y modo, no
 | Notebook | |
 |---|---|
 | `08_deteccion_yolov8n` — YOLOv8n: red completa y backbone congelado, mAP en val/Jamaica y detector como clasificador | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/08_deteccion_yolov8n.ipynb) |
-| `09_deteccion_yolo11n` — YOLO11n: lo mismo que el 08, con la misma receta salvo el tamaño de entrada (640 en vez de 256) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/09_deteccion_yolo11n.ipynb) |
+| `09_deteccion_yolo11n` — YOLO11n: lo mismo que el 08, con la misma receta (640 px) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/09_deteccion_yolo11n.ipynb) |
 
 Usar una sesión nueva de Colab con GPU T4 y `requirements-detection.txt` (PyTorch).
 Solo usa el dataset existente y el split fijo. Guía: [detección con YOLOv8n](docs/deteccion_yolov8n.md); vale también para YOLO11n,
-salvo que congelar el backbone es `freeze=11` (módulos 0–10) en vez de `freeze=10` y que entrena a 640 px.
+salvo que congelar el backbone es `freeze=11` (módulos 0–10) en vez de `freeze=10`.
 
 **Comparación final (consigna)**
 
