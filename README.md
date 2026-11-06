@@ -99,6 +99,7 @@ registrar la receta y la fecha de la corrida consultada.
 | Galería de errores | `13_galeria_errores` | Visor de imagen completa y zoom común: anotaciones y cajas predichas lado a lado, confianza/IoU, omisiones, detecciones sin correspondencia y cajas cercanas mal ajustadas; incluye decisiones de las CNN |
 | Variables de clasificación (issue #35) | `14_variables_clasificacion` | Siete variantes implementadas, selección efectiva de pesos, métricas por fuente, diferencias pareadas y curvas; **pendiente ejecutar en Colab y analizar resultados** |
 | Tamaño de entrada de YOLOv8n (issue #36) | `15_deteccion_yolov8n_256` | Control a 256 px implementado, análisis por tamaño, diferencias pareadas, ejemplos y costos; **pendiente ejecutar en Colab y analizar resultados** |
+| Evaluación en el test de Kingston | `17_evaluacion_test` | Implementada; test etiquetado (200 imágenes) en Drive, `test_kingston/`. Se corre una vez, al final, con los modelos elegidos en val |
 | Informe | — | Pendiente |
 | Página interactiva para el cierre | — | Idea: un módulo que muestre cómo se generan las cajas (candidatas → filtrado → finales) y otro con la red calculando en vivo (mapas de activación capa por capa). Se arma al final, con los resultados reales |
 
@@ -127,10 +128,14 @@ modo, fecha y configuración; no inferirlo de estos antecedentes.
   mismo**; no regenerarlo sin acuerdo del equipo (`scripts/make_split.py`).
 - **Clases**: en `solarpanels_hd` los IDs 0/1/2 son la *confianza* de la anotación (alta/moderada/baja),
   no tipos de panel. Se trabaja con una sola clase `panel`. Ver [docs/criterios_datos.md](docs/criterios_datos.md).
-- **Test previsto:** clasificación y detección sobre capturas de Kingston del mismo tamaño y zoom que las
-  originales, con mayoría sin paneles (issue #7). Jamaica tiene 172 imágenes: 149 en train y **23 en val**
-  (11 con paneles y 12 sin). Reportar ese subconjunto además del val completo. N06/N16 siguen pendientes
-  de segunda revisión; conservar la referencia provisional y los originales.
+- **Test de Kingston:** 200 capturas tipo Google Maps de 256×256, **125 con paneles y 75 sin** (no la mayoría
+  sin paneles que se esperaba en el issue #7), 178 cajas etiquetadas a mano con el criterio del train. Está en
+  la carpeta compartida, en `PDI-TP/test_kingston/` (imágenes, `.txt` YOLO, `etiquetas.csv` y `LEEME.md`), no en
+  el repo: el repo es público y son capturas de Google Maps. Se evalúa con `17_evaluacion_test`, **una sola vez y
+  al final**: no elegir modelos, umbrales ni recetas mirando el test.
+- **Jamaica en val:** Jamaica tiene 172 imágenes: 149 en train y **23 en val** (11 con paneles y 12 sin).
+  Reportar ese subconjunto además del val completo. N06/N16 siguen pendientes de segunda revisión; conservar la
+  referencia provisional y los originales.
 
 ## Puesta en marcha (una sola vez por persona)
 
@@ -251,6 +256,7 @@ No cambiar `comun_v2` sin acuerdo en #15.
 | `10_comparacion_final` — compara clasificadores y detectores usados como clasificadores sobre val y Jamaica, con intervalos bootstrap y diferencias pareadas, más el mAP de los detectores. No entrena: lee los resultados en solo lectura | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/10_comparacion_final.ipynb) |
 | `12_marca_de_agua_efecto` — si los modelos ya entrenados usan la marca de agua: tapa la marca en Jamaica y la pega en imágenes de otras fuentes, cada prueba con su control, y mide cuánto cambia la probabilidad (issue #7). No entrena: lee los modelos en solo lectura, una sesión por familia (CNN o YOLO) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/12_marca_de_agua_efecto.ipynb) |
 | `13_galeria_errores` — muestra la imagen con las cajas anotadas y predichas, un zoom de cada error y las decisiones de las CNN; permite filtrar Jamaica, modelo, confianza y tipo de error. Sin GPU, en solo lectura | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/13_galeria_errores.ipynb) |
+| `17_evaluacion_test` — evalúa las corridas vigentes en el test de Kingston (Drive, `test_kingston/`): métricas de test al lado de las de val con intervalos bootstrap, mAP de los detectores, ejemplos de cómo clasificó cada modelo contra lo real y las imágenes en que fallan casi todos. Controla la carga contra `predicciones_val.csv`. No entrena: solo lectura, una sesión por familia (CNN, YOLOv8n/YOLO11n o YOLO26n, cada una con su entorno). **Correrlo una vez, al final** | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/17_evaluacion_test.ipynb) |
 
 No necesita GPU. Correrlo cada vez que haya corridas nuevas: incluye las CNN completas con
 `params.receta = "comun_v2"`, los detectores completos y el baseline disponible. Las CNN de otra receta

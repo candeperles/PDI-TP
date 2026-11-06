@@ -91,6 +91,38 @@ class DeteccionTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "original"):
                 deteccion.preparar_dataset(rutas, datos / "derivado")
 
+    def test_leer_cajas_vacio_valido_y_clase_distinta(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            txt = Path(tmp) / "a.txt"
+            txt.write_text("", encoding="utf-8")
+            self.assertEqual(deteccion.leer_cajas(txt).shape, (0, 4))
+            txt.write_text("0 0.5 0.5 0.2 0.1\n0 0.1 0.1 0.05 0.05\n", encoding="utf-8")
+            np.testing.assert_allclose(deteccion.leer_cajas(txt)[0], [0.5, 0.5, 0.2, 0.1])
+            txt.write_text("1 0.5 0.5 0.2 0.1\n", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "clase 0"):
+                deteccion.leer_cajas(txt)
+
+    def test_map_cajas_como_ultralytics(self):
+        reales = {"a.png": np.array([[0.5, 0.5, 0.2, 0.2]]), "b.png": np.zeros((0, 4))}
+
+        def fila(archivo, conf, xc=0.5):
+            return dict(archivo=archivo, confianza=conf, xc=xc, yc=0.5, w=0.2, h=0.2)
+
+        # Caja perfecta: Ultralytics da 0.995, no 1 (interpolación de 101 puntos).
+        perfecta = deteccion.map_cajas(reales, [fila("a.png", 0.9)])
+        self.assertAlmostEqual(perfecta["map50"], 0.995, places=3)
+        self.assertAlmostEqual(perfecta["map50_95"], 0.995, places=3)
+        # Corrida 0.04: IoU = 0.16 / 0.24 ≈ 0.67, acierta en 4 de los 10 umbrales (0.50 a 0.65).
+        corrida = deteccion.map_cajas(reales, [fila("a.png", 0.9, xc=0.54)])
+        self.assertAlmostEqual(corrida["map50"], 0.995, places=3)
+        self.assertAlmostEqual(corrida["map50_95"], 0.4 * 0.995, places=3)
+        # Un falso positivo más confiado en la imagen sin cajas baja el AP.
+        con_falso = deteccion.map_cajas(reales, [fila("a.png", 0.9), fila("b.png", 0.95)])
+        self.assertLess(con_falso["map50"], 0.9)
+        self.assertEqual(deteccion.map_cajas(reales, [])["map50"], 0.0)
+        with self.assertRaisesRegex(ValueError, "sin etiqueta"):
+            deteccion.map_cajas(reales, [fila("c.png", 0.9)])
+
     def test_notebook_codigo_valido_y_dos_corridas_independientes(self):
         raiz = Path(__file__).resolve().parent.parent
         nb = json.loads((raiz / "notebooks/08_deteccion_yolov8n.ipynb").read_text(encoding="utf-8"))
