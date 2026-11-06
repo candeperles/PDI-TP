@@ -2,6 +2,7 @@
 import ast
 import json
 import tempfile
+import time
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
@@ -99,7 +100,7 @@ class EstudiosTest(unittest.TestCase):
         self.assertEqual(estudios.validar_control(recetas[0], recetas[1], ["imgsz"]), {"imgsz"})
         self.assertEqual(recetas[1]["imgsz"], 256)
 
-    def test_entrenamiento_aplica_pesos_y_sin_early_stopping_selecciona_checkpoint(self):
+    def test_entrenamiento_aplica_pesos_y_restauracion_no_depende_de_leer_checkpoints(self):
         espacio = {"pd": pd, "np": np, "PENDIENTES_GUARDADO": {}}
         for codigo in celdas("14_variables_clasificacion"):
             for nodo in ast.parse(codigo).body:
@@ -117,9 +118,20 @@ class EstudiosTest(unittest.TestCase):
         config = dict(early_stopping=False, paciencia=10, inicio_early_stopping=0)
         historia = espacio["entrenar_etapa"](modelo, "cabeza", 1e-3, 30, "train", "val", config, Path("corrida"))
         self.assertEqual(modelo.fit.call_args.kwargs["epochs"], 30)
-        keras.callbacks.EarlyStopping.assert_not_called()
-        modelo.set_weights.assert_called_once_with(["pesos_mejores"])
+        keras.callbacks.EarlyStopping.assert_called_once_with(monitor="val_loss", patience=31,
+            restore_best_weights=True, start_from_epoch=0)
+        keras.models.load_model.assert_not_called()
+        self.assertIn(keras.callbacks.EarlyStopping.return_value, modelo.fit.call_args.kwargs["callbacks"])
         self.assertEqual(historia.etapa.tolist(), ["cabeza", "cabeza"])
+        # Con parada temprana conserva paciencia 10; en fine-tuning sin parada, usa 21.
+        for activa, epocas, paciencia in ((True, 30, 10), (False, 20, 21)):
+            keras.callbacks.EarlyStopping.reset_mock()
+            espacio["entrenar_etapa"](modelo, "fine_tuning", 1e-5, epocas, "train", "val",
+                                      {**config, "early_stopping": activa}, Path("corrida"))
+            self.assertEqual(modelo.fit.call_args.kwargs["epochs"], epocas)
+            keras.callbacks.EarlyStopping.assert_called_once_with(monitor="val_loss", patience=paciencia,
+                restore_best_weights=True, start_from_epoch=0)
+        keras.models.load_model.assert_not_called()
         # Se comprueba la función que corre una variante, sin dataset ni TensorFlow.
         espacio.update(clasificacion=clasificacion, fuentes_train=["a", "a", "a", "b"],
             y_train=np.array([1, 1, 1, 0]), X_train="imagenes_train", X_val="imagenes_val", y_val="y_val",
@@ -166,6 +178,51 @@ class EstudiosTest(unittest.TestCase):
             espacio["resultados"].guardar_corrida.assert_called_once_with(
                 espacio["rutas"], carpeta, archivos=pendiente["archivos"], probabilidad=pendiente["probabilidad"],
                 params=pendiente["config"], umbral=0.5, metricas_extra={})
+
+    def test_etapas_usan_checkpoints_locales_y_se_publican_junto_al_modelo(self):
+        espacio = {"pd": pd, "np": np, "time": time, "estudios": estudios, "clasificacion": clasificacion,
+                   "MODELO": "mobilenetv2", "REFERENCIA": "mobilenetv2/imagenet_finetuning",
+                   "PENDIENTES_GUARDADO": {}, "REPETIR": False}
+        codigo = next(c for c in celdas("14_variables_clasificacion") if "def guardar_pendiente" in c)
+        funciones = [n for n in ast.parse(codigo).body if isinstance(n, ast.FunctionDef)]
+        exec(compile(ast.Module(body=funciones, type_ignores=[]), "notebook14", "exec"), espacio)
+        with tempfile.TemporaryDirectory() as temporal:
+            repo = Path(temporal) / "repo"
+            raiz = Path(temporal) / "drive" / "resultados"
+            referencia = raiz / espacio["REFERENCIA"] / "config.json"
+            referencia.parent.mkdir(parents=True)
+            referencia.write_text("{}")
+            modelo = Mock()
+            modelo.predict.return_value = np.array([[0.8]])
+            modelo.save.side_effect = lambda destino: destino.write_bytes(b"modelo final de prueba")
+            extractor = SimpleNamespace(trainable=True, layers=[])
+            carpetas = []
+
+            def etapa_local(modelo, etapa, lr, epocas, train_ds, val_ds, config, carpeta):
+                carpetas.append(carpeta)
+                self.assertTrue(carpeta.is_relative_to(repo / "resultados_locales"))
+                self.assertFalse(carpeta.is_relative_to(raiz))
+                (carpeta / f"checkpoint_{etapa}.keras").write_bytes(etapa.encode())
+                return pd.DataFrame({"loss": [0.2], "val_loss": [0.3], "etapa": [etapa], "epoca": [1]})
+
+            espacio.update(repo=repo, rutas=SimpleNamespace(resultados_equipo=raiz),
+                resultados=SimpleNamespace(carpeta_corrida=resultados.carpeta_corrida, guardar_corrida=Mock()),
+                keras=SimpleNamespace(backend=SimpleNamespace(clear_session=Mock()),
+                    utils=SimpleNamespace(set_random_seed=Mock())),
+                armar_modelo=Mock(return_value=(modelo, extractor)), armar_ds=Mock(),
+                entrenar_etapa=etapa_local, archivos={"val": ["a.png"]},
+                fuentes_train=["a", "a"], y_train=np.array([0, 1]),
+                X_train="train", X_val="val", y_val=np.array([1]), PESOS_VAL=np.ones(1))
+            config = dict(semilla=42, sample_weight=None, umbral=0.5,
+                          lr_cabeza=1e-3, epocas_cabeza=30, lr_fine_tuning=1e-5, epocas_fine_tuning=20)
+            espacio["correr_experimento"]("sin_early_stopping", config)
+            destino = raiz / "mobilenetv2" / "sin_early_stopping"
+            self.assertEqual(len(carpetas), 2)
+            for etapa in ("cabeza", "fine_tuning"):
+                self.assertEqual((destino / f"checkpoint_{etapa}.keras").read_bytes(), etapa.encode())
+            self.assertEqual((destino / "modelo.keras").read_bytes(), b"modelo final de prueba")
+            espacio["resultados"].guardar_corrida.assert_called_once()
+            self.assertFalse(espacio["PENDIENTES_GUARDADO"])
 
     def test_guardado_no_crea_carpeta_si_se_perdio_acceso_a_drive(self):
         espacio = {"pd": pd, "np": np, "MODELO": "mobilenetv2",

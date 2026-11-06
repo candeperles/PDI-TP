@@ -232,6 +232,10 @@ conserva el modelo, las predicciones y el historial en `PENDIENTES_GUARDADO` has
 Recuperar el acceso con `rutas = entorno.preparar()` y ejecutar `guardar_pendiente("sin_aug")`
 (usar el modo que falló). Después, la celda del bucle continúa los modos pendientes sin repetir los
 completos con `REPETIR=False`. Este rescate es solo en memoria: se pierde al reiniciar Colab.
+Los checkpoints del 14 se escriben en el disco local de Colab y se copian a Drive junto con la corrida
+terminada. La selección de la mejor época restaura pesos desde memoria, sin leer modelos de Drive entre
+etapas. En `sin_early_stopping`, la paciencia efectiva del callback supera las épocas de cada etapa:
+restaura la mejor `val_loss` pero no interrumpe las 30 + 20 épocas previstas.
 
 **Todavía no hay resultados de estos estudios verificados:** falta ejecutar las variantes y registrar
 fecha, commit y entorno en sus issues. Val selecciona checkpoints y también reporta; Jamaica tiene 23 imágenes.
