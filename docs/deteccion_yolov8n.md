@@ -69,6 +69,23 @@ Jamaica tiene solo 23 imágenes de val (11 positivas, 12 negativas), de modo que
 pequeñas no permiten concluir superioridad. No se comparan recetas distintas como si solo
 cambiara la arquitectura. Ver también [evaluación de Jamaica](evaluacion_jamaica.md).
 
+## YOLO26n
+
+`notebooks/16_deteccion_yolo26n.ipynb` usa la misma receta y los mismos dos modos, con `yolo26n.pt` y `freeze=11`
+(backbone: módulos 0–10, como YOLO11n). Cambia lo siguiente:
+
+- **Entorno:** `requirements-yolo26.txt` (Ultralytics 8.4.184), porque 8.3.221 no incluye YOLO26. Frente al 08 y el 09
+  cambia la arquitectura y también la versión de la librería. Un `modelo.pt` de YOLO26n se abre solo con ese entorno:
+  8.3.221 lo carga sin error, pero predice otras cajas.
+- **Dos cabezas:** el entrenamiento (`E2ELoss`) ajusta la one-to-many y la one-to-one. Con `nms=None`, el default de
+  esta versión, validación e inferencia usan la one-to-many con NMS, como YOLOv8n y YOLO11n. Esa es la métrica
+  principal, y con ella se elige `best.pt` y se escriben `cajas_val.csv` y `predicciones_val.csv`.
+- **Sin NMS:** el notebook mide además `nms=False` sobre el mismo `modelo.pt`, en `extra.deteccion_sin_nms` de
+  `metricas.json`, con carpetas `deteccion_val_sin_nms/` y `deteccion_jamaica_sin_nms/`. Ahí `iou` no tiene efecto. No
+  entra en la tabla de `10_comparacion_final`.
+- **Sin DFL** (`reg_max: 1`): `dfl=1.5` es la ganancia de una pérdida L1 de las cajas. Es el mismo valor de la receta,
+  con otro significado.
+
 Referencias: [YOLOv8](https://docs.ultralytics.com/models/yolov8/),
 [entrenamiento](https://docs.ultralytics.com/modes/train/),
 [validación](https://docs.ultralytics.com/modes/val/),
