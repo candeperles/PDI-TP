@@ -71,16 +71,61 @@ Es una limitación del diseño: ese conjunto selecciona épocas por rendimiento 
 El val común se usó para elegir los finalistas y también para reportar; la CV adicional no elimina
 por completo ese sesgo de selección.
 
-**Estado:** particiones implementadas; entrenamiento, predicciones fuera de fold y elección final
-pendientes. Todavía no hay resultados de esta validación cruzada ni un cambio de modelo o umbral.
-El notebook y su guardado en `analisis/cv_jamaica/` requieren acordar el flujo con las reglas del
-verificador, que actualmente exige el formato común a todo notebook que entrena.
+**Estado:** particiones, entrenamiento y análisis implementados en
+`18_validacion_cruzada_jamaica`. El flujo de guardado específico fue autorizado y se incorporó al
+verificador con controles propios; no cambia las reglas de las corridas comunes. Todavía no se
+ejecutaron los entrenamientos de CV y no hay predicciones fuera de fold, resultados ni cambio de
+modelo o umbral. Falta la segunda revisión de N06 para poder comenzar.
 
 La comprobación local del 06/11/2026 se detuvo en **N06**, una imagen de Jamaica cuya etiqueta sigue
 pendiente de segunda revisión. Antes estaba solo en val; al reunir Jamaica de train y val para CV
 entraría al entrenamiento de cuatro folds. No se transforma su referencia provisional en una etiqueta
 confirmada: hay que resolver esa revisión o acordar y documentar otro tratamiento antes de entrenar.
 N16 no es de Jamaica y permanece en la validación no jamaicana, con su referencia provisional.
+
+### Ejecutar y guardar la CV
+
+- Una arquitectura por sesión nueva de Colab: ResNet50, YOLO11n, YOLO26n y MobileNetV2 opcional.
+  Las CNN usan `requirements-training.txt`; YOLO11n usa `requirements-detection.txt` (8.3.221)
+  y YOLO26n usa `requirements-yolo26.txt` (8.4.184). Las versiones efectivas se registran.
+- `ENTRENAR=False` permite analizar sin GPU y con Drive en solo lectura. Para entrenar, activar T4,
+  elegir `MODELO`, `FOLDS` y `ENTRENAR=True`. El test de Kingston nunca se carga.
+- La receta se lee de la corrida de referencia completa en Drive. En las CNN se verifican ambas
+  etapas contra `comun_v2`. **No se cargan pesos de esas corridas**: cada fold comienza desde
+  ImageNet/COCO y la cabeza de fine-tuning se aprende dentro de ese fold.
+- Se recalculan los pesos por fuente × clase solo con train de cada fold. Los máximos de épocas,
+  paciencia, aumentación y LR conservan la receta. Los pesos CNN de menor `val_loss` se restauran
+  desde memoria; YOLO conserva su criterio nativo de mejor checkpoint y registra la época real.
+- Cada fold se guarda en `analisis/cv_jamaica/<modelo>/<modo>/fold_N/`, con pesos, `config.json`
+  (receta, referencia, entorno, huella de datos y commit), `particiones.csv`, `entrenamiento.json`
+  (mejores épocas por etapa), `predicciones_oof.csv`, historiales y `completo.json` (SHA-256).
+  Los detectores además guardan `cajas_oof.csv` y los argumentos efectivos. No entra en la tabla
+  de corridas comunes ni se usa `resultados.guardar_corrida`.
+- Los checkpoints de entrenamiento son locales a Colab. Si se corta la sesión se pierde el progreso
+  del fold en curso, no los folds completos. Seleccionar solo ese fold y `REPETIR=True` para
+  archivar sus archivos y repetirlo desde cero; después volver a `False`. No se borran archivos.
+- La lectura exige los cinco folds completos del mismo modelo, receta, entorno, datos y commit.
+  No agrega resultados parciales. Una imagen de Jamaica debe aparecer exactamente una vez; un
+  archivo alterado o una configuración mezclada produce error.
+
+### Análisis y decisión pendientes de ejecutar
+
+El notebook calcula recall con/sin paneles, balanced accuracy, F1 macro y AUC con intervalos,
+diferencias pareadas entre los dos primeros de cada familia, mAP sobre las cajas fuera de fold
+reunidas (no el promedio de los mAP de folds) y `umbral.tabla_jamaica` sobre todas las predicciones.
+La comparación del umbral usa **0.5 para CNN y 0.25 para YOLO** como referencias; los resultados
+con 0.5 de la tabla histórica se conservan como diagnóstico.
+
+La regla se escribe antes de mostrar las tablas: elegir la mayor balanced accuracy solo si la
+diferencia pareada es clara. En caso contrario, preferir el modelo más simple o barato con costo
+medido, sin afirmar superioridad. Cambiar el umbral solo con mejora clara de la estimación por
+grupos `*_cv` frente a su referencia. Registrar la decisión y las épocas antes de ejecutar el test.
+
+Los intervalos bootstrap remuestrean imágenes, no entrenamientos; la dependencia espacial puede
+hacerlos demasiado estrechos. La estimación `*_cv` deja grupos afuera al elegir umbral, pero los
+modelos de otros folds comparten imágenes de entrenamiento: no es una CV anidada completa. Tampoco
+se corrige la selección previa de finalistas con val. El test independiente se corre una vez al
+final con los modelos y umbrales decididos.
 
 ## Umbral de decisión (implementado)
 

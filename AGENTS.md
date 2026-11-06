@@ -48,6 +48,20 @@ No desactivar, aflojar ni esquivar el verificador. Si algo legítimo no entra en
 
 No agregar excepciones al verificador sin acuerdo del equipo.
 
+### Validación cruzada de Jamaica (issue #43)
+
+Flujo adicional autorizado para `notebooks/18_validacion_cruzada_jamaica.ipynb`:
+usa `split.folds_jamaica`, `cv_jamaica.preparar_fold`, `fold_completo` y `guardar_fold`.
+Guarda en `analisis/cv_jamaica/<modelo>/<modo>/fold_N/` los pesos, la configuración con receta,
+referencias y commit, las particiones, las mejores épocas y las predicciones fuera de fold
+(más las cajas de los detectores). No usa `guardar_corrida` ni escribe en `resultados/`.
+`cv_jamaica.cargar_predicciones` solo compara modelos con los cinco folds íntegros y compatibles.
+Los folds repetidos se archivan; nunca se borran. El verificador controla este protocolo específico
+con metadata `pdi_tp.flujo: cv_jamaica_v1`; las reglas de las corridas comunes siguen vigentes.
+En modo análisis, `entorno.preparar(solo_lectura=not ENTRENAR)` monta Drive sin permitir guardados.
+El fold evaluado no elige checkpoints. Las etiquetas pendientes de Jamaica deben resolverse antes
+de incorporarlas al entrenamiento de CV; no se confirman automáticamente.
+
 ## Datos y evaluación
 
 - El dataset no está en git (`data/` ignorado; se baja con `scripts/download_data.py`). **No modificar los
