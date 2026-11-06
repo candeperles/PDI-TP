@@ -142,3 +142,59 @@ def cargar_split(rutas: Rutas) -> dict[str, list[Path]]:
         nombre: [rutas.imagenes / a for a in (SPLITS_DIR / f"{nombre}.txt").read_text().split()]
         for nombre in ("train", "val")
     }
+
+
+def folds_jamaica(rutas: Rutas, n: int = 5, semilla: int = 42) -> list[dict]:
+    """Particiones adicionales para el #43; no escribe ni modifica el split oficial.
+
+    Cada elemento contiene `fold` (1..n) y tres manifiestos: `train`, `validacion`
+    y `evaluacion`. Todas las imágenes de Jamaica se evalúan una vez, por grupos
+    espaciales. Train contiene el train no jamaicano y los otros n-1 folds.
+    La validación que elige checkpoints es SOLO el val oficial no jamaicano:
+    el fold evaluado nunca decide una época ni una parada temprana.
+    """
+    from sklearn.model_selection import StratifiedGroupKFold
+    from . import clasificacion
+
+    if isinstance(n, bool) or not isinstance(n, int) or n < 2:
+        raise ValueError("Se requieren al menos dos folds.")
+    tabla, _ = clasificacion.preparar_tabla(rutas)
+    tabla = tabla.sort_values("archivo").reset_index(drop=True).copy()
+    oficiales = cargar_split(rutas)
+    esperados = {p.name: conjunto for conjunto, archivos in oficiales.items() for p in archivos}
+    if (sum(map(len, oficiales.values())) != len(esperados)
+            or tabla.archivo.duplicated().any() or set(tabla.archivo) != set(esperados)
+            or not tabla.split.eq(tabla.archivo.map(esperados)).all()):
+        raise ValueError("El manifiesto debe coincidir exactamente con train/val oficiales; no admite test.")
+    if not tabla.y_original.isin([0, 1]).all():
+        raise ValueError("Se requieren etiquetas binarias.")
+    # Recalcular juntos: una cadena de vecinos puede atravesar train y val.
+    tabla["grupo"] = grupos_espaciales([Path(a).stem for a in tabla.archivo])
+    jamaica = tabla.archivo.map(es_jamaica)
+    seleccion = tabla.loc[jamaica].reset_index(drop=True)
+    if seleccion.pendiente_revision.any():
+        raise ValueError("Resolver las etiquetas pendientes de Jamaica antes de hacer CV.")
+    por_clase = seleccion.groupby("y_original").grupo.nunique()
+    if set(por_clase.index) != {0, 1} or (por_clase < n).any():
+        raise ValueError("No hay suficientes grupos de ambas clases para los folds pedidos.")
+    train_fijo = tabla.loc[~jamaica & tabla.split.eq("train")]
+    validacion = tabla.loc[~jamaica & tabla.split.eq("val")]
+    if train_fijo.empty or validacion.empty:
+        raise ValueError("Se requiere train y val no jamaicano para separar checkpoints de evaluación.")
+    particiones = StratifiedGroupKFold(n_splits=n, shuffle=True, random_state=semilla)
+    folds = []
+    for numero, (idx_train, idx_eval) in enumerate(particiones.split(
+            seleccion, seleccion.y_original, seleccion.grupo), 1):
+        train = pd.concat([train_fijo, seleccion.iloc[idx_train]], ignore_index=True)
+        evaluacion = seleccion.iloc[idx_eval]
+        conjuntos = [train, validacion, evaluacion]
+        if any(set(a.grupo) & set(b.grupo)
+               for i, a in enumerate(conjuntos) for b in conjuntos[i + 1:]):
+            raise ValueError("Hay grupos espaciales compartidos entre entrenamiento, validación y evaluación.")
+        if any(set(t.y_original) != {0, 1} for t in conjuntos):
+            raise ValueError("Alguna partición no contiene ambas clases; revisar el diseño de los folds.")
+        folds.append(dict(fold=numero, **{
+            nombre: t.sort_values("archivo").reset_index(drop=True)
+            for nombre, t in zip(("train", "validacion", "evaluacion"), conjuntos)
+        }))
+    return folds

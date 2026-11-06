@@ -28,7 +28,7 @@ corridas guardadas antes del cambio, sin volver a entrenar.
 entre 8 y 9 puntos. Sirve para detectar problemas grandes, como el 59 % del issue #7, no para elegir entre
 modelos parecidos.
 
-## Paso 2 (propuesto): validación cruzada agrupada sobre Jamaica
+## Paso 2: validación cruzada agrupada sobre Jamaica (issue #43)
 
 Para medir con las 172 imágenes y no solo con 23:
 
@@ -48,6 +48,39 @@ las CNN en Colab conviene hacerlo solo con la receta común y las variantes fina
 
 **Qué no cambia:** el split oficial sigue igual y las métricas de val del formato común se siguen
 reportando como hasta ahora. Esto es una evaluación adicional.
+
+### Particiones implementadas
+
+`split.folds_jamaica(rutas, n=5, semilla=42)` audita los datos y devuelve una lista de cinco
+diccionarios. Cada uno contiene `fold` (1 a 5) y tres tablas con las columnas del manifiesto:
+
+- `train`: todo el train oficial no jamaicano más las imágenes de Jamaica de los otros cuatro folds.
+- `validacion`: solo el val oficial **no jamaicano**, para elegir checkpoints y aplicar early stopping.
+- `evaluacion`: el fold de Jamaica que queda afuera, para obtener las predicciones fuera de fold.
+
+La agrupación espacial se calcula sobre todos los nombres oficiales juntos, antes de separar las
+particiones, para conservar las cadenas de vecinos. La función frena si falta una clase, hay grupos
+compartidos entre particiones, etiquetas pendientes en Jamaica o diferencias con los archivos del split.
+No admite imágenes de un test externo ni escribe `splits/train.txt` o `splits/val.txt`.
+
+El fold de `evaluacion` **no se pasa como validación al entrenamiento**: usarlo para elegir el mejor
+checkpoint haría optimistas sus predicciones, aunque sus imágenes nunca entrenaran por gradiente.
+Reservar el val no jamaicano permite entrenar con todas las imágenes de Jamaica de los otros cuatro
+folds, como pide el issue, conservando los hiperparámetros y el criterio de checkpoint de cada receta.
+Es una limitación del diseño: ese conjunto selecciona épocas por rendimiento fuera de Jamaica.
+El val común se usó para elegir los finalistas y también para reportar; la CV adicional no elimina
+por completo ese sesgo de selección.
+
+**Estado:** particiones implementadas; entrenamiento, predicciones fuera de fold y elección final
+pendientes. Todavía no hay resultados de esta validación cruzada ni un cambio de modelo o umbral.
+El notebook y su guardado en `analisis/cv_jamaica/` requieren acordar el flujo con las reglas del
+verificador, que actualmente exige el formato común a todo notebook que entrena.
+
+La comprobación local del 06/11/2026 se detuvo en **N06**, una imagen de Jamaica cuya etiqueta sigue
+pendiente de segunda revisión. Antes estaba solo en val; al reunir Jamaica de train y val para CV
+entraría al entrenamiento de cuatro folds. No se transforma su referencia provisional en una etiqueta
+confirmada: hay que resolver esa revisión o acordar y documentar otro tratamiento antes de entrenar.
+N16 no es de Jamaica y permanece en la validación no jamaicana, con su referencia provisional.
 
 ## Umbral de decisión (implementado)
 
