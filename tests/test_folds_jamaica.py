@@ -71,6 +71,14 @@ class FoldsJamaicaTest(unittest.TestCase):
             for conjunto in ("train", "validacion", "evaluacion"):
                 pd.testing.assert_frame_equal(a[conjunto], b[conjunto])
 
+    def test_estratifica_grupos_con_una_sola_clase_sin_perder_su_correspondencia(self):
+        jamaica = self.tabla.archivo.map(split.es_jamaica)
+        self.tabla.loc[jamaica, "y_original"] = self.tabla.loc[jamaica, "archivo"].map(
+            lambda nombre: (int(nombre.split("_")[1]) // 10) % 2)
+        # Cinco grupos negativos y cinco positivos del mismo tamaño permiten equilibrio exacto.
+        for fold in split.folds_jamaica(self.rutas):
+            self.assertEqual(fold["evaluacion"].y_original.mean(), 0.5)
+
     def test_test_o_splits_inconsistentes_no_entran(self):
         nueva = self.tabla.iloc[[0]].assign(archivo="kingston_999_0_0_0.png", split="test")
         self.tabla = pd.concat([self.tabla, nueva], ignore_index=True)

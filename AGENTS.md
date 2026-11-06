@@ -69,7 +69,7 @@ de incorporarlas al entrenamiento de CV; no se confirman automáticamente.
 - **El split es fijo** (`splits/train.txt` / `val.txt`, 738/162, agrupado por zona espacial). No
   regenerarlo ni usar otra división sin acuerdo explícito del equipo.
 - Una sola clase de detección, `panel` (los IDs 0/1/2 de `solarpanels_hd` son confianza de anotación).
-  N06/N16 están pendientes de revisión: ver `docs/criterios_datos.md`.
+  N06 fue revisado por el equipo como sin paneles; N16 sigue pendiente: ver `docs/criterios_datos.md`.
 - Val se usa para elegir checkpoints y para reportar: decirlo siempre al mostrar resultados.
 - **No inventar ni estimar métricas.** Si algo no se corrió, decirlo. No afirmar que un modelo es mejor sin
   resultados reales del formato común.

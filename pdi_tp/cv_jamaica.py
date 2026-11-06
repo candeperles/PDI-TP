@@ -140,8 +140,9 @@ def _solicitud(rutas, modelo, modo, fold, params):
     manifiesto = _manifiesto(rutas, fold)
     if (not params.get("referencias") or not params.get("receta")
             or not params.get("entorno") or not params.get("huella_datos")
-            or params.get("semilla_folds") != 42):
-        raise ValueError("Faltan receta, referencias, entorno, huella de datos o semilla de folds.")
+            or params.get("semilla_folds") != 42
+            or params.get("estrategia_folds") != split.ESTRATEGIA_FOLDS_JAMAICA):
+        raise ValueError("Faltan receta, referencias, entorno, huella de datos, semilla o estrategia de folds.")
     base = referencia(rutas, modelo)
     if any(params.get(k) != base[k] for k in ("receta", "umbral", "referencias")):
         raise ValueError("La configuración de CV debe conservar exactamente la receta de la referencia.")

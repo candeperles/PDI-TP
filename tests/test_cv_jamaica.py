@@ -46,7 +46,8 @@ class CvJamaicaTest(unittest.TestCase):
 
     def params(self, modelo="resnet50"):
         return dict(self.referencia_falsa(self.rutas, modelo), entorno={"paquetes": "prueba"},
-                    huella_datos="huella_de_prueba", semilla_folds=42)
+                    huella_datos="huella_de_prueba", semilla_folds=42,
+                    estrategia_folds=split.ESTRATEGIA_FOLDS_JAMAICA)
 
     def guardar(self, fold, modelo="resnet50", **cambios):
         modo, params = cv.FINALISTAS[modelo], self.params(modelo)

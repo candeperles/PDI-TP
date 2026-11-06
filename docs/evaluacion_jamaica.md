@@ -63,6 +63,16 @@ particiones, para conservar las cadenas de vecinos. La función frena si falta u
 compartidos entre particiones, etiquetas pendientes en Jamaica o diferencias con los archivos del split.
 No admite imágenes de un test externo ni escribe `splits/train.txt` o `splits/val.txt`.
 
+La semilla 42 permuta los IDs de grupo usados para desempatar `StratifiedGroupKFold`, con
+`shuffle=False`. Se mantiene la correspondencia entre cada grupo y sus recuentos de clase:
+en [scikit-learn 1.7.2](https://github.com/scikit-learn/scikit-learn/blob/1.7.2/sklearn/model_selection/_split.py)
+el `shuffle=True` interno permuta los recuentos sin permutar los índices que identifican sus imágenes.
+En la comprobación local eso produjo folds con proporciones de positivos muy distintas; un test
+con grupos de una sola clase controla la regresión. La estrategia queda registrada en `params`.
+La estratificación sigue siendo aproximada: las zonas más grandes incluyen grupos de 30 negativos
+y de 21 positivos, que limitan el equilibrio entre composición y tamaño. El notebook muestra la
+distribución antes de entrenar; no se eligen particiones mirando métricas de los modelos ni el test.
+
 El fold de `evaluacion` **no se pasa como validación al entrenamiento**: usarlo para elegir el mejor
 checkpoint haría optimistas sus predicciones, aunque sus imágenes nunca entrenaran por gradiente.
 Reservar el val no jamaicano permite entrenar con todas las imágenes de Jamaica de los otros cuatro
@@ -75,12 +85,12 @@ por completo ese sesgo de selección.
 `18_validacion_cruzada_jamaica`. El flujo de guardado específico fue autorizado y se incorporó al
 verificador con controles propios; no cambia las reglas de las corridas comunes. Todavía no se
 ejecutaron los entrenamientos de CV y no hay predicciones fuera de fold, resultados ni cambio de
-modelo o umbral. Falta la segunda revisión de N06 para poder comenzar.
+modelo o umbral. La revisión de N06 ya fue resuelta por el equipo y se puede preparar la CV.
 
-La comprobación local del 06/11/2026 se detuvo en **N06**, una imagen de Jamaica cuya etiqueta sigue
-pendiente de segunda revisión. Antes estaba solo en val; al reunir Jamaica de train y val para CV
-entraría al entrenamiento de cuatro folds. No se transforma su referencia provisional en una etiqueta
-confirmada: hay que resolver esa revisión o acordar y documentar otro tratamiento antes de entrenar.
+El 06/11/2026 la usuaria comunicó la decisión del equipo: **N06 no tiene paneles**. Se registra como
+`revisado_equipo` y se conserva su etiqueta original vacía. En la CV se evalúa una vez y entra al
+entrenamiento de los otros cuatro folds como negativa. La comprobación inicial se había detenido
+por su revisión pendiente; se mantiene el control para cualquier nueva etiqueta dudosa de Jamaica.
 N16 no es de Jamaica y permanece en la validación no jamaicana, con su referencia provisional.
 
 ### Ejecutar y guardar la CV

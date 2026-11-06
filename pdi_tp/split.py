@@ -21,6 +21,7 @@ from .datos import label_de, listar_imagenes, tiene_paneles
 from .entorno import Rutas
 
 SPLITS_DIR = Path(__file__).resolve().parent.parent / "splits"
+ESTRATEGIA_FOLDS_JAMAICA = "sgkf_sin_shuffle_ids_permutados_v1"
 
 _HD = re.compile(r"solarpanels_hd_(\d+)__x0_(\d+)_y0_(\d+)_dxdy_(\d+)_\d+_\d+$")
 _PV01 = re.compile(r"PV01_(\d+)_(\d+)$")
@@ -181,10 +182,15 @@ def folds_jamaica(rutas: Rutas, n: int = 5, semilla: int = 42) -> list[dict]:
     validacion = tabla.loc[~jamaica & tabla.split.eq("val")]
     if train_fijo.empty or validacion.empty:
         raise ValueError("Se requiere train y val no jamaicano para separar checkpoints de evaluación.")
-    particiones = StratifiedGroupKFold(n_splits=n, shuffle=True, random_state=semilla)
+    # Desempatar por IDs permutados mantiene alineados grupos y recuentos de clase.
+    # En sklearn 1.7.2, shuffle=True permuta los recuentos pero no sus índices de grupo.
+    ids = np.unique(seleccion.grupo)
+    orden = dict(zip(ids, np.random.default_rng(semilla).permutation(ids)))
+    grupos_cv = seleccion.grupo.map(orden)
+    particiones = StratifiedGroupKFold(n_splits=n, shuffle=False)
     folds = []
     for numero, (idx_train, idx_eval) in enumerate(particiones.split(
-            seleccion, seleccion.y_original, seleccion.grupo), 1):
+            seleccion, seleccion.y_original, grupos_cv), 1):
         train = pd.concat([train_fijo, seleccion.iloc[idx_train]], ignore_index=True)
         evaluacion = seleccion.iloc[idx_eval]
         conjuntos = [train, validacion, evaluacion]
