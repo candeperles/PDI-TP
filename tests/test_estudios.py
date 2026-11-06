@@ -1,6 +1,7 @@
 """Estudios controlados: aislamiento de variables y recall pareado por imagen."""
 import ast
 import json
+import tempfile
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
@@ -9,7 +10,7 @@ from unittest.mock import Mock, patch
 import numpy as np
 import pandas as pd
 
-from pdi_tp import clasificacion, estudios
+from pdi_tp import clasificacion, estudios, resultados
 
 RAIZ = Path(__file__).resolve().parents[1]
 
@@ -99,7 +100,7 @@ class EstudiosTest(unittest.TestCase):
         self.assertEqual(recetas[1]["imgsz"], 256)
 
     def test_entrenamiento_aplica_pesos_y_sin_early_stopping_selecciona_checkpoint(self):
-        espacio = {"pd": pd, "np": np}
+        espacio = {"pd": pd, "np": np, "PENDIENTES_GUARDADO": {}}
         for codigo in celdas("14_variables_clasificacion"):
             for nodo in ast.parse(codigo).body:
                 if isinstance(nodo, ast.FunctionDef):
@@ -130,6 +131,59 @@ class EstudiosTest(unittest.TestCase):
             espacio["correr_experimento"]("pesos_clase", dict(semilla=42, sample_weight="clase"))
         pesos_reales = espacio["armar_ds"].call_args_list[0].args[2]
         np.testing.assert_allclose(pesos_reales, [2/3, 2/3, 2/3, 2])
+
+    def test_guardado_recrea_destino_y_conserva_modelo_si_drive_falla(self):
+        espacio = {"pd": pd, "np": np, "estudios": estudios, "MODELO": "mobilenetv2",
+                   "REFERENCIA": "mobilenetv2/imagenet_finetuning"}
+        codigo = next(c for c in celdas("14_variables_clasificacion") if "def guardar_pendiente" in c)
+        arbol = ast.parse(codigo)
+        funciones = [n for n in arbol.body if isinstance(n, ast.FunctionDef)]
+        exec(compile(ast.Module(body=funciones, type_ignores=[]), "notebook14", "exec"), espacio)
+        with tempfile.TemporaryDirectory() as temporal:
+            raiz = Path(temporal) / "resultados"
+            referencia = raiz / espacio["REFERENCIA"] / "config.json"
+            referencia.parent.mkdir(parents=True)
+            referencia.write_text("{}")
+            modelo = Mock()
+            modelo.save.side_effect = FileNotFoundError("Carpeta dejó de estar disponible")
+            pendiente = dict(modelo=modelo, config={"umbral": 0.5}, archivos=["a.png"],
+                probabilidad=np.array([0.7]), historia=pd.DataFrame({"loss": [0.3]}), extra={})
+            espacio.update(rutas=SimpleNamespace(resultados_equipo=raiz),
+                resultados=SimpleNamespace(carpeta_corrida=resultados.carpeta_corrida, guardar_corrida=Mock()),
+                PENDIENTES_GUARDADO={"sin_aug": pendiente})
+            with self.assertRaises(FileNotFoundError):
+                espacio["guardar_pendiente"]("sin_aug")
+            self.assertIs(espacio["PENDIENTES_GUARDADO"]["sin_aug"]["modelo"], modelo)
+            espacio["resultados"].guardar_corrida.assert_not_called()
+            # Reintentar correr el modo solo guarda el mismo modelo; no llega a Keras ni a fit.
+            modelo.save.side_effect = lambda destino: destino.write_bytes(b"pesos de prueba")
+            espacio["correr_experimento"]("sin_aug", pendiente["config"])
+            carpeta = raiz / "mobilenetv2" / "sin_aug"
+            self.assertTrue((carpeta / "modelo.keras").is_file())
+            self.assertTrue((carpeta / "historia.csv").is_file())
+            self.assertNotIn("sin_aug", espacio["PENDIENTES_GUARDADO"])
+            self.assertEqual(list(carpeta.parent.glob("*__anterior_*")), [])
+            espacio["resultados"].guardar_corrida.assert_called_once_with(
+                espacio["rutas"], carpeta, archivos=pendiente["archivos"], probabilidad=pendiente["probabilidad"],
+                params=pendiente["config"], umbral=0.5, metricas_extra={})
+
+    def test_guardado_no_crea_carpeta_si_se_perdio_acceso_a_drive(self):
+        espacio = {"pd": pd, "np": np, "MODELO": "mobilenetv2",
+                   "REFERENCIA": "mobilenetv2/imagenet_finetuning"}
+        codigo = next(c for c in celdas("14_variables_clasificacion") if "def guardar_pendiente" in c)
+        funciones = [n for n in ast.parse(codigo).body if isinstance(n, ast.FunctionDef)]
+        exec(compile(ast.Module(body=funciones, type_ignores=[]), "notebook14", "exec"), espacio)
+        with tempfile.TemporaryDirectory() as temporal:
+            raiz = Path(temporal) / "drive_inaccesible" / "resultados"
+            modelo = Mock()
+            espacio.update(rutas=SimpleNamespace(resultados_equipo=raiz), resultados=Mock(),
+                           PENDIENTES_GUARDADO={"sin_aug": {"modelo": modelo}})
+            with self.assertRaisesRegex(FileNotFoundError, "Conservar esta sesión"):
+                espacio["guardar_pendiente"]("sin_aug")
+            self.assertFalse(raiz.exists())
+            espacio["resultados"].carpeta_corrida.assert_not_called()
+            modelo.save.assert_not_called()
+            self.assertIn("sin_aug", espacio["PENDIENTES_GUARDADO"])
 
 
 if __name__ == "__main__":

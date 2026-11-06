@@ -227,6 +227,12 @@ ni reentrenan las referencias. `REPETIR=False` conserva modos completos con la m
 Para analizar sin GPU, poner `ENTRENAR=False` antes del setup (`MEDIR_INFERENCIA=False` en 15).
 El análisis no escribe resultados; estos dos notebooks mantienen permiso de entrenamiento al montar Drive.
 
+Si el 14 falla al guardar después de entrenar, **no reiniciar la sesión ni poner `REPETIR=True`**:
+conserva el modelo, las predicciones y el historial en `PENDIENTES_GUARDADO` hasta completar el guardado.
+Recuperar el acceso con `rutas = entorno.preparar()` y ejecutar `guardar_pendiente("sin_aug")`
+(usar el modo que falló). Después, la celda del bucle continúa los modos pendientes sin repetir los
+completos con `REPETIR=False`. Este rescate es solo en memoria: se pierde al reiniciar Colab.
+
 **Todavía no hay resultados de estos estudios verificados:** falta ejecutar las variantes y registrar
 fecha, commit y entorno en sus issues. Val selecciona checkpoints y también reporta; Jamaica tiene 23 imágenes.
 Las diferencias usan bootstrap pareado por imagen: un intervalo que incluye cero no acredita una mejora.
