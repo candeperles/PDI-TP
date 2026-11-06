@@ -84,6 +84,22 @@ def pesos_muestra_fuente_clase(fuentes, y):
     return pesos
 
 
+def elegir_pesos_muestra(fuentes, y, estrategia):
+    """Selecciona el balance de train según `sample_weight`; nunca usa val."""
+    fuentes, etiquetas = np.asarray(fuentes), np.asarray(y)
+    if (fuentes.ndim != 1 or etiquetas.ndim != 1 or len(etiquetas) == 0
+            or len(fuentes) != len(etiquetas) or not np.isin(etiquetas, [0, 1]).all()):
+        raise ValueError("fuentes e y deben ser vectores binarios no vacíos y alineados.")
+    if estrategia is None:
+        return np.ones(len(etiquetas), dtype=float)
+    if estrategia == "clase":
+        pesos = pesos_clase(etiquetas)
+        return np.array([pesos[int(c)] for c in etiquetas], dtype=float)
+    if estrategia == "igual_masa_por_fuente_x_clase":
+        return pesos_muestra_fuente_clase(fuentes, etiquetas)
+    raise ValueError(f"Estrategia de sample_weight desconocida: {estrategia!r}")
+
+
 def evaluar(y, probabilidades, umbral=0.5):
     y, p = np.asarray(y), np.asarray(probabilidades, dtype=float).reshape(-1)
     if y.ndim != 1 or len(y) == 0 or len(y) != len(p) or not np.isin(y, [0, 1]).all():

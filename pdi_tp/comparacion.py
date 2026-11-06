@@ -3,7 +3,7 @@
 Todo sale de los resultados guardados con el formato común (pdi_tp/resultados.py); acá no se entrena nada.
 
 - Solo se comparan corridas **vigentes**: las CNN con la receta común actual (`params.receta`) y los
-  detectores (con su propia receta, la misma para YOLOv8n y YOLO11n: ver los notebooks 08 y 09).
+  detectores con imgsz=640 (con su propia receta, la misma para YOLOv8n y YOLO11n: ver 08 y 09).
 - Cada corrida se mide con su propio umbral (0.5 las CNN, 0.25 los YOLO). El puntaje de un YOLO es la
   máxima confianza de sus cajas, no una probabilidad calibrada: el AUC no depende del umbral y es la
   comparación más justa entre familias.
@@ -50,7 +50,10 @@ def corridas_vigentes(corridas: pd.DataFrame, receta: str = RECETA_VIGENTE) -> p
     # La receta común es de las CNN: los detectores guardan otra cosa en `params.receta` y el baseline no tiene.
     recetas = tabla["params.receta"] if "params.receta" in tabla else pd.Series(None, index=tabla.index)
     tabla.insert(2, "receta", recetas.where(tabla["familia"] == "clasificador"))
-    tabla.insert(3, "vigente", (tabla["familia"] != "clasificador") | (tabla["receta"] == receta))
+    detectores_640 = recetas.map(lambda r: isinstance(r, dict) and r.get("imgsz") == 640)
+    tabla.insert(3, "vigente", (tabla["familia"] == "referencia")
+                 | ((tabla["familia"] == "clasificador") & (tabla["receta"] == receta))
+                 | ((tabla["familia"] == "detector") & detectores_640))
     columnas = ["corrida", "familia", "receta", "vigente", "modelo", "modo", "fecha", "umbral", *METRICAS,
                 *[f"jamaica.{m}" for m in METRICAS if f"jamaica.{m}" in tabla]]
     return tabla[[c for c in columnas if c in tabla]].reset_index(drop=True)
@@ -91,6 +94,10 @@ def _calcular(y: np.ndarray, prob: np.ndarray, pred: np.ndarray) -> dict:
         rangos = rankdata(prob, axis=-1)
         auc = ((rangos * y).sum(-1) - n_con * (n_con + 1) / 2) / (n_con * n_sin)
     return {
+        "accuracy": (tp + tn) / y.shape[-1],
+        "precision": np.divide(tp, tp + fp, out=np.zeros_like(tp, dtype=float), where=tp + fp > 0),
+        "recall": recall_con,
+        "f1": f1_con,
         "f1_macro": (f1_con + f1_sin) / 2,
         "balanced_accuracy": np.nanmean(np.stack([recall_con, recall_sin]), axis=0),
         "recall_sin_paneles": recall_sin,
@@ -129,6 +136,8 @@ def diferencias(predicciones: pd.DataFrame, corridas: list[str], referencia: str
     `clara` es True cuando el intervalo no incluye el 0: con estos tamaños, solo esas diferencias se pueden
     afirmar. Las demás pueden ser ruido.
     """
+    if metrica not in (*METRICAS, "accuracy", "precision", "recall", "f1"):
+        raise ValueError(f"Métrica desconocida: {metrica}")
     if referencia not in corridas:
         corridas = [referencia, *corridas]
     y, prob, pred = _matrices(predicciones, corridas, solo_jamaica)
