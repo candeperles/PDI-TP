@@ -81,7 +81,7 @@ class ComparacionTest(unittest.TestCase):
             "modelo": ["mobilenetv2", "mobilenetv2", "yolov8n", "baseline"],
             "modo": ["imagenet_congelado", "imagenet_fine_tuning", "coco_completo", "siempre_con_paneles"],
             "completa": [True, True, True, True], "fecha": None, "umbral": [0.5, 0.5, 0.25, 0.5],
-            "params.receta": ["comun_v2", None, {"imgsz": 256}, "comun_v2"],
+            "params.receta": ["comun_v2", None, {"imgsz": 640}, "comun_v2"],
             **{m: 0.5 for m in comparacion.METRICAS}})
         tabla = comparacion.corridas_vigentes(corridas).set_index("corrida")
         self.assertEqual(tabla.vigente.to_dict(), {"mobilenetv2/imagenet_congelado": True,
@@ -91,6 +91,35 @@ class ComparacionTest(unittest.TestCase):
         self.assertEqual(tabla.loc["yolov8n/coco_completo", "familia"], "detector")
         self.assertTrue(pd.isna(tabla.loc["yolov8n/coco_completo", "receta"]))
         self.assertTrue(pd.isna(tabla.loc["baseline/siempre_con_paneles", "receta"]))
+
+    def test_excluye_controles_y_detectores_sin_resolucion(self):
+        corridas = pd.DataFrame([
+            dict(modelo="yolov8n", modo="control", completa=True, **{"params.receta": {"imgsz": 256}}),
+            dict(modelo="yolo11n", modo="actual", completa=True, **{"params.receta": {"imgsz": 640}}),
+            dict(modelo="yolov8n", modo="sin_lado", completa=True, **{"params.receta": {}}),
+            dict(modelo="yolov8n", modo="sin_receta", completa=True),
+            dict(modelo="mobilenetv2", modo="sin_aug", completa=True, **{"params.receta": "variables_v1"}),
+            dict(modelo="yolov8n", modo="incompleto", completa=False, **{"params.receta": {"imgsz": 640}}),
+        ])
+        tabla = comparacion.corridas_vigentes(corridas).set_index("corrida")
+        self.assertEqual(tabla.index[tabla.vigente].tolist(), ["yolo11n/actual"])
+        self.assertNotIn("yolov8n/incompleto", tabla.index)
+        sin_receta = comparacion.corridas_vigentes(corridas.drop(columns="params.receta"))
+        self.assertFalse(sin_receta.vigente.any())
+
+    def test_diferencias_admite_metricas_del_estudio(self):
+        from sklearn.metrics import accuracy_score, precision_score
+
+        pred = (self.mala >= 0.5).astype(int)
+        esperadas = {"accuracy": accuracy_score(self.y, pred) - 1,
+                     "precision": precision_score(self.y, pred) - 1,
+                     "recall": recall_score(self.y, pred) - 1,
+                     "f1": f1_score(self.y, pred) - 1}
+        for metrica, esperada in esperadas.items():
+            fila = comparacion.diferencias(self.pred, ["b/malo"], "a/bueno", metrica=metrica, n=50).iloc[0]
+            self.assertAlmostEqual(fila.diferencia, esperada)
+        with self.assertRaisesRegex(ValueError, "desconocida"):
+            comparacion.diferencias(self.pred, ["b/malo"], "a/bueno", metrica="otra")
 
     def test_tabla_deteccion_lee_extra(self):
         with tempfile.TemporaryDirectory() as temporal:

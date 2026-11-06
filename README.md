@@ -79,7 +79,7 @@ entrenables salen de las arquitecturas de Keras con entrada 256×256.
 
 ## Estado de implementación
 
-Revisado contra el código de `main` el **3/11/2026**. Esta tabla describe lo implementado. El estado del
+Revisado contra el código de `main` el **6/11/2026**. Esta tabla describe lo implementado. El estado del
 entrenamiento se confirma por separado con los archivos de cada modo guardados en Drive; al actualizarlo,
 registrar la receta y la fecha de la corrida consultada.
 
@@ -96,6 +96,8 @@ registrar la receta y la fecha de la corrida consultada.
 | Detección: YOLO11n | `09_deteccion_yolo11n` | Dos modos implementados con la **misma receta de 640 px** que YOLOv8n; cambia la arquitectura y la cantidad de módulos del backbone congelados |
 | Detector como clasificador y comparación final | `10_comparacion_final` | Implementado; se puede ejecutar con las corridas disponibles, informa cuáles faltan y calcula intervalos bootstrap y diferencias pareadas sobre val y Jamaica |
 | Galería de errores | `13_galeria_errores` | Visor de imagen completa y zoom común: anotaciones y cajas predichas lado a lado, confianza/IoU, omisiones, detecciones sin correspondencia y cajas cercanas mal ajustadas; incluye decisiones de las CNN |
+| Variables de clasificación (issue #35) | `14_variables_clasificacion` | Siete variantes implementadas, selección efectiva de pesos, métricas por fuente, diferencias pareadas y curvas; **pendiente ejecutar en Colab y analizar resultados** |
+| Tamaño de entrada de YOLOv8n (issue #36) | `15_deteccion_yolov8n_256` | Control a 256 px implementado, análisis por tamaño, diferencias pareadas, ejemplos y costos; **pendiente ejecutar en Colab y analizar resultados** |
 | Informe | — | Pendiente |
 | Página interactiva para el cierre | — | Idea: un módulo que muestre cómo se generan las cajas (candidatas → filtrado → finales) y otro con la red calculando en vivo (mapas de activación capa por capa). Se arma al final, con los resultados reales |
 
@@ -151,7 +153,7 @@ modo, fecha y configuración; no inferirlo de estos antecedentes.
 ## Correr un notebook en Colab
 
 1. Abrirlo con su botón **Open in Colab** (tabla de abajo). Siempre abre la última versión de `main`.
-2. Para entrenar (`04`, `05`, `06`, `08`, `09`): *Entorno de ejecución → Cambiar tipo de entorno → T4* (GPU).
+2. Para entrenar (`04`, `05`, `06`, `08`, `09`, `14`, `15`): *Entorno de ejecución → Cambiar tipo de entorno → T4* (GPU).
    Los notebooks de datos y la comparación final no necesitan GPU.
 3. *Entorno de ejecución → Ejecutar todas*. La celda de setup clona o actualiza el repo, instala
    las dependencias que corresponden y descarga el dataset si falta. Los notebooks que entrenan montan
@@ -204,6 +206,27 @@ Como clasificadores usan umbral **0.25** sobre la máxima confianza de panel por
 detecciones). Ese puntaje no es una probabilidad calibrada. La evaluación de cajas usa confianza mínima
 0.001, NMS IoU 0.7 y hasta 300 detecciones; son parámetros distintos del umbral de clasificación.
 
+**Estudios de una variable (consigna, issues #35 y #36)**
+
+| Notebook | |
+|---|---|
+| `14_variables_clasificacion` — siete variantes de MobileNetV2: augmentation, pesos, LR y early stopping. Referencia `imagenet_finetuning/comun_v2`; guarda como `variables_v1`, fuera de la comparación de arquitecturas | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/14_variables_clasificacion.ipynb) |
+| `15_deteccion_yolov8n_256` — control de entrada 256 frente a 640, mismo entrenamiento COCO completo. Guarda `coco_completo_256`; compara detección, clasificación, recall por tamaño, costos y ejemplos reales | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/15_deteccion_yolov8n_256.ipynb) |
+
+Usan sesiones separadas de Colab con T4 (14: TensorFlow; 15: PyTorch). Antes de entrenar,
+verifican que la referencia completa en Drive tenga la receta esperada. No modifican los notebooks 04/08
+ni reentrenan las referencias. `REPETIR=False` conserva modos completos con la misma configuración;
+`True` archiva. Un modo incompleto del 14 comienza otra vez; el 15 retoma `last.pt` como el 08.
+Para analizar sin GPU, poner `ENTRENAR=False` antes del setup (`MEDIR_INFERENCIA=False` en 15).
+El análisis no escribe resultados; estos dos notebooks mantienen permiso de entrenamiento al montar Drive.
+
+**Todavía no hay resultados de estos estudios verificados:** falta ejecutar las variantes y registrar
+fecha, commit y entorno en sus issues. Val selecciona checkpoints y también reporta; Jamaica tiene 23 imágenes.
+Las diferencias usan bootstrap pareado por imagen: un intervalo que incluye cero no acredita una mejora.
+El recall por tamaño no reemplaza el mAP; el notebook 15 no calcula un intervalo de mAP. La inferencia se
+mide opcionalmente en la misma T4, batch 1, FP32, con calentamiento y sincronización de CUDA.
+No cambiar `comun_v2` sin acuerdo en #15.
+
 **Comparación final (consigna)**
 
 | Notebook | |
@@ -214,9 +237,8 @@ detecciones). Ese puntaje no es una probabilidad calibrada. La evaluación de ca
 
 No necesita GPU. Correrlo cada vez que haya corridas nuevas: incluye las CNN completas con
 `params.receta = "comun_v2"`, los detectores completos y el baseline disponible. Las CNN de otra receta
-se listan, pero se excluyen de la comparación. **El filtro de receta se aplica solo a las CNN:** el notebook
-no excluye automáticamente detectores entrenados a 256 px; revisar su configuración y archivar esas
-corridas si se reemplazan por las de 640 px.
+se listan, pero se excluyen de la comparación. **Los detectores requieren `params.receta.imgsz = 640`:** los controles a 256 px y las corridas
+sin resolución registrada se listan, pero quedan excluidos automáticamente de la comparación final.
 
 Ordena val por F1 macro y Jamaica por balanced accuracy, con AUC como desempate. Muestra también recall
 sin paneles, AUC e intervalos del 95 %. Para comparar CNN y detectores, mirar especialmente el AUC porque

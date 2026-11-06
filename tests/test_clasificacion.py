@@ -45,6 +45,26 @@ class ClasificacionTest(unittest.TestCase):
         self.assertEqual(split.fuente("kingston_123_456_7"), "kingston")
         self.assertEqual(split.fuente("kingston2_123_456_7"), "kingston2")
 
+    def test_seleccion_de_pesos_respeta_estrategia_y_orden(self):
+        fuentes = ["a", "b", "a", "a"]
+        y = [1, 0, 1, 1]
+        np.testing.assert_array_equal(clf.elegir_pesos_muestra(fuentes, y, None), [1, 1, 1, 1])
+        np.testing.assert_allclose(clf.elegir_pesos_muestra(fuentes, y, "clase"), [2/3, 2, 2/3, 2/3])
+        np.testing.assert_allclose(clf.elegir_pesos_muestra(fuentes, y, "igual_masa_por_fuente_x_clase"),
+                                   clf.pesos_muestra_fuente_clase(fuentes, y))
+        # La estrategia por fuente distingue fuentes de una misma clase.
+        pesos = clf.elegir_pesos_muestra(["a", "b", "b", "c"], [1, 1, 1, 0],
+                                       "igual_masa_por_fuente_x_clase")
+        np.testing.assert_allclose(pesos, [1, 0.5, 0.5, 2])
+
+    def test_seleccion_pesos_rechaza_estrategia_y_datos_invalidos(self):
+        with self.assertRaisesRegex(ValueError, "desconocida"):
+            clf.elegir_pesos_muestra(["a", "b"], [0, 1], "otra")
+        for fuentes, y in [([], []), (["a"], [0, 1]), (["a"], [0.5]),
+                           (["a"], [[1]]), (["a"], [2])]:
+            with self.subTest(fuentes=fuentes, y=y), self.assertRaises(ValueError):
+                clf.elegir_pesos_muestra(fuentes, y, None)
+
     def test_error_nuevo_impide_preparar(self):
         informe = SimpleNamespace(
             incidencias=pd.DataFrame([dict(nivel="error", archivo="otro.png", linea=1,
