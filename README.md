@@ -12,7 +12,7 @@ dónde hay generación propia. El mismo dataset se resuelve de dos maneras y se 
 
 1. **Clasificación**: ¿la imagen tiene paneles? (sí / no). Redes de Keras (MobileNetV2, EfficientNetB0 y
    ResNet50), comparando pesos de ImageNet contra aleatorios y extractor congelado contra fine-tuning.
-2. **Detección**: ¿dónde está cada panel? YOLOv8n y YOLO11n, entrenando toda la red
+2. **Detección**: ¿dónde está cada panel? YOLOv8n y YOLO11n (más YOLO26n, opcional), entrenando toda la red
    contra congelar una parte.
 3. **Comparación**: el detector también se usa como clasificador (si detecta al menos un panel, la imagen
    "tiene paneles") y se compara con los clasificadores sobre las mismas imágenes de validación.
@@ -94,6 +94,7 @@ registrar la receta y la fecha de la corrida consultada.
 | Marca de agua de Google Maps (issue #7) | `11_marca_de_agua`, `12_marca_de_agua_efecto` | **Diagnóstico listo en `12`, falta correrlo** para las CNN y los YOLO: mide si los modelos actuales usan la marca, antes de decidir si hay que neutralizarla. **Ubicada:** aparece en 49 de las 172 imágenes de Jamaica y en ninguna de las otras fuentes; ocupa desde la fila 222 para abajo (barra de atribución y logo). En todo el dataset, "marca → sin paneles" acierta el 63 % contra el 13 % sin marca, porque solo aparece en Jamaica. **Falta:** elegir entre tapar esa franja en todas las imágenes o pegar marcas falsas como augmentation, y medir el efecto en Jamaica |
 | Detección: YOLOv8n | `08_deteccion_yolov8n` | Dos modos implementados con entrada de **640 px**, evaluación en val/Jamaica y salida como clasificador |
 | Detección: YOLO11n | `09_deteccion_yolo11n` | Dos modos implementados con la **misma receta de 640 px** que YOLOv8n; cambia la arquitectura y la cantidad de módulos del backbone congelados |
+| Detección: YOLO26n (opcional, issue #37) | `16_deteccion_yolo26n` | Dos modos implementados con la **misma receta de 640 px**, en un entorno propio (`requirements-yolo26.txt`). **Falta entrenar** en Colab |
 | Detector como clasificador y comparación final | `10_comparacion_final` | Implementado; se puede ejecutar con las corridas disponibles, informa cuáles faltan y calcula intervalos bootstrap y diferencias pareadas sobre val y Jamaica |
 | Galería de errores | `13_galeria_errores` | Visor de imagen completa y zoom común: anotaciones y cajas predichas lado a lado, confianza/IoU, omisiones, detecciones sin correspondencia y cajas cercanas mal ajustadas; incluye decisiones de las CNN |
 | Informe | — | Pendiente |
@@ -101,7 +102,7 @@ registrar la receta y la fecha de la corrida consultada.
 
 **Cómo confirmar las corridas actuales:** abrir `10_comparacion_final` y revisar la tabla de corridas,
 fechas, receta y modos faltantes. Se esperan **9 modos de clasificación y 4 de detección**, más el baseline
-como referencia. Una corrida completa incluye pesos, `config.json`, `metricas.json` y
+como referencia; los 2 modos de YOLO26n son opcionales y, si están, entran en la comparación. Una corrida completa incluye pesos, `config.json`, `metricas.json` y
 `predicciones_val.csv` sobre las 162 imágenes de val; el baseline no necesita pesos.
 
 Los registros históricos no equivalen a la receta actual: las métricas de Jamaica del 27/10 en
@@ -160,7 +161,7 @@ modo, fecha y configuración; no inferirlo de estos antecedentes.
    a correr desde el setup.
 
 Usar sesiones separadas para clasificación (`requirements-training.txt`, TensorFlow) y detección
-(`requirements-detection.txt`, PyTorch/Ultralytics). No mezclar esos entornos con `requirements.txt`
+(`requirements-detection.txt`, PyTorch/Ultralytics; YOLO26n usa `requirements-yolo26.txt`). No mezclar esos entornos con `requirements.txt`
 (exploración). Antes de entrenar, revisar la receta de las corridas existentes: `REPETIR = True` archiva
 las anteriores y vuelve a entrenar; una vez iniciada la receta correcta, volver a `False` para conservar
 los modos completos. Ver [Repetir o recuperar un entrenamiento](#repetir-o-recuperar-un-entrenamiento).
@@ -192,9 +193,15 @@ No hay que poner ningún nombre: los resultados se guardan por modelo y modo, no
 |---|---|
 | `08_deteccion_yolov8n` — YOLOv8n: red completa y backbone congelado, mAP en val/Jamaica y detector como clasificador | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/08_deteccion_yolov8n.ipynb) |
 | `09_deteccion_yolo11n` — YOLO11n: lo mismo que el 08, con la misma receta (640 px) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/09_deteccion_yolo11n.ipynb) |
+| `16_deteccion_yolo26n` — YOLO26n (opcional en la consigna): lo mismo que el 09, con su propio entorno | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/16_deteccion_yolo26n.ipynb) |
 
-Ambos usan una sesión nueva de Colab con GPU T4 y `requirements-detection.txt` (PyTorch), el dataset
-existente y el split fijo. La entrada es **640 px en ambos**: Ultralytics agranda las imágenes originales
+**YOLO26n no usa el entorno de abajo:** instala `requirements-yolo26.txt` (Ultralytics 8.4.184), porque la
+versión del 08 y el 09 no incluye YOLO26. Sus `modelo.pt` **no se abren con 8.3.221**: los carga sin error,
+pero predice otras cajas. Por eso `12_marca_de_agua_efecto` no sirve hoy para YOLO26n. Diferencias de la
+receta: [detección con YOLOv8n](docs/deteccion_yolov8n.md#yolo26n).
+
+El 08 y el 09 usan una sesión nueva de Colab con GPU T4 y `requirements-detection.txt` (PyTorch), el dataset
+existente y el split fijo. La entrada es **640 px en los tres**: Ultralytics agranda las imágenes originales
 de 256×256. Comparten batch 16, hasta 50 épocas, paciencia 10, AdamW y LR inicial 0.001; la receta completa
 está en `RECETA` y se guarda en `config.json`. Guía: [detección con YOLOv8n](docs/deteccion_yolov8n.md);
 vale también para YOLO11n, salvo que congelar el backbone es `freeze=11` (módulos 0–10) en vez de
@@ -265,6 +272,9 @@ Mi unidad/PDI-TP/
 │   ├── yolo11n/
 │   │   ├── coco_completo/
 │   │   └── coco_backbone_congelado/
+│   ├── yolo26n/                        ← opcional
+│   │   ├── coco_completo/
+│   │   └── coco_backbone_congelado/
 │   └── baseline/siempre_con_paneles/
 ├── analisis/                           ← tablas auxiliares de notebooks que entrenan (p. ej. manifiesto de ResNet50)
 └── cache/                              ← intermedios reutilizables (features, folds); no son resultados
@@ -305,7 +315,7 @@ Si se corta Colab, la recuperación depende del notebook:
 
 - **ResNet50:** continúa la etapa desde `ultimo.keras`, con optimizador e historial; conserva
   `mejor.keras` para evaluar. Si los archivos no coinciden, se detiene para que se revisen.
-- **YOLOv8n y YOLO11n:** reanudan desde `entrenamiento/weights/last.pt`; si terminó el entrenamiento,
+- **YOLOv8n, YOLO11n y YOLO26n:** reanudan desde `entrenamiento/weights/last.pt`; si terminó el entrenamiento,
   recuperan `best.pt` para completar la evaluación. Rechazan una configuración distinta al reanudar.
 - **MobileNetV2 y EfficientNetB0:** conservan y saltean los modos completos, pero **no reanudan un modo
   incompleto desde la última época**: al ejecutarlo otra vez, ese modo comienza de nuevo. EfficientNet
@@ -418,7 +428,7 @@ sus cambios se pierden al unir. Si dos personas tienen que tocar el mismo notebo
   `resultados.guardar_corrida(...)` y sumarlo a la tabla de este README con su botón de Colab
   (`https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/<ruta del notebook>`).
   Si entrena con TensorFlow, instalar `requirements-training.txt`; si es un detector de Ultralytics,
-  `requirements-detection.txt`. Usar sesiones separadas del entorno de exploración (`requirements.txt`).
+  `requirements-detection.txt` (YOLO26n: `requirements-yolo26.txt`). Usar sesiones separadas del entorno de exploración (`requirements.txt`).
 - **Código que usan varios notebooks**: va en `pdi_tp/`. Si se cambia, avisar: lo reciben todos en el
   próximo setup.
 - Mensajes de commit en castellano, en infinitivo y diciendo qué cambia ("Agregar ...", "Corregir ...").

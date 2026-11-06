@@ -1,0 +1,9 @@
+# Solo para notebooks/16_deteccion_yolo26n: YOLO26 no está en la Ultralytics de requirements-detection.txt.
+# No unificar: el 08 y el 09 exigen 8.3.221 y sus corridas se hicieron con esa versión.
+# Los modelo.pt de yolo26n se abren con este entorno: 8.3.221 los carga, pero predice otras cajas.
+ultralytics==8.4.184
+numpy>=1.26,<2.3
+pandas>=2.2,<3
+Pillow>=11,<13
+matplotlib>=3.9,<4
+scikit-learn>=1.5,<2
