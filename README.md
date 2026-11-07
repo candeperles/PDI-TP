@@ -100,6 +100,7 @@ registrar la receta y la fecha de la corrida consultada.
 | Variables de clasificación (issue #35) | `14_variables_clasificacion` | Siete variantes implementadas, selección efectiva de pesos, métricas por fuente, diferencias pareadas y curvas; **pendiente ejecutar en Colab y analizar resultados** |
 | Tamaño de entrada de YOLOv8n (issue #36) | `15_deteccion_yolov8n_256` | Control a 256 px implementado, análisis por tamaño, diferencias pareadas, ejemplos y costos; **pendiente ejecutar en Colab y analizar resultados** |
 | Evaluación en el test de Kingston | `17_evaluacion_test` | Implementada; test etiquetado (200 imágenes) en Drive, `test_kingston/`. Se corre una vez, al final, con los modelos elegidos en val |
+| Validación cruzada de Jamaica (issue #43) | `18_validacion_cruzada_jamaica` | Folds espaciales, entrenamiento de finalistas y análisis fuera de fold implementados. N06 revisado por el equipo como sin paneles; **pendiente ejecutar en Colab** y registrar resultados |
 | Informe | — | Pendiente |
 | Página interactiva para el cierre | — | Idea: un módulo que muestre cómo se generan las cajas (candidatas → filtrado → finales) y otro con la red calculando en vivo (mapas de activación capa por capa). Se arma al final, con los resultados reales |
 
@@ -134,8 +135,8 @@ modo, fecha y configuración; no inferirlo de estos antecedentes.
   el repo: el repo es público y son capturas de Google Maps. Se evalúa con `17_evaluacion_test`, **una sola vez y
   al final**: no elegir modelos, umbrales ni recetas mirando el test.
 - **Jamaica en val:** Jamaica tiene 172 imágenes: 149 en train y **23 en val** (11 con paneles y 12 sin).
-  Reportar ese subconjunto además del val completo. N06/N16 siguen pendientes de segunda revisión; conservar la
-  referencia provisional y los originales.
+  Reportar ese subconjunto además del val completo. El equipo resolvió N06 como sin paneles el 06/11/2026;
+  N16 sigue pendiente de segunda revisión y conserva su referencia provisional. Los originales se mantienen.
 
 ## Puesta en marcha (una sola vez por persona)
 
@@ -218,12 +219,13 @@ Como clasificadores usan umbral **0.25** sobre la máxima confianza de panel por
 detecciones). Ese puntaje no es una probabilidad calibrada. La evaluación de cajas usa confianza mínima
 0.001, NMS IoU 0.7 y hasta 300 detecciones; son parámetros distintos del umbral de clasificación.
 
-**Estudios de una variable (consigna, issues #35 y #36)**
+**Estudios adicionales (issues #35, #36 y #43)**
 
 | Notebook | |
 |---|---|
 | `14_variables_clasificacion` — siete variantes de MobileNetV2: augmentation, pesos, LR y early stopping. Referencia `imagenet_finetuning/comun_v2`; guarda como `variables_v1`, fuera de la comparación de arquitecturas | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/14_variables_clasificacion.ipynb) |
 | `15_deteccion_yolov8n_256` — control de entrada 256 frente a 640, mismo entrenamiento COCO completo. Guarda `coco_completo_256`; compara detección, clasificación, recall por tamaño, costos y ejemplos reales | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/15_deteccion_yolov8n_256.ipynb) |
+| `18_validacion_cruzada_jamaica` — cinco folds por zona sobre Jamaica: ResNet50, YOLO11n, YOLO26n y MobileNetV2 opcional; checkpoints en val no jamaicano, análisis pareado y umbral. Guarda fuera de las corridas comunes | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/18_validacion_cruzada_jamaica.ipynb) |
 
 Usan sesiones separadas de Colab con T4 (14: TensorFlow; 15: PyTorch). Antes de entrenar,
 verifican que la referencia completa en Drive tenga la receta esperada. No modifican los notebooks 04/08
@@ -231,6 +233,16 @@ ni reentrenan las referencias. `REPETIR=False` conserva modos completos con la m
 `True` archiva. Un modo incompleto del 14 comienza otra vez; el 15 retoma `last.pt` como el 08.
 Para analizar sin GPU, poner `ENTRENAR=False` antes del setup (`MEDIR_INFERENCIA=False` en 15).
 El análisis no escribe resultados; estos dos notebooks mantienen permiso de entrenamiento al montar Drive.
+
+El 18 corre una arquitectura por sesión T4: ResNet50/MobileNetV2 con `requirements-training.txt`,
+YOLO11n con `requirements-detection.txt` o YOLO26n con `requirements-yolo26.txt`. Usa la receta de la
+referencia guardada, pero empieza cada fold desde ImageNet/COCO. `ENTRENAR=False` abre Drive en solo
+lectura. Los checkpoints se eligen con val no jamaicano; el fold de Jamaica queda solo para evaluación.
+Guarda en `analisis/cv_jamaica/` y exige cinco folds completos y compatibles para comparar un modelo.
+Si Colab se corta, seleccionar solo el fold incompleto y `REPETIR=True` para archivarlo y entrenarlo
+otra vez desde el principio; volver después a `False`. **N06 fue revisado por el equipo como sin paneles**;
+conserva su etiqueta vacía y ya puede participar en los folds. Detalles y estado en
+[evaluacion_jamaica.md](docs/evaluacion_jamaica.md). Todavía no hay resultados de esta CV.
 
 Si el 14 falla al guardar después de entrenar, **no reiniciar la sesión ni poner `REPETIR=True`**:
 conserva el modelo, las predicciones y el historial en `PENDIENTES_GUARDADO` hasta completar el guardado.
@@ -273,8 +285,8 @@ ese optimismo. Con solo 23 imágenes de Jamaica, diferencias pequeñas pueden se
 `predicciones_val.csv` de las corridas completas; no necesita cargar pesos ni volver a hacer inferencia.
 Muestra la misma imagen y el mismo zoom para la referencia y hasta dos detectores. Las cajas llevan
 identificador, confianza y, si hay correspondencia, IoU. Se pueden ver omisiones, falsas detecciones,
-duplicados y cajas cercanas con IoU insuficiente, además de errores de presencia de las CNN. N06/N16
-quedan ocultos por defecto por su referencia provisional. Las CNN requieren `comun_v2` y los YOLO, 640 px;
+duplicados y cajas cercanas con IoU insuficiente, además de errores de presencia de las CNN. Los casos
+pendientes (actualmente N16) quedan ocultos por defecto por su referencia provisional. Las CNN requieren `comun_v2` y los YOLO, 640 px;
 una opción permite inspeccionar detectores históricos con otra resolución, sin tratarlos como una
 comparación de arquitecturas. Si falta una exportación de cajas, se informa; no se interpreta como cero
 detecciones. Las cuentas por caja son diagnósticas y no reemplazan el mAP.

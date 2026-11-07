@@ -48,6 +48,23 @@ No desactivar, aflojar ni esquivar el verificador. Si algo legítimo no entra en
 
 No agregar excepciones al verificador sin acuerdo del equipo.
 
+### Validación cruzada de Jamaica (issue #43)
+
+Flujo adicional autorizado para `notebooks/18_validacion_cruzada_jamaica.ipynb`:
+usa `split.folds_jamaica`, `cv_jamaica.preparar_fold`, `fold_completo` y `guardar_fold`.
+Guarda en `analisis/cv_jamaica/<modelo>/<modo>/fold_N/` los pesos, la configuración con receta,
+referencias y commit, las particiones, las mejores épocas y las predicciones fuera de fold
+(más las cajas de los detectores). No usa `guardar_corrida` ni escribe en `resultados/`.
+`cv_jamaica.cargar_predicciones` solo compara modelos con los cinco folds íntegros y compatibles.
+Los folds repetidos se archivan; nunca se borran. El verificador controla este protocolo específico
+con metadata `pdi_tp.flujo: cv_jamaica_v1`; las reglas de las corridas comunes siguen vigentes.
+Las CNN pueden reanudar épocas con dos checkpoints alternos verificados. La versión de entrenamiento
+permite conservar los folds CNN del commit anterior documentado; receta, datos y entorno deben coincidir.
+Registrar los commits de ejecución y cambiar `VERSION_CNN` si cambia el entrenamiento.
+En modo análisis, `entorno.preparar(solo_lectura=not ENTRENAR)` monta Drive sin permitir guardados.
+El fold evaluado no elige checkpoints. Las etiquetas pendientes de Jamaica deben resolverse antes
+de incorporarlas al entrenamiento de CV; no se confirman automáticamente.
+
 ## Datos y evaluación
 
 - El dataset no está en git (`data/` ignorado; se baja con `scripts/download_data.py`). **No modificar los
@@ -55,7 +72,7 @@ No agregar excepciones al verificador sin acuerdo del equipo.
 - **El split es fijo** (`splits/train.txt` / `val.txt`, 738/162, agrupado por zona espacial). No
   regenerarlo ni usar otra división sin acuerdo explícito del equipo.
 - Una sola clase de detección, `panel` (los IDs 0/1/2 de `solarpanels_hd` son confianza de anotación).
-  N06/N16 están pendientes de revisión: ver `docs/criterios_datos.md`.
+  N06 fue revisado por el equipo como sin paneles; N16 sigue pendiente: ver `docs/criterios_datos.md`.
 - Val se usa para elegir checkpoints y para reportar: decirlo siempre al mostrar resultados.
 - **No inventar ni estimar métricas.** Si algo no se corrió, decirlo. No afirmar que un modelo es mejor sin
   resultados reales del formato común.
