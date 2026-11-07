@@ -13,3 +13,5 @@ Las normas del repo están en `AGENTS.md` y valen igual para Claude Code:
 - El flujo de rama + PR de `AGENTS.md` es automático: crear la rama, subirla y abrir el PR no necesita
   confirmación (es la forma de trabajo del repo). Confirmar con el usuario antes del **merge** y antes de
   borrar o renombrar un notebook.
+- Para segundas opiniones (revisiones de código, notebooks o resultados) se puede consultar a Codex con
+  `codex exec`, en modo solo lectura: `codex exec -s read-only "<pedido>"`.
