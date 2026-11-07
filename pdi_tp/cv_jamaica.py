@@ -23,6 +23,29 @@ VERSIONES_YOLO = {"yolo11n": "8.3.221", "yolo26n": "8.4.184"}
 COLUMNAS_CAJAS = ["archivo", "clase", "confianza", "xc", "yc", "w", "h"]
 CONJUNTOS = ("train", "validacion", "evaluacion")
 PROTOCOLO = "cv_jamaica_v1"
+# Cambiar esta versión si cambia el entrenamiento, no por ajustes de persistencia.
+VERSION_CNN = "jamaica_cnn_comun_v2_v1"
+COMMIT_CNN_ANTERIOR = "c1ffe523d2b6233a707cd7fbcd34f1e0c21ddbc4"
+
+
+def _firma_config(config):
+    """Conserva la procedencia; permite el cambio de guardado de las CNN del #43.
+
+    Solo el commit anterior conocido comparte esta versión. Los demás formatos
+    antiguos y los detectores siguen requiriendo el mismo commit exacto.
+    Receta, referencias, entorno y datos siempre deben coincidir íntegramente.
+    """
+    version = config.get("version_entrenamiento")
+    if config["modelo"] not in VERSIONES_YOLO and (
+            version == VERSION_CNN or (version is None and config["commit"] == COMMIT_CNN_ANTERIOR)):
+        return dict(version_entrenamiento=VERSION_CNN, params=config["params"])
+    return dict(commit=config["commit"], version_entrenamiento=version, params=config["params"])
+
+
+def _compatible(guardada, solicitada):
+    identidad = ("protocolo", "modelo", "modo", "fold", "huella_fold")
+    return (all(guardada.get(k) == solicitada.get(k) for k in identidad)
+            and _firma_config(guardada) == _firma_config(solicitada))
 
 
 def _json(valor):
@@ -152,20 +175,32 @@ def _solicitud(rutas, modelo, modo, fold, params):
     config = dict(protocolo=PROTOCOLO, modelo=modelo, modo=modo, fold=fold["fold"],
         commit=commit, params=params,
         huella_fold=hashlib.sha256(manifiesto.to_csv(index=False).encode("utf-8")).hexdigest())
+    if modelo not in VERSIONES_YOLO:
+        config["version_entrenamiento"] = VERSION_CNN
     # Fuerza un JSON finito antes de crear carpetas; no serializa silenciosamente objetos como texto.
     return json.loads(_json(config)), manifiesto
 
 
-def preparar_fold(rutas, modelo, modo, fold, params, *, reiniciar=False):
+def preparar_fold(rutas, modelo, modo, fold, params, *, reiniciar=False, reanudar=False):
     """Crea solo el fold que se va a entrenar; archiva al repetir, sin borrados.
 
-    Los folds completos se saltean con fold_completo. Una interrupción exige
-    repetir únicamente ese fold: no se pisa ni se reutiliza un entrenamiento parcial.
+    Las CNN pueden retomar checkpoints compatibles. Un parcial anterior a esa
+    función se archiva automáticamente, conservando todos sus archivos.
     """
     resultados._exigir_escritura(rutas)
     config, manifiesto = _solicitud(rutas, modelo, modo, fold, params)
     carpeta = ruta_fold(rutas, modelo, modo, fold["fold"])
     if carpeta.exists() and any(carpeta.iterdir()):
+        if reanudar and not reiniciar and modelo not in VERSIONES_YOLO:
+            guardada = json.loads((carpeta / "config.json").read_text(encoding="utf-8"))
+            if not _compatible(guardada, config):
+                raise ValueError("Cambió receta, entorno, datos o versión de entrenamiento: no reanudar ese fold.")
+            if (carpeta / "completo.json").exists():
+                raise FileExistsError("El fold ya está completo; comprobar fold_completo antes de preparar.")
+            if (carpeta / "reanudacion").exists():
+                return carpeta
+            print(f"Fold {fold['fold']} sin checkpoint recuperable: se archiva el parcial y empieza de nuevo.")
+            reiniciar = True
         if not reiniciar:
             raise FileExistsError("Fold con contenido: comprobar fold_completo o archivar con REPETIR=True.")
         carpeta.rename(carpeta.with_name(f"{carpeta.name}__anterior_{datetime.now():%Y%m%d_%H%M%S_%f}"))
@@ -183,8 +218,8 @@ def _leer_fold(rutas, modelo, modo, fold, params=None):
     if (config.get("protocolo"), config.get("modelo"), config.get("modo"), config.get("fold"), config.get("huella_fold")) != (
             PROTOCOLO, modelo, modo, fold["fold"], huella):
         raise ValueError("La configuración no corresponde al fold actual.")
-    if params is not None and config != _solicitud(rutas, modelo, modo, fold, params)[0]:
-        raise ValueError("Cambió receta, entorno, datos o commit: no reutilizar ese fold.")
+    if params is not None and not _compatible(config, _solicitud(rutas, modelo, modo, fold, params)[0]):
+        raise ValueError("Cambió receta, entorno, datos o versión de entrenamiento: no reutilizar ese fold.")
     control = json.loads((carpeta / "completo.json").read_text(encoding="utf-8"))
     pesos = "modelo.pt" if modelo in VERSIONES_YOLO else "modelo.keras"
     obligatorios = {"config.json", "particiones.csv", "predicciones_oof.csv", "entrenamiento.json", pesos}
@@ -208,11 +243,16 @@ def _leer_fold(rutas, modelo, modo, fold, params=None):
     return pred.assign(modelo=modelo, modo=modo, fold=fold["fold"], umbral=u), config
 
 
-def fold_completo(rutas, modelo, modo, fold, params):
+def fold_completo(rutas, modelo, modo, fold, params, *, reanudar=False):
     carpeta = ruta_fold(rutas, modelo, modo, fold["fold"])
     if not carpeta.exists() or not any(carpeta.iterdir()):
         return False
     if not (carpeta / "completo.json").is_file():
+        if reanudar and modelo not in VERSIONES_YOLO:
+            config = json.loads((carpeta / "config.json").read_text(encoding="utf-8"))
+            if not _compatible(config, _solicitud(rutas, modelo, modo, fold, params)[0]):
+                raise ValueError("El fold incompleto tiene otra receta, entorno, datos o versión de entrenamiento.")
+            return False
         raise FileExistsError(f"Fold incompleto: seleccionar solo {fold['fold']} y usar REPETIR=True para archivarlo.")
     _leer_fold(rutas, modelo, modo, fold, params)
     return True
@@ -225,7 +265,7 @@ def guardar_fold(rutas, carpeta, modelo, modo, fold, params, probabilidad, entre
     if carpeta.resolve() != ruta_fold(rutas, modelo, modo, fold["fold"]).resolve():
         raise ValueError("Guardar solo dentro de analisis/cv_jamaica/<modelo>/<modo>/fold_N.")
     config, _ = _solicitud(rutas, modelo, modo, fold, params)
-    if json.loads((carpeta / "config.json").read_text(encoding="utf-8")) != config:
+    if not _compatible(json.loads((carpeta / "config.json").read_text(encoding="utf-8")), config):
         raise ValueError("La solicitud cambió durante el entrenamiento.")
     if (carpeta / "completo.json").exists():
         raise FileExistsError("El fold ya está completo; no se sobrescribe.")
@@ -295,7 +335,7 @@ def cargar_predicciones(rutas, folds):
                 configuraciones.append(config)
         if len(partes) != 5:
             continue
-        firmas = {_json(dict(commit=c["commit"], params=c["params"])) for c in configuraciones}
+        firmas = {_json(_firma_config(c)) for c in configuraciones}
         if len(firmas) != 1:
             raise ValueError(f"No mezclar folds de distinta receta, datos, entorno o commit: {modelo}")
         pred = pd.concat(partes, ignore_index=True)

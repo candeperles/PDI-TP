@@ -96,6 +96,8 @@ N16 no es de Jamaica y permanece en la validación no jamaicana, con su referenc
 ### Ejecutar y guardar la CV
 
 - Una arquitectura por sesión nueva de Colab: ResNet50, YOLO11n, YOLO26n y MobileNetV2 opcional.
+  Cada ejecución entrena a lo sumo un fold. Con `FOLDS = [1, 2, 3, 4, 5]` se saltean los completos
+  y se toma el primero pendiente, sin tener que recordar cuál terminó.
   Las CNN usan `requirements-training.txt`; YOLO11n usa `requirements-detection.txt` (8.3.221)
   y YOLO26n usa `requirements-yolo26.txt` (8.4.184). Las versiones efectivas se registran.
 - `ENTRENAR=False` permite analizar sin GPU y con Drive en solo lectura. Para entrenar, activar T4,
@@ -111,10 +113,24 @@ N16 no es de Jamaica y permanece en la validación no jamaicana, con su referenc
   (mejores épocas por etapa), `predicciones_oof.csv`, historiales y `completo.json` (SHA-256).
   Los detectores además guardan `cajas_oof.csv` y los argumentos efectivos. No entra en la tabla
   de corridas comunes ni se usa `resultados.guardar_corrida`.
-- Los checkpoints de entrenamiento son locales a Colab. Si se corta la sesión se pierde el progreso
-  del fold en curso, no los folds completos. Seleccionar solo ese fold y `REPETIR=True` para
-  archivar sus archivos y repetirlo desde cero; después volver a `False`. No se borran archivos.
-- La lectura exige los cinco folds completos del mismo modelo, receta, entorno, datos y commit.
+- Las CNN guardan al final de cada época en `fold_N/reanudacion/`: modelo completo con Adam,
+  mejores pesos, historial, paciencia y commits de ejecución. Dos copias alternas con SHA-256
+  permiten recuperar la anterior si una escritura se interrumpe. No se borran los checkpoints;
+  ocupan espacio adicional en Drive. Se trabaja con copias locales de los modelos.
+  Después de un corte: sesión T4 nueva, mismo modelo y `REPETIR=False`. Se recupera la última
+  época íntegra; no se repiten etapas terminadas ni se reinicia Adam o la paciencia. Si nunca
+  se creó la carpeta de checkpoints (versión anterior o corte antes del primer guardado), se archiva el parcial
+  y ese fold empieza desde ImageNet. Un checkpoint corrupto sin otra copia íntegra frena.
+  El flujo aleatorio del dataset puede cambiar al reanudar; no se promete reproducción bit a bit.
+  El tiempo acumulado cuenta las épocas guardadas, no el trabajo perdido durante un corte.
+- Los checkpoints de YOLO siguen siendo locales. Para repetir su fold interrumpido, seleccionar
+  solo ese fold y `REPETIR=True` para archivarlo; después volver a `False`. No se borran archivos.
+- La lectura exige los cinco folds completos del mismo modelo, receta, entorno, datos y versión
+  de entrenamiento. Las CNN del commit `c1ffe523d2b6233a707cd7fbcd34f1e0c21ddbc4` son compatibles
+  con `jamaica_cnn_comun_v2_v1`: solo se agregó persistencia, sin cambiar la receta. Se conserva
+  el commit original de cada fold y se registran los commits de ejecución al reanudar. Otros
+  formatos antiguos y los detectores siguen exigiendo el mismo commit exacto. Si cambia el
+  entrenamiento, debe cambiar `VERSION_CNN`; la equivalencia no autoriza cambios de receta.
   No agrega resultados parciales. Una imagen de Jamaica debe aparecer exactamente una vez; un
   archivo alterado o una configuración mezclada produce error.
 

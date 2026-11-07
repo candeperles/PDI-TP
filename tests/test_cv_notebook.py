@@ -37,32 +37,6 @@ class CvNotebookTest(unittest.TestCase):
         importaciones_directas = [ast.unparse(n) for n in arbol.body if isinstance(n, (ast.Import, ast.ImportFrom))]
         self.assertFalse(any("tensorflow" in n or "aumentacion" in n for n in importaciones_directas))
 
-    def test_restaurar_mejor_epoca_aun_si_se_agota_el_presupuesto(self):
-        class Callback:
-            pass
-        modelo = Mock()
-        estado = {"epoca": 0}
-        modelo.get_weights.side_effect = lambda: [np.array([estado["epoca"]])]
-        def entrenar(*args, **kw):
-            mejor = kw["callbacks"][0]
-            mejor.model = modelo
-            for epoca, perdida in enumerate([0.3, 0.1, 0.2]):
-                estado["epoca"] = epoca
-                mejor.on_epoch_end(epoca, {"val_loss": perdida})
-            return SimpleNamespace(history=dict(loss=[0.5, 0.3, 0.2], val_loss=[0.3, 0.1, 0.2]))
-        modelo.fit.side_effect = entrenar
-        keras = SimpleNamespace(callbacks=SimpleNamespace(Callback=Callback, EarlyStopping=Mock(), TerminateOnNaN=Mock()),
-            optimizers=SimpleNamespace(Adam=Mock()), metrics=SimpleNamespace(BinaryAccuracy=Mock()))
-        entorno = funciones({"entrenar_etapa_cnn"}, dict(keras=keras, np=np, pd=pd))
-        receta = dict(lr_cabeza=1e-3, epocas_cabeza=30, paciencia=10, loss="binary_crossentropy")
-        with tempfile.TemporaryDirectory() as tmp:
-            resultado = entorno["entrenar_etapa_cnn"](modelo, "train", "val_no_jamaica", receta, "cabeza", Path(tmp))
-        self.assertEqual(resultado["mejor_epoca"], 2)
-        self.assertEqual(resultado["epocas"], 3)
-        np.testing.assert_array_equal(modelo.set_weights.call_args.args[0][0], [1])
-        self.assertEqual(modelo.fit.call_args.kwargs["validation_data"], "val_no_jamaica")
-        keras.callbacks.EarlyStopping.assert_called_once_with(monitor="val_loss", patience=10, restore_best_weights=True)
-
     def test_fine_tuning_parte_de_su_cabeza_y_no_valida_sobre_el_fold_evaluado(self):
         class BatchNorm:
             trainable = True
@@ -72,7 +46,7 @@ class CvNotebookTest(unittest.TestCase):
         modelo.predict.return_value = np.array([[0.3], [0.9]])
         crear_ds = Mock(side_effect=lambda t, r, entrenamiento=False: t)
         etapas = []
-        def entrenar_etapa(red, train_ds, val_ds, receta, etapa, local):
+        def entrenar_etapa(k, rutas, carpeta, local, red, train_ds, val_ds, receta, etapa, **kw):
             etapas.append(etapa)
             self.assertIs(red, modelo)
             self.assertEqual(train_ds, "train_del_fold")
@@ -82,17 +56,73 @@ class CvNotebookTest(unittest.TestCase):
                 self.assertTrue(base.trainable)
                 self.assertTrue(convolucion.trainable)
                 self.assertFalse(bn.trainable)
-            return dict(epocas=1, mejor_epoca=1)
+            return red, dict(epocas=1, mejor_epoca=1, segundos=1.0), None
         keras = SimpleNamespace(backend=SimpleNamespace(clear_session=Mock()),
             utils=SimpleNamespace(set_random_seed=Mock()), layers=SimpleNamespace(BatchNormalization=BatchNorm))
         entorno = funciones({"entrenar_cnn"}, dict(keras=keras, MODELO="resnet50", dataset_cnn=crear_ds,
-            construir_cnn=Mock(return_value=(modelo, base)), entrenar_etapa_cnn=entrenar_etapa))
+            construir_cnn=Mock(return_value=(modelo, base)), rutas="rutas",
+            reanudacion_cnn=SimpleNamespace(cargar=Mock(return_value=None), entrenar_etapa=entrenar_etapa)))
         fold = dict(train="train_del_fold", validacion="val_no_jamaica", evaluacion="jamaica_afuera")
         with tempfile.TemporaryDirectory() as tmp:
-            prob, cajas, entrenamiento = entorno["entrenar_cnn"](fold, {"semilla": 42}, Path(tmp))
+            prob, cajas, entrenamiento = entorno["entrenar_cnn"](fold, {"semilla": 42}, Path(tmp), Path(tmp))
         modelo.predict.assert_called_once_with("jamaica_afuera", verbose=0)
         self.assertIsNone(cajas)
         self.assertEqual(set(entrenamiento["etapas"]), {"cabeza", "fine_tuning"})
+
+    def test_retomar_fine_tuning_no_repite_cabeza_ni_descongela_batchnorm(self):
+        class ModeloBase:
+            pass
+        base = ModeloBase()
+        modelo = Mock()
+        modelo.layers = [base]
+        modelo.predict.return_value = np.array([[0.8]])
+        cabeza = dict(epocas=3, mejor_epoca=2, segundos=2.0)
+        estado = dict(etapa="fine_tuning", etapas_anteriores={"cabeza": cabeza})
+        reanudar = SimpleNamespace(cargar=Mock(return_value=estado),
+            entrenar_etapa=Mock(return_value=(modelo, dict(segundos=4.0), None)))
+        keras = SimpleNamespace(backend=SimpleNamespace(clear_session=Mock()), Model=ModeloBase,
+            utils=SimpleNamespace(set_random_seed=Mock()), models=SimpleNamespace(load_model=Mock(return_value=modelo)))
+        crear = Mock()
+        entorno = funciones({"entrenar_cnn"}, dict(keras=keras, MODELO="resnet50", rutas="rutas",
+            dataset_cnn=lambda tabla, receta, **kw: tabla, construir_cnn=crear, reanudacion_cnn=reanudar))
+        with tempfile.TemporaryDirectory() as tmp:
+            _, _, resumen = entorno["entrenar_cnn"](
+                dict(train="train", validacion="val", evaluacion="fuera"), {"semilla": 42}, Path(tmp), Path(tmp))
+        crear.assert_not_called()
+        reanudar.entrenar_etapa.assert_called_once()
+        self.assertEqual(reanudar.entrenar_etapa.call_args.args[-1], "fine_tuning")
+        self.assertIs(reanudar.entrenar_etapa.call_args.kwargs["anterior"], estado)
+        self.assertEqual(resumen["segundos"], 6.0)
+
+    def test_bucle_salta_completos_y_entrena_solo_el_primer_pendiente(self):
+        arbol = ast.parse(CODIGO)
+        bucle = next(n for n in arbol.body if isinstance(n, ast.If) and isinstance(n.test, ast.Name)
+                     and n.test.id == "ENTRENAR"
+                     and any(isinstance(h, ast.Name) and h.id == "FOLDS" for h in ast.walk(n)))
+        with tempfile.TemporaryDirectory() as tmp:
+            carpeta = Path(tmp)
+            (carpeta / "modelo.keras").write_bytes(b"modelo")
+            (carpeta / "ultimo.keras").write_bytes(b"checkpoint local")
+            destino = carpeta / "drive"
+            destino.mkdir()
+            cv = SimpleNamespace(VERSIONES_YOLO={}, FINALISTAS={"resnet50": "imagenet_finetuning"},
+                referencia=Mock(return_value={"receta": "receta"}),
+                fold_completo=Mock(side_effect=lambda r, m, mo, f, p, **kw: f["fold"] < 3),
+                preparar_fold=Mock(return_value=destino), guardar_fold=Mock())
+            entrenar = Mock(return_value=([0.8], None, dict(segundos=2.0)))
+            entorno = dict(ENTRENAR=True, FOLDS=[1, 2, 3, 4, 5], REPETIR=False, MODELO="resnet50",
+                cv_jamaica=cv, split=SimpleNamespace(ESTRATEGIA_FOLDS_JAMAICA="estrategia"),
+                HUELLA_DATOS="huella", gpus=["T4"], rutas="rutas", repo=carpeta,
+                folds=[dict(fold=i) for i in range(1, 6)], platform=SimpleNamespace(python_version=lambda: "3"),
+                version=lambda p: "version", Path=Path, tempfile=SimpleNamespace(mkdtemp=lambda **kw: str(carpeta)),
+                time=SimpleNamespace(perf_counter=lambda: 1.0), entrenar_cnn=entrenar,
+                shutil=__import__("shutil"), gc=SimpleNamespace(collect=lambda: None))
+            exec(compile(ast.Module(body=[bucle], type_ignores=[]), "bucle", "exec"), entorno)
+            self.assertEqual([c.args[3]["fold"] for c in cv.fold_completo.call_args_list], [1, 2, 3])
+            entrenar.assert_called_once()
+            self.assertEqual(entrenar.call_args.args[0]["fold"], 3)
+            self.assertTrue((destino / "modelo.keras").is_file())
+            self.assertFalse((destino / "ultimo.keras").exists())
 
     def test_detector_entrena_con_validacion_separada_y_guarda_la_epoca_de_best(self):
         with tempfile.TemporaryDirectory() as tmp:
