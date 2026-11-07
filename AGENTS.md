@@ -50,7 +50,7 @@ No agregar excepciones al verificador sin acuerdo del equipo.
 
 ### Validación cruzada de Jamaica (issue #43)
 
-Flujo adicional autorizado para `notebooks/18_validacion_cruzada_jamaica.ipynb`:
+Flujo adicional autorizado para `notebooks/16_validacion_cruzada_jamaica.ipynb`:
 usa `split.folds_jamaica`, `cv_jamaica.preparar_fold`, `fold_completo` y `guardar_fold`.
 Guarda en `analisis/cv_jamaica/<modelo>/<modo>/fold_N/` los pesos, la configuración con receta,
 referencias y commit, las particiones, las mejores épocas y las predicciones fuera de fold

@@ -71,10 +71,10 @@ class EstudiosTest(unittest.TestCase):
 
     def test_estudios_conservan_recetas_originales_salvo_variable(self):
         espacio = {"estudios": estudios}
-        codigo = next(c for c in celdas("14_variables_clasificacion") if c.startswith("MODELO ="))
+        codigo = next(c for c in celdas("11_variables_clasificacion") if c.startswith("MODELO ="))
         exec(codigo.split("# No se puede")[0], espacio)
         original = {}
-        codigo_original = next(c for c in celdas("04_clasificacion_mobilenetv2") if c.startswith("REPETIR ="))
+        codigo_original = next(c for c in celdas("05_clasificacion_mobilenetv2") if c.startswith("REPETIR ="))
         exec(codigo_original.split("a_correr =")[0], original)
         self.assertEqual(espacio["BASE"], {**original["BASE"], "early_stopping": True})
         self.assertEqual(len(espacio["CONFIGURACIONES"]), 7)
@@ -85,7 +85,7 @@ class EstudiosTest(unittest.TestCase):
             self.assertEqual(config["receta"], "variables_v1")
         # La receta YOLO ejecutada es literalmente la del 08 salvo imgsz.
         recetas = []
-        for nombre in ("08_deteccion_yolov8n", "15_deteccion_yolov8n_256"):
+        for nombre in ("08_deteccion_yolov8n", "12_deteccion_yolov8n_256"):
             espacio_yolo = {}
             opciones = next(c for c in celdas(nombre) if "MODOS =" in c)
             exec(opciones, espacio_yolo)
@@ -102,10 +102,10 @@ class EstudiosTest(unittest.TestCase):
 
     def test_entrenamiento_aplica_pesos_y_restauracion_no_depende_de_leer_checkpoints(self):
         espacio = {"pd": pd, "np": np, "PENDIENTES_GUARDADO": {}}
-        for codigo in celdas("14_variables_clasificacion"):
+        for codigo in celdas("11_variables_clasificacion"):
             for nodo in ast.parse(codigo).body:
                 if isinstance(nodo, ast.FunctionDef):
-                    exec(compile(ast.Module(body=[nodo], type_ignores=[]), "notebook14", "exec"), espacio)
+                    exec(compile(ast.Module(body=[nodo], type_ignores=[]), "notebook11", "exec"), espacio)
         modelo = Mock()
         modelo.fit.return_value.history = {"loss": [0.4, 0.3], "val_loss": [0.2, 0.3]}
         mejor = Mock()
@@ -147,10 +147,10 @@ class EstudiosTest(unittest.TestCase):
     def test_guardado_recrea_destino_y_conserva_modelo_si_drive_falla(self):
         espacio = {"pd": pd, "np": np, "estudios": estudios, "MODELO": "mobilenetv2",
                    "REFERENCIA": "mobilenetv2/imagenet_finetuning"}
-        codigo = next(c for c in celdas("14_variables_clasificacion") if "def guardar_pendiente" in c)
+        codigo = next(c for c in celdas("11_variables_clasificacion") if "def guardar_pendiente" in c)
         arbol = ast.parse(codigo)
         funciones = [n for n in arbol.body if isinstance(n, ast.FunctionDef)]
-        exec(compile(ast.Module(body=funciones, type_ignores=[]), "notebook14", "exec"), espacio)
+        exec(compile(ast.Module(body=funciones, type_ignores=[]), "notebook11", "exec"), espacio)
         with tempfile.TemporaryDirectory() as temporal:
             raiz = Path(temporal) / "resultados"
             referencia = raiz / espacio["REFERENCIA"] / "config.json"
@@ -183,9 +183,9 @@ class EstudiosTest(unittest.TestCase):
         espacio = {"pd": pd, "np": np, "time": time, "estudios": estudios, "clasificacion": clasificacion,
                    "MODELO": "mobilenetv2", "REFERENCIA": "mobilenetv2/imagenet_finetuning",
                    "PENDIENTES_GUARDADO": {}, "REPETIR": False}
-        codigo = next(c for c in celdas("14_variables_clasificacion") if "def guardar_pendiente" in c)
+        codigo = next(c for c in celdas("11_variables_clasificacion") if "def guardar_pendiente" in c)
         funciones = [n for n in ast.parse(codigo).body if isinstance(n, ast.FunctionDef)]
-        exec(compile(ast.Module(body=funciones, type_ignores=[]), "notebook14", "exec"), espacio)
+        exec(compile(ast.Module(body=funciones, type_ignores=[]), "notebook11", "exec"), espacio)
         with tempfile.TemporaryDirectory() as temporal:
             repo = Path(temporal) / "repo"
             raiz = Path(temporal) / "drive" / "resultados"
@@ -227,9 +227,9 @@ class EstudiosTest(unittest.TestCase):
     def test_guardado_no_crea_carpeta_si_se_perdio_acceso_a_drive(self):
         espacio = {"pd": pd, "np": np, "MODELO": "mobilenetv2",
                    "REFERENCIA": "mobilenetv2/imagenet_finetuning"}
-        codigo = next(c for c in celdas("14_variables_clasificacion") if "def guardar_pendiente" in c)
+        codigo = next(c for c in celdas("11_variables_clasificacion") if "def guardar_pendiente" in c)
         funciones = [n for n in ast.parse(codigo).body if isinstance(n, ast.FunctionDef)]
-        exec(compile(ast.Module(body=funciones, type_ignores=[]), "notebook14", "exec"), espacio)
+        exec(compile(ast.Module(body=funciones, type_ignores=[]), "notebook11", "exec"), espacio)
         with tempfile.TemporaryDirectory() as temporal:
             raiz = Path(temporal) / "drive_inaccesible" / "resultados"
             modelo = Mock()

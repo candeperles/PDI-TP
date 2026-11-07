@@ -1,7 +1,7 @@
 """Validación cruzada adicional del #43; no escribe corridas del formato común.
 
 Cada fold se verifica contra el split oficial y se guarda en analisis/cv_jamaica.
-No importa TensorFlow ni PyTorch: el entrenamiento vive en el notebook 18.
+No importa TensorFlow ni PyTorch: el entrenamiento vive en el notebook 16.
 """
 import hashlib
 import json
@@ -40,7 +40,7 @@ def _sha(archivo):
 def referencia(rutas, modelo):
     """Lee la receta guardada, nunca los pesos entrenados con Jamaica.
 
-    CNN: normaliza los nombres del 04 y del 05 y exige comun_v2 completa.
+    CNN: normaliza los nombres del 05 y del 06 y exige comun_v2 completa.
     YOLO: conserva íntegra la RECETA guardada de la corrida coco_completo.
     """
     if modelo not in FINALISTAS:

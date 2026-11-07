@@ -48,7 +48,7 @@ de `PV01`, `geo` o `kingston`, cuya confianza de origen no está documentada aqu
 ## Aplicación y pendientes
 
 Los criterios se aplican ahora al manifiesto binario y los metadatos de cajas de
-`05_clasificacion_resnet50.ipynb`, sin modificar originales. El nuevo notebook
+`06_clasificacion_resnet50.ipynb`, sin modificar originales. El nuevo notebook
 `08_deteccion_yolov8n.ipynb` prepara una copia local derivada de detección al ejecutarse:
 imágenes RGB, clase única 0 (`panel`), etiquetas vacías para negativos y exclusión solo
 de Z01/línea 1. Conserva las cajas pequeñas y exporta la clase/confianza original por caja.

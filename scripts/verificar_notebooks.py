@@ -10,7 +10,7 @@ Normas:
    pdi_tp.entorno, y prohibidas las formas viejas de guardar resultados.
 4. Todo notebook que entrena un modelo guarda con `resultados.guardar_corrida(...)`
    (carpeta resultados/<modelo>/<modo>/ con pesos, métricas y predicción contra el real).
-   El notebook 18 tiene el protocolo adicional cv_jamaica_v1 acordado para el #43:
+   El notebook 16 tiene el protocolo adicional cv_jamaica_v1 acordado para el #43:
    pesos, particiones y predicciones fuera de fold en analisis/cv_jamaica, con integridad y tests.
    Los que no entrenan no montan Drive (`entorno.preparar(usar_drive=False)`): solo los modelos crean
    carpetas en la carpeta compartida. Excepción: los que solo leen resultados del equipo (comparación
@@ -26,8 +26,8 @@ from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
 COLAB = "https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/"
-# Flujo adicional acordado para el #43: solo el notebook 18 puede usarlo.
-FLUJOS_CV = {"notebooks/18_validacion_cruzada_jamaica.ipynb": "cv_jamaica_v1"}
+# Flujo adicional acordado para el #43: solo el notebook 16 puede usarlo.
+FLUJOS_CV = {"notebooks/16_validacion_cruzada_jamaica.ipynb": "cv_jamaica_v1"}
 
 PROHIBIDOS = {
     "INTEGRANTE": "ya no se pide el nombre de quien corre: borrar INTEGRANTE y llamar entorno.preparar()",

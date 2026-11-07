@@ -30,7 +30,7 @@ simulado y su referencia, no un resultado de evaluación.
 
 ## Revisar errores reales
 
-Usar [`13_galeria_errores.ipynb`](../../notebooks/13_galeria_errores.ipynb) en
-[Colab](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/13_galeria_errores.ipynb).
+Usar [`14_galeria_errores.ipynb`](../../notebooks/14_galeria_errores.ipynb) en
+[Colab](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/14_galeria_errores.ipynb).
 Ese notebook sigue disponible: lee las corridas guardadas en Drive en solo lectura, sin volver a
 entrenar ni hacer inferencia. Val también se usa para elegir checkpoints y para reportar resultados.

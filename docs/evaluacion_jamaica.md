@@ -82,7 +82,7 @@ El val común se usó para elegir los finalistas y también para reportar; la CV
 por completo ese sesgo de selección.
 
 **Estado:** particiones, entrenamiento y análisis implementados en
-`18_validacion_cruzada_jamaica`. El flujo de guardado específico fue autorizado y se incorporó al
+`16_validacion_cruzada_jamaica`. El flujo de guardado específico fue autorizado y se incorporó al
 verificador con controles propios; no cambia las reglas de las corridas comunes. Todavía no se
 ejecutaron los entrenamientos de CV y no hay predicciones fuera de fold, resultados ni cambio de
 modelo o umbral. La revisión de N06 ya fue resuelta por el equipo y se puede preparar la CV.
@@ -149,7 +149,7 @@ umbral para Kingston. `pdi_tp/umbral.py` elige el umbral para Jamaica y mide si 
   se deja afuera un grupo espacial por vez, se elige el umbral con el resto y se aplica al grupo que quedó
   afuera (columnas `*_cv`). El umbral para el test (`umbral`) se elige con todas las imágenes.
 - **Dónde se ve:** `umbral.tabla_jamaica(resultados.cargar_predicciones(rutas))` da una fila por modelo/modo
-  de todo el equipo. La sección *Kingston* del notebook `04_clasificacion_mobilenetv2` la muestra.
+  de todo el equipo. La sección *Kingston* del notebook `05_clasificacion_mobilenetv2` la muestra.
 - **No cambia las corridas:** el umbral guardado en `metricas.json` sigue siendo 0.5. Es una evaluación
   adicional.
 

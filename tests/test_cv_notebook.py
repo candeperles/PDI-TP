@@ -1,4 +1,4 @@
-"""Controles del notebook 18 y sus etapas, con dobles de Keras en CPU."""
+"""Controles del notebook 16 y sus etapas, con dobles de Keras en CPU."""
 import ast
 import json
 import tempfile
@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 
 RAIZ = Path(__file__).resolve().parents[1]
-NB = json.loads((RAIZ / "notebooks/18_validacion_cruzada_jamaica.ipynb").read_text(encoding="utf-8"))
+NB = json.loads((RAIZ / "notebooks/16_validacion_cruzada_jamaica.ipynb").read_text(encoding="utf-8"))
 CODIGO = "\n\n".join("".join(c["source"]) for c in NB["cells"] if c["cell_type"] == "code")
 
 

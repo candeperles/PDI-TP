@@ -13,7 +13,7 @@ import numpy as np
 import pandas as pd
 
 
-NOTEBOOK = Path(__file__).resolve().parents[1] / 'notebooks' / '06_clasificacion_efficientnet.ipynb'
+NOTEBOOK = Path(__file__).resolve().parents[1] / 'notebooks' / '07_clasificacion_efficientnet.ipynb'
 
 
 def cargar_funciones():
