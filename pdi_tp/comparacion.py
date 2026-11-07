@@ -112,8 +112,11 @@ def _remuestreos(y, prob, pred, n: int, semilla: int):
 
 
 def intervalos(predicciones: pd.DataFrame, corridas: list[str], *, solo_jamaica: bool = False,
-               n: int = 2000, semilla: int = 42, nivel: float = 0.95) -> pd.DataFrame:
+               n: int = 2000, semilla: int = 42, nivel: float = 0.95,
+               metricas: tuple = METRICAS) -> pd.DataFrame:
     """Cada métrica de cada corrida con su intervalo bootstrap. Una fila por corrida."""
+    if not metricas or set(metricas) - set((*METRICAS, "accuracy", "precision", "recall", "f1")):
+        raise ValueError("Métricas desconocidas para los intervalos.")
     y, prob, pred = _matrices(predicciones, corridas, solo_jamaica)
     puntual = _calcular(y[None], prob[:, None], pred[:, None])
     remuestreadas = _calcular(*_remuestreos(y, prob, pred, n, semilla))
@@ -121,7 +124,7 @@ def intervalos(predicciones: pd.DataFrame, corridas: list[str], *, solo_jamaica:
     filas = []
     for i, corrida in enumerate(corridas):
         fila = {"corrida": corrida, "n": len(y), "n_sin_paneles": int((y == 0).sum())}
-        for metrica in METRICAS:
+        for metrica in metricas:
             inf, sup = np.nanpercentile(remuestreadas[metrica][i], colas)
             fila.update({metrica: puntual[metrica][i, 0], f"{metrica}_inf": inf, f"{metrica}_sup": sup})
         filas.append(fila)

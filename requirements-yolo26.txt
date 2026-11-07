@@ -1,4 +1,4 @@
-# Solo para notebooks/16_deteccion_yolo26n: YOLO26 no está en la Ultralytics de requirements-detection.txt.
+# Solo para notebooks/10_deteccion_yolo26n: YOLO26 no está en la Ultralytics de requirements-detection.txt.
 # No unificar: el 08 y el 09 exigen 8.3.221 y sus corridas se hicieron con esa versión.
 # Los modelo.pt de yolo26n se abren con este entorno: 8.3.221 los carga, pero predice otras cajas.
 ultralytics==8.4.184

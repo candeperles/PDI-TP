@@ -226,7 +226,7 @@ class VistaTest(unittest.TestCase):
 
     def test_notebook_limpio_codigo_valido_y_lectura_sin_inferencia(self):
         raiz = Path(__file__).resolve().parent.parent
-        nb = json.loads((raiz / "notebooks/13_galeria_errores.ipynb").read_text(encoding="utf-8"))
+        nb = json.loads((raiz / "notebooks/14_galeria_errores.ipynb").read_text(encoding="utf-8"))
         codigo = []
         for i, celda in enumerate(nb["cells"]):
             if celda["cell_type"] == "code":

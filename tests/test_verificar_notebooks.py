@@ -23,12 +23,12 @@ class VerificadorTest(unittest.TestCase):
         self.addCleanup(tmp.cleanup)
         self.dir = Path(tmp.name)
 
-    def notebook(self, codigo, salidas=False):
+    def notebook(self, codigo, salidas=False, metadata=None):
         ruta = self.dir / "prueba.ipynb"
         celda = {"cell_type": "code", "metadata": {}, "source": [codigo],
                  "outputs": [{"output_type": "stream", "name": "stdout", "text": ["x"]}] if salidas else [],
                  "execution_count": 1 if salidas else None}
-        ruta.write_text(json.dumps({"nbformat": 4, "nbformat_minor": 5, "metadata": {}, "cells": [celda]}))
+        ruta.write_text(json.dumps({"nbformat": 4, "nbformat_minor": 5, "metadata": metadata or {}, "cells": [celda]}))
         relativa = ruta.relative_to(RAIZ).as_posix()
         return verificar.verificar(ruta, readme=verificar.COLAB + relativa)
 
@@ -71,6 +71,36 @@ class VerificadorTest(unittest.TestCase):
         ruta = self.dir / "prueba.ipynb"
         self.notebook(ENTRENAMIENTO_OK)
         self.assertIn("README", "\n".join(verificar.verificar(ruta, readme="")))
+
+    def test_flujo_cv_acordado_exige_protocolo_completo_y_no_strings(self):
+        codigo = ("rutas = entorno.preparar(solo_lectura=not ENTRENAR)\n"
+                  "folds = split.folds_jamaica(rutas)\n"
+                  "cv_jamaica.fold_completo(rutas, modelo, modo, fold, params)\n"
+                  "carpeta = cv_jamaica.preparar_fold(rutas, modelo, modo, fold, params)\n"
+                  "modelo.fit(train, validation_data=validacion)\n"
+                  "cv_jamaica.guardar_fold(rutas, carpeta, modelo, modo, fold, params, prob, entrenamiento)\n"
+                  "cv_jamaica.cargar_predicciones(rutas, folds)\n")
+        metadata = {"pdi_tp": {"flujo": "cv_jamaica_v1"}}
+        relativa = (self.dir / "prueba.ipynb").relative_to(RAIZ).as_posix()
+        original = verificar.FLUJOS_CV
+        self.addCleanup(setattr, verificar, "FLUJOS_CV", original)
+        verificar.FLUJOS_CV = {relativa: "cv_jamaica_v1"}
+        self.assertEqual(self.notebook(codigo, metadata=metadata), [])
+        for llamada in ("cv_jamaica.guardar_fold", "cv_jamaica.preparar_fold", "split.folds_jamaica"):
+            alterado = "\n".join(repr(linea) if llamada in linea else linea for linea in codigo.splitlines())
+            self.assertIn(llamada, "\n".join(self.notebook(alterado, metadata=metadata)))
+        self.assertIn("CV no puede escribir corridas comunes", "\n".join(self.notebook(
+            codigo + "resultados.guardar_corrida(rutas, carpeta)\n", metadata=metadata)))
+        self.assertIn("solo_lectura=not ENTRENAR", "\n".join(self.notebook(
+            codigo.replace("solo_lectura=not ENTRENAR", ""), metadata=metadata)))
+        self.assertIn("salidas", "\n".join(self.notebook(codigo, salidas=True, metadata=metadata)))
+        self.assertIn("googleapiclient", "\n".join(self.notebook(codigo + "import googleapiclient\n", metadata=metadata)))
+
+    def test_cv_no_habilita_otros_notebooks_ni_modifica_entrenamiento_comun(self):
+        problemas = self.notebook("modelo.fit(x)\n", metadata={"pdi_tp": {"flujo": "cv_jamaica_v1"}})
+        self.assertIn("flujo de CV no autorizado", "\n".join(problemas))
+        self.assertIn("guardar_corrida", "\n".join(problemas))
+        self.assertEqual(self.notebook(ENTRENAMIENTO_OK), [])
 
 
 if __name__ == "__main__":
