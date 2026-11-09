@@ -76,9 +76,12 @@ MODELOS_FINALES = {
 Para evaluar el detector seleccionado, usar **`FAMILIA = "yolo26n"`**: instala Ultralytics 8.4.184.
 La opción `"detectores"` corresponde a YOLOv8n/YOLO11n y no sirve para abrir correctamente YOLO26n.
 
-El notebook 18 conserva en el código la selección anterior de YOLO11n; se deja explícito el
-cambio necesario para la revisión del equipo. No se ha cambiado ni ejecutado ese notebook aquí.
-Los umbrales de las corridas comunes ya son 0.5 y 0.25, respectivamente.
+El notebook 18 ya configura esta elección y usa `SOLO_FINALES = True` para evaluar únicamente
+el finalista de cada sesión. Comprueba el umbral guardado y reproduce las predicciones de val
+antes de predecir el test; si el finalista no supera ese control, frena.
+Se evalúan los pesos actuales, entrenados solo con train (738 imágenes), sin reentrenamiento
+con train + val: es la alternativa prevista en el #45. La ejecución de esta evaluación actualizada
+todavía está pendiente; actualizar este registro solo cuando existan resultados reales.
 
 Se mantiene el registro histórico: el 06/11 se hizo una corrida preliminar del test con las
 corridas vigentes. Las decisiones de esta actualización salen solo de la CV. Si se concreta
