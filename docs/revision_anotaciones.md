@@ -46,6 +46,17 @@ La segunda revisión debe usar contexto o evidencia adicional y registrar cualqu
 cambio de referencia. Esta muestra exploratoria no estima una tasa de falsos negativos
 ni garantiza la corrección de las otras 121 imágenes con etiqueta vacía.
 
+### Resolución de N06 comunicada por el equipo (06/11/2026)
+
+La usuaria comunicó la decisión del equipo: **N06 no tiene paneles**. Se conserva la etiqueta
+original vacía y se cambia el estado de N06 a `revisado_equipo` en el registro CSV. El manifiesto
+binario pasa a considerarla negativa (`y = 0`) sin revisión pendiente, incluida su participación
+en el entrenamiento y la evaluación de la validación cruzada adicional de Jamaica.
+
+La observación inicial de la tabla anterior se conserva como historial. Esta resolución documenta
+la decisión comunicada por el equipo; no afirma una nueva confirmación visual de Codex. N16 sigue
+pendiente de segunda revisión. Las imágenes, las etiquetas originales y el split se mantienen.
+
 ## Cómo mirar los casos juntos
 
 Ejecutar `notebooks/03_revision_anotaciones.ipynb`. Genera imágenes completas y zooms

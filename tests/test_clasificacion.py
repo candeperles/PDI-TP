@@ -74,6 +74,27 @@ class ClasificacionTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "Errores nuevos"):
                 clf.preparar_tabla(None)
 
+    def test_decision_del_equipo_confirma_n06_y_conserva_n16_pendiente(self):
+        repo = Path(__file__).resolve().parents[1]
+        registro = pd.read_csv(repo / "docs" / "revision_anotaciones.csv").set_index("caso")
+        nombres = registro.loc[["N06", "N16"], "archivo"].to_list()
+        informe = SimpleNamespace(
+            imagenes=pd.DataFrame(dict(archivo=nombres, n_cajas_validas=[0, 0],
+                                       split=["val", "val"], fuente=["geo", "solarpanels_hd"])),
+            incidencias=pd.DataFrame(columns=["nivel", "archivo", "linea", "control"]),
+            cajas=pd.DataFrame(columns=["archivo", "linea", "w", "h", "clase", "valida"]))
+        rutas = SimpleNamespace(repo=repo, imagenes=Path("imagenes_sinteticas"))
+        with patch.object(clf.validacion, "validar", return_value=informe):
+            tabla, _ = clf.preparar_tabla(rutas)
+        n06, n16 = tabla.iloc[0], tabla.iloc[1]
+        self.assertEqual(registro.loc["N06", "estado"], "revisado_equipo")
+        self.assertEqual(registro.loc["N06", "decision"], "conservar_etiqueta_vacia")
+        self.assertEqual(n06.y, 0)
+        self.assertFalse(n06.pendiente_revision)
+        self.assertEqual(n16.y_original, 0)
+        self.assertTrue(pd.isna(n16.y))
+        self.assertTrue(n16.pendiente_revision)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -137,12 +137,12 @@ class DeteccionTest(unittest.TestCase):
     def test_notebook_yolo26n_misma_receta_y_entorno_propio(self):
         raiz = Path(__file__).resolve().parent.parent
         celdas = {}
-        for nombre in ("09_deteccion_yolo11n", "16_deteccion_yolo26n"):
+        for nombre in ("09_deteccion_yolo11n", "10_deteccion_yolo26n"):
             nb = json.loads((raiz / f"notebooks/{nombre}.ipynb").read_text(encoding="utf-8"))
             celdas[nombre] = ["".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "code"]
-        for i, codigo in enumerate(celdas["16_deteccion_yolo26n"]):
+        for i, codigo in enumerate(celdas["10_deteccion_yolo26n"]):
             compile(codigo, f"celda_{i}", "exec")
-        base, nuevo = celdas["09_deteccion_yolo11n"], celdas["16_deteccion_yolo26n"]
+        base, nuevo = celdas["09_deteccion_yolo11n"], celdas["10_deteccion_yolo26n"]
         opciones = {}
         exec(nuevo[0], opciones)
         self.assertEqual(opciones["MODOS"], {"coco_completo": 0, "coco_backbone_congelado": 11})

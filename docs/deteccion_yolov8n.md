@@ -71,7 +71,7 @@ cambiara la arquitectura. Ver también [evaluación de Jamaica](evaluacion_jamai
 
 ## YOLO26n
 
-`notebooks/16_deteccion_yolo26n.ipynb` usa la misma receta y los mismos dos modos, con `yolo26n.pt` y `freeze=11`
+`notebooks/10_deteccion_yolo26n.ipynb` usa la misma receta y los mismos dos modos, con `yolo26n.pt` y `freeze=11`
 (backbone: módulos 0–10, como YOLO11n). Cambia lo siguiente:
 
 - **Entorno:** `requirements-yolo26.txt` (Ultralytics 8.4.184), porque 8.3.221 no incluye YOLO26. Frente al 08 y el 09
@@ -82,7 +82,7 @@ cambiara la arquitectura. Ver también [evaluación de Jamaica](evaluacion_jamai
   principal, y con ella se elige `best.pt` y se escriben `cajas_val.csv` y `predicciones_val.csv`.
 - **Sin NMS:** el notebook mide además `nms=False` sobre el mismo `modelo.pt`, en `extra.deteccion_sin_nms` de
   `metricas.json`, con carpetas `deteccion_val_sin_nms/` y `deteccion_jamaica_sin_nms/`. Ahí `iou` no tiene efecto. No
-  entra en la tabla de `10_comparacion_final`.
+  entra en la tabla de `15_comparacion_validacion`.
 - **Sin DFL** (`reg_max: 1`): `dfl=1.5` es la ganancia de una pérdida L1 de las cajas. Es el mismo valor de la receta,
   con otro significado.
 

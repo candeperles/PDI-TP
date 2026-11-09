@@ -10,6 +10,8 @@ Normas:
    pdi_tp.entorno, y prohibidas las formas viejas de guardar resultados.
 4. Todo notebook que entrena un modelo guarda con `resultados.guardar_corrida(...)`
    (carpeta resultados/<modelo>/<modo>/ con pesos, métricas y predicción contra el real).
+   El notebook 16 tiene el protocolo adicional cv_jamaica_v1 acordado para el #43:
+   pesos, particiones y predicciones fuera de fold en analisis/cv_jamaica, con integridad y tests.
    Los que no entrenan no montan Drive (`entorno.preparar(usar_drive=False)`): solo los modelos crean
    carpetas en la carpeta compartida. Excepción: los que solo leen resultados del equipo (comparación
    final) usan `entorno.preparar(solo_lectura=True)`, y entonces no pueden entrenar ni escribir archivos.
@@ -17,12 +19,15 @@ Normas:
 
 Las reglas se aplican a todos los notebooks. No agregar excepciones sin acuerdo del equipo.
 """
+import ast
 import json
 import sys
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
 COLAB = "https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/"
+# Flujo adicional acordado para el #43: solo el notebook 16 puede usarlo.
+FLUJOS_CV = {"notebooks/16_validacion_cruzada_jamaica.ipynb": "cv_jamaica_v1"}
 
 PROHIBIDOS = {
     "INTEGRANTE": "ya no se pide el nombre de quien corre: borrar INTEGRANTE y llamar entorno.preparar()",
@@ -42,7 +47,38 @@ ENTRENA = ("keras.applications", "torchvision.models", ".fit(", ".train(", "torc
 SOLO_LECTURA = "solo_lectura=True"
 # Lo que un notebook de solo lectura no puede hacer: crear o modificar archivos.
 ESCRITURA = ("guardar_corrida(", "carpeta_corrida(", ".mkdir(", ".to_csv(", ".to_json(", ".write_text(",
-             ".write_bytes(", ".savefig(", ".save(", ".rename(", ".unlink(", "shutil.", "open(")
+             ".write_bytes(", ".savefig(", ".save(", ".rename(", ".unlink(", "shutil.", "open(",
+             "cv_jamaica.preparar_fold(", "cv_jamaica.guardar_fold(")
+
+
+def verificar_cv(nb, todo, relativa):
+    """Reconoce llamadas reales del protocolo; comentarios y strings no cuentan.
+
+    Los controles de pesos, particiones, receta, commit, puntajes y lectura se
+    ejecutan en pdi_tp.cv_jamaica (con tests independientes de TensorFlow).
+    """
+    flujo = nb.get("metadata", {}).get("pdi_tp", {}).get("flujo")
+    if flujo is None:
+        return False, []
+    if FLUJOS_CV.get(relativa) != flujo:
+        return False, ["flujo de CV no autorizado para este notebook"]
+    try:
+        arbol = ast.parse(todo)
+    except SyntaxError:
+        return False, ["el notebook de CV debe contener código Python válido"]
+    llamadas = {ast.unparse(n.func) for n in ast.walk(arbol) if isinstance(n, ast.Call)}
+    requeridas = {"split.folds_jamaica", "cv_jamaica.preparar_fold", "cv_jamaica.fold_completo",
+                  "cv_jamaica.guardar_fold", "cv_jamaica.cargar_predicciones"}
+    problemas = [f"CV sin llamada a {nombre}(...)" for nombre in sorted(requeridas - llamadas)]
+    if {"resultados.guardar_corrida", "resultados.carpeta_corrida"} & llamadas:
+        problemas.append("CV no puede escribir corridas comunes: usar solo cv_jamaica")
+    preparaciones = [n for n in ast.walk(arbol) if isinstance(n, ast.Call)
+                    and ast.unparse(n.func) == "entorno.preparar"]
+    if len(preparaciones) != 1 or not any(
+            k.arg == "solo_lectura" and ast.unparse(k.value) == "not ENTRENAR"
+            for llamada in preparaciones for k in llamada.keywords):
+        problemas.append("CV debe usar entorno.preparar(solo_lectura=not ENTRENAR)")
+    return not problemas, problemas
 
 
 def verificar(ruta: Path, readme: str) -> list[str]:
@@ -67,7 +103,9 @@ def verificar(ruta: Path, readme: str) -> list[str]:
         if patron in todo:
             problemas.append(f"usa `{patron}`: {motivo}")
     entrena = any(s in todo for s in ENTRENA)
-    if entrena and "resultados.guardar_corrida(" not in todo:
+    es_cv, problemas_cv = verificar_cv(nb, todo, relativa)
+    problemas.extend(problemas_cv)
+    if entrena and not es_cv and "resultados.guardar_corrida(" not in todo:
         problemas.append("entrena un modelo pero no guarda con resultados.guardar_corrida(...)")
     if SOLO_LECTURA in todo:
         if entrena:

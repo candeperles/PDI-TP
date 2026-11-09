@@ -12,10 +12,10 @@ La marca tiene tres partes:
 - **"© 2025 Google" casi transparente**, repetido sobre toda la imagen. Es muy tenue y no se detecta acá.
 
 Los umbrales se calibraron mirando las 172 imágenes de Jamaica y comprobando que ninguna de las otras 728 dé
-positivo (ver notebooks/11_marca_de_agua.ipynb). Es un detector a mano: puede fallar en recortes donde solo
+positivo (ver notebooks/04_marca_de_agua.ipynb). Es un detector a mano: puede fallar en recortes donde solo
 queda un pedacito de la barra o del logo.
 
-Para medir si un modelo ya entrenado usa la marca (notebooks/12_marca_de_agua_efecto.ipynb) hay dos pruebas, cada
+Para medir si un modelo ya entrenado usa la marca (notebooks/13_marca_de_agua_efecto.ipynb) hay dos pruebas, cada
 una con su control, que hace lo mismo con una franja sin marca:
 
 - **Tapar**: en las imágenes de Jamaica con marca se reemplaza la franja de abajo por el reflejo de las filas de
@@ -107,7 +107,7 @@ def armar_pruebas(tabla: pd.DataFrame, semilla: int = 42) -> pd.DataFrame:
     """Una fila por imagen modificada: prueba, grupo, archivo, donante (o vacío), split y y_real.
 
     `tabla` tiene una fila por imagen con `archivo`, `split`, `jamaica`, `marca` y `con_paneles` (la del
-    notebook 11). Tapar usa todas las imágenes de Jamaica (las de train el modelo ya las vio: se reportan aparte).
+    notebook 04). Tapar usa todas las imágenes de Jamaica (las de train el modelo ya las vio: se reportan aparte).
     Pegar usa las de val con paneles de las otras fuentes, y cada una recibe un donante con marca y uno sin marca,
     elegidos al azar entre las imágenes de Jamaica sin paneles.
     """

@@ -37,22 +37,29 @@ de `PV01`, `geo` o `kingston`, cuya confianza de origen no está documentada aqu
 - **Clasificación:** positiva si queda al menos una caja válida; negativa si la
   etiqueta original está vacía y no hay duda registrada. Faltantes, etiquetas ilegibles
   o casos ambiguos quedan pendientes, sin reclasificación automática.
-- **Negativos N06 y N16:** conservar la anotación original, marcarlos para segunda
-  revisión antes de fijar el conjunto de evaluación. No corregir solo val por intuición.
+- **Negativo N06:** el equipo decidió el 06/11/2026 que no tiene paneles, según lo comunicado
+  por la usuaria. Conservar la etiqueta original vacía y cerrar su revisión pendiente en el
+  manifiesto. La decisión habilita su uso como negativo en los folds adicionales de Jamaica.
+- **Negativo N16:** conservar la anotación original y su marca de segunda revisión pendiente
+  antes de fijar el conjunto de evaluación. No corregir solo val por intuición.
 - **Split:** mantenerlo. Cualquier cambio debe justificarse en un registro, ser
   compartido por el equipo y aplicarse antes de comparar experimentos.
 
 ## Aplicación y pendientes
 
 Los criterios se aplican ahora al manifiesto binario y los metadatos de cajas de
-`05_clasificacion_resnet50.ipynb`, sin modificar originales. El nuevo notebook
+`06_clasificacion_resnet50.ipynb`, sin modificar originales. El nuevo notebook
 `08_deteccion_yolov8n.ipynb` prepara una copia local derivada de detección al ejecutarse:
 imágenes RGB, clase única 0 (`panel`), etiquetas vacías para negativos y exclusión solo
 de Z01/línea 1. Conserva las cajas pequeñas y exporta la clase/confianza original por caja.
 No incorpora imágenes nuevas ni modifica el split. La auditoría original sigue informando
 una anotación inválida. Ver [detección con YOLOv8n](deteccion_yolov8n.md).
-Pendientes: segunda revisión de N06/N16 con mayor contexto y confirmar con la
+Pendientes: segunda revisión de N16 con mayor contexto y confirmar con la
 cátedra si esperan conservar la incertidumbre de origen como etiquetas separadas.
 La fusión definida aquí representa la tarea física de detectar paneles.
 
 Evidencia, muestra y límites: [revisión de anotaciones](revision_anotaciones.md).
+
+La decisión de N06 se registra como `revisado_equipo` en `revision_anotaciones.csv`.
+Se conserva la duda inicial en el historial de revisión; la resolución proviene del equipo,
+no de una nueva inferencia del código. No se modifican imágenes, etiquetas originales ni split.
