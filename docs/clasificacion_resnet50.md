@@ -18,9 +18,9 @@ metadatos por caja, sin alterar originales ni generar un dataset de detección.
 Se omite únicamente la caja Z01 de ancho cero. Su imagen conserva siete cajas y es positiva.
 Se mantienen los IDs de origen y su confianza como metadatos.
 
-N06/N16 conservan `y_original=0`, con `y` sin confirmar y bandera de revisión.
-Las métricas sobre las 162 imágenes y la selección por `val_loss` usan la referencia
-original **provisional**; el informe incluye además métricas sin estos dos casos.
+N06/N16 conservan `y_original=0`. El 6/11 el equipo revisó N06 como sin paneles; N16 sigue
+pendiente (ver [criterios_datos.md](criterios_datos.md)). Las métricas sobre las 162 imágenes y la
+selección por `val_loss` usan la etiqueta original; `metricas.json` trae además métricas sin estos dos casos.
 No se cambió el split ni se resolvieron sus dudas semánticas por entrenamiento.
 
 Cada variante queda en Drive en `resultados/resnet50/<modo>/` (`imagenet_congelado`,
@@ -39,11 +39,14 @@ pueden ser incompatibles. Usar Colab o un entorno nuevo con Python compatible co
 la versión de TensorFlow elegida. El notebook registra las versiones efectivas.
 
 Verificaciones sin TensorFlow: `python -m unittest discover -s tests -v` y validación
-de estructura/sintaxis del notebook. Los entrenamientos deben ejecutarse en el
-entorno de modelos; no hay métricas ni pesos producidos hasta ejecutarlos.
-La comparación entre arquitecturas requiere ejecutar también MobileNetV2, disponible en el repositorio.
+de estructura/sintaxis del notebook. La comparación con MobileNetV2 y EfficientNetB0 está en
+`15_comparacion_validacion`, que solo incluye las corridas con `params.receta = "comun_v2"`.
 Val sirve para elegir checkpoints y comparar; no proporciona una evaluación final
 independiente. No inferir superioridad sin resultados reales y revisión de curvas.
+
+En Drive puede quedar `resultados/resnet50/imagenet_cabeza/`, un modo de una receta anterior
+(apareció en la evaluación del test del 6/11). No forma parte de la comparación: archivarlo con
+`__anterior_<fecha>` para que no se confunda con `imagenet_congelado`.
 
 Si una etapa se interrumpe, al volver a ejecutar el notebook (aunque sea en otra sesión de Colab)
 continúa desde `ultimo.keras` y conserva el optimizador Adam, el historial y el mejor
@@ -51,7 +54,7 @@ checkpoint anterior. No se reinicia la etapa ni se repiten las épocas ya regist
 Si historial y checkpoint no coinciden, se detiene sin sobrescribirlos. Las variantes ya completas
 se reutilizan.
 
-## Receta común del issue #15 (pendiente de entrenamiento)
+## Receta común del issue #15 (`comun_v2`)
 
 Entrada 256×256, batch 32, dropout 0.3, semilla 42 y augmentation
 `aumentacion.google_maps`. No se aplica `class_weight`: los pesos por fuente × clase
@@ -71,5 +74,5 @@ La parada temprana restaura los mejores pesos; también se carga explícitamente
 Los params usan `img_size`, `batch_size`, `dropout`, `lr`, `epocas_max`,
 `paciencia`, `umbral` y `semilla` en los tres modos.
 
-Volver a correr con `REPETIR = True`: las corridas anteriores no son comparables
-con esta receta. No se ejecutó entrenamiento como parte de esta modificación.
+Las corridas de recetas anteriores no son comparables con esta: si un modo de Drive no tiene
+`params.receta = "comun_v2"`, volver a correrlo con `REPETIR = True`.

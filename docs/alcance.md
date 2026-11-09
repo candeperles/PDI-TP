@@ -30,7 +30,8 @@ Las dos tareas y su comparación forman parte del trabajo.
 | Entrega | Informe con comparaciones y conclusiones que explique arquitecturas, hiperparámetros y estrategias de entrenamiento. |
 
 La cantidad exacta de combinaciones de experimentos no está especificada. La
-matriz de experimentos se definirá en una etapa posterior.
+matriz elegida está en la tabla de abajo: 3 redes × 3 modos de clasificación y
+2 versiones de YOLO × 2 modos de detección, más YOLO26n opcional.
 
 ## Opciones y orientaciones
 
@@ -44,51 +45,45 @@ matriz de experimentos se definirá en una etapa posterior.
 - Para detección se explica el uso de pesos aleatorios, pero no se exige de
   forma explícita la misma comparación con/sin preentrenamiento que para clasificación.
 
-## Qué aporta el repositorio actual
+## Cómo cubre el repositorio cada requisito
 
-- `notebooks/01_exploracion.ipynb`: exploración reproducida sobre la copia local.
-- `notebooks/02_validacion_datos.ipynb`: auditoría estructural y visual ejecutada;
-  detectó una caja de ancho cero y 37 cajas pequeñas positivas para revisión.
-  Ver [validacion_dataset.md](validacion_dataset.md) para resultados y límites.
-- `splits/train.txt` y `splits/val.txt`: división compartida de 738 y 162 imágenes.
-  El código agrupa por cercanía espacial y busca equilibrar fuente y presencia
-  de paneles. La proporción efectiva es 82/18; la consigna no impone una proporción.
-- `pdi_tp/`: preparación del entorno, lectura de imágenes y cajas, manejo del split
-  y formato común de resultados por modelo y modo (`pdi_tp/resultados.py`).
-- Los datos están descargados en esta copia y siguen fuera de Git. Cada integrante
-  debe descargarlos en su entorno. Las dependencias y el procedimiento de instalación
-  están documentados en el README. No hay modelos implementados, pesos ni resultados de entrenamiento.
+Revisado contra el código de `main` el **9/11/2026**. La tabla dice dónde está implementado cada
+requisito; si un modo está entrenado se confirma con las corridas guardadas en Drive (notebook 15), no
+con esta tabla.
 
-## Puntos pendientes antes de entrenar
+| Requisito | Dónde |
+|---|---|
+| Exploración y dibujo de cajas | `01_exploracion`; validación en `02_validacion_datos` ([resultados](validacion_dataset.md)) y casos dudosos en `03_revision_anotaciones` ([resultados](revision_anotaciones.md)) |
+| Split común | `splits/train.txt` y `splits/val.txt`: 738/162 (82/18 efectivo), agrupado por zona espacial y equilibrado por fuente y presencia de paneles |
+| Clasificación: tres redes, ImageNet contra aleatorio, congelado contra fine-tuning | `05`–`07` (MobileNetV2, ResNet50, EfficientNetB0) con la receta `comun_v2`, modos `imagenet_congelado`, `imagenet_finetuning` y `aleatorio` |
+| Otras variables de clasificación | `11_variables_clasificacion` (augmentation, pesos de la loss, LR y early stopping); tamaño de entrada de detección en `12_deteccion_yolov8n_256` |
+| Detección: YOLOv8n y YOLO11n, red completa contra congelar una parte | `08`–`09`, modos `coco_completo` y `coco_backbone_congelado`; YOLO26n opcional en `10` |
+| Métricas de clasificación | `resultados.guardar_corrida`: matriz de confusión, accuracy, precision, recall y F1, más F1 macro, balanced accuracy, recall sin paneles y AUC |
+| Métricas de detección | mAP50, mAP50-95 y curva precisión-recall de Ultralytics en `08`–`10` (`deteccion_val/`) |
+| Detector como clasificador | `08`–`10` guardan la máxima confianza por imagen en el formato común; `15_comparacion_validacion` lo compara con las CNN sobre las mismas 162 imágenes |
+| Informe | Pendiente |
 
-1. **Clases y criterios.** Se cotejó la fuente original: en `solarpanels_hd`, 0/1/2
-   son niveles de confianza. La futura fusión a `panel` preservará ese metadato;
-   ver [criterios_datos.md](criterios_datos.md). No tratar archivos faltantes,
-   corruptos o dudas registradas como negativos confirmados.
-2. **Calidad de datos y anotaciones.** Verificar correspondencias imagen/etiqueta,
-   dimensiones, coordenadas, tamaños de cajas y duplicados. Revisar visualmente
-   clases raras y cajas mínimas. Conservar los originales y documentar cualquier
-   transformación antes de aplicarla.
-3. **Validación común.** Mantener por ahora el split versionado y comprobar su
-   cobertura y separación espacial. No regenerarlo individualmente.
-4. **Criterios de evaluación.** Acordar la clase positiva, el promedio de las métricas
-   y cómo se elegirá el umbral de confianza al convertir detecciones en clasificación.
-   La consigna no especifica esos detalles; todavía no se fijan valores.
-5. **Entrega y calendario.** El PDF no fija fecha, extensión del informe, formato de
-   presentación ni un requisito explícito de entregar código o pesos. Sí pide
-   guardar pesos y resultados durante el trabajo. Confirmar los detalles de entrega
-   por el canal de la materia.
-6. **Material opcional.** Se menciona `ayuda_rcnn.py`, que no está en el repositorio.
-   Solo hace falta localizarlo si se decide explorar Faster R-CNN.
+Además de la consigna: diagnóstico de la marca de agua de Google Maps (`04` y `13`), galería de errores
+(`14`), validación cruzada sobre Jamaica (`16`) y test propio de Kingston (`17`).
 
-## Siguiente etapa acordada en la conversación
+## Decisiones tomadas
 
-Se implementó la parte ResNet50 del ítem 2 en
-`notebooks/06_clasificacion_resnet50.ipynb`: ImageNet congelado, ajuste fino y pesos
-aleatorios, con evaluación y checkpoints. La preparación binaria aplica los criterios
-a un manifiesto sin modificar originales. Los entrenamientos todavía deben ejecutarse
-en Colab; ver [clasificacion_resnet50.md](clasificacion_resnet50.md).
-El repositorio también incluye MobileNetV2; queda ejecutar y comparar ambas arquitecturas.
+1. **Clases.** En `solarpanels_hd`, 0/1/2 son niveles de confianza de la anotación: se usa una sola clase
+   `panel` y la confianza original se conserva como metadato. Ver [criterios_datos.md](criterios_datos.md).
+2. **Datos.** No se modifican los originales. Se excluye solo la caja Z01 de ancho cero y se conservan las
+   cajas pequeñas. N06 fue revisado por el equipo como sin paneles; N16 sigue pendiente de segunda revisión.
+3. **Clase positiva y umbrales.** Positiva = con paneles. Umbral 0.5 para las CNN y 0.25 sobre la máxima
+   confianza de panel para los detectores; elegir otro umbral con las 23 imágenes de Jamaica de val no
+   mejoró ([evaluación sobre Jamaica](evaluacion_jamaica.md)).
+4. **Comparación.** Val se ordena por F1 macro y Jamaica por balanced accuracy, con AUC para comparar CNN y
+   detectores sin depender del umbral. Val también eligió los checkpoints: sus métricas son optimistas.
+5. **Resolución de detección.** Los YOLO se entrenan a 640 px aunque la consigna sugiere `imgsz=256`; el
+   notebook `12` es el control a 256 px que tiene que justificar esa decisión en el informe.
 
-La preparación de un dataset derivado de detección sigue pendiente. Dos negativos
-ambiguos requieren segunda revisión; originales y split permanecen sin cambios.
+## Pendiente para la entrega
+
+1. **Informe** con arquitecturas, hiperparámetros, estrategias de entrenamiento, comparaciones y conclusiones.
+2. **Confirmar las corridas en Drive** con el notebook 15: 9 modos de clasificación con `comun_v2` y 4 de
+   detección a 640 px.
+3. **Fecha, extensión y formato de la entrega:** el PDF no los fija. Confirmarlos por el canal de la materia.
+4. **Faster R-CNN** (opcional) no se implementó; el `ayuda_rcnn.py` que menciona la consigna no está en el repo.

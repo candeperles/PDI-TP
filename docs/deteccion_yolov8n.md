@@ -1,7 +1,11 @@
 # Detección con YOLOv8n
 
-Notebook: `notebooks/08_deteccion_yolov8n.ipynb`, para Colab con GPU T4.
-Estado: implementación preparada; **entrenamiento y resultados pendientes**.
+Notebook: `notebooks/08_deteccion_yolov8n.ipynb`, para Colab con GPU T4. La misma receta vale para
+`09_deteccion_yolo11n` (con `freeze=11`) y `10_deteccion_yolo26n` (ver [YOLO26n](#yolo26n)).
+
+**Estado de las corridas:** en la evaluación del test del 6/11, las corridas de YOLOv8n en Drive todavía
+eran de **256 px** y las de YOLO11n de 640 px. El notebook 15 excluye automáticamente los detectores sin
+`params.receta.imgsz = 640`: para que YOLOv8n entre en la comparación, correr el 08 con la receta actual.
 
 ## Datos y variantes
 
@@ -9,7 +13,8 @@ Se utilizan únicamente las 900 imágenes existentes y el split fijo 738/162. La
 derivada local convierte las imágenes a RGB y las anotaciones a una sola clase `panel`.
 Se aplica la auditoría compartida: excluir solo Z01/línea 1, conservar las cajas pequeñas
 y guardar la clase y confianza originales en `cajas_derivadas.csv`. Los negativos mantienen
-su etiqueta vacía; N06/N16 siguen con referencia provisional. No se agregan imágenes ni
+su etiqueta vacía; N06 fue revisado por el equipo como sin paneles y N16 sigue con referencia
+provisional. No se agregan imágenes ni
 se modifican originales o splits.
 
 Las dos variantes parten independientemente de `yolov8n.pt` (COCO):
