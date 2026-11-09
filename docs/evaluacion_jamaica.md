@@ -81,11 +81,10 @@ Es una limitación del diseño: ese conjunto selecciona épocas por rendimiento 
 El val común se usó para elegir los finalistas y también para reportar; la CV adicional no elimina
 por completo ese sesgo de selección.
 
-**Estado:** particiones, entrenamiento y análisis implementados en
-`16_validacion_cruzada_jamaica`. El flujo de guardado específico fue autorizado y se incorporó al
-verificador con controles propios; no cambia las reglas de las corridas comunes. Todavía no se
-ejecutaron los entrenamientos de CV y no hay predicciones fuera de fold, resultados ni cambio de
-modelo o umbral. La revisión de N06 ya fue resuelta por el equipo y se puede preparar la CV.
+**Estado al 09/11/2026:** ResNet50, YOLO11n y YOLO26n tienen los cinco folds guardados.
+El resultado y la decisión se documentan debajo: recomendar YOLO26n con umbral 0.25 y conservar
+ResNet50/0.5 como CNN de referencia. El flujo autorizado del notebook 16 no cambia las reglas
+de las corridas comunes. No se cargó el test para esta decisión.
 
 El 06/11/2026 la usuaria comunicó la decisión del equipo: **N06 no tiene paneles**. Se registra como
 `revisado_equipo` y se conserva su etiqueta original vacía. En la CV se evalúa una vez y entra al
@@ -134,24 +133,139 @@ N16 no es de Jamaica y permanece en la validación no jamaicana, con su referenc
   No agrega resultados parciales. Una imagen de Jamaica debe aparecer exactamente una vez; un
   archivo alterado o una configuración mezclada produce error.
 
-### Análisis y decisión pendientes de ejecutar
+### Resultado de CV y decisión (09/11/2026)
 
-El notebook calcula recall con/sin paneles, balanced accuracy, F1 macro y AUC con intervalos,
-diferencias pareadas entre los dos primeros de cada familia, mAP sobre las cajas fuera de fold
-reunidas (no el promedio de los mAP de folds) y `umbral.tabla_jamaica` sobre todas las predicciones.
-La comparación del umbral usa **0.5 para CNN y 0.25 para YOLO** como referencias; los resultados
-con 0.5 de la tabla histórica se conservan como diagnóstico.
+Se leyeron de Drive los **15 folds** de ResNet50, YOLO11n y YOLO26n. Cada modelo tiene
+exactamente las mismas **172 imágenes** fuera de fold (69 con paneles y 103 sin), sin duplicados,
+con etiquetas y particiones coincidentes. MobileNetV2 era opcional y no se ejecutó.
+**Esta decisión no usa imágenes ni métricas del test.**
 
-La regla se escribe antes de mostrar las tablas: elegir la mayor balanced accuracy solo si la
-diferencia pareada es clara. En caso contrario, preferir el modelo más simple o barato con costo
-medido, sin afirmar superioridad. Cambiar el umbral solo con mejora clara de la estimación por
-grupos `*_cv` frente a su referencia. Registrar la decisión y las épocas antes de ejecutar el test.
+**Recomendación para presencia de paneles: `yolo26n/coco_completo`, umbral 0.25.**
+Por familia, se conserva ResNet50/0.5 como CNN y se elige YOLO26n/0.25 como detector.
+La CNN es el único finalista de su familia ejecutado; no se afirma superioridad frente a MobileNetV2.
 
-Los intervalos bootstrap remuestrean imágenes, no entrenamientos; la dependencia espacial puede
-hacerlos demasiado estrechos. La estimación `*_cv` deja grupos afuera al elegir umbral, pero los
-modelos de otros folds comparten imágenes de entrenamiento: no es una CV anidada completa. Tampoco
-se corrige la selección previa de finalistas con val. El test independiente se corre una vez al
-final con los modelos y umbrales decididos.
+![Comparación de balanced accuracy, diferencias pareadas y umbrales](figuras/comparacion_cv_jamaica.png)
+
+#### Clasificación sobre las 172 predicciones fuera de fold
+
+La balanced accuracy es el criterio principal. Los intervalos del 95 % usan el procedimiento
+previsto en `comparacion.intervalos`: 2000 remuestreos de imágenes, semilla 42. F1 macro,
+recall de cada clase y AUC se muestran como complemento. **Val eligió los finalistas y se usó
+para reportar; el val no jamaicano eligió los checkpoints de esta CV.**
+
+| Modelo | Umbral | Balanced accuracy [IC 95 %] | F1 macro | Recall con paneles | Recall sin paneles | AUC |
+|---|---:|---|---:|---:|---:|---:|
+| ResNet50 | 0.5 | 0.8377 [0.7781, 0.8914] | 0.8283 | 0.8696 | 0.8058 | 0.9192 |
+| YOLO11n | 0.25 | 0.8815 [0.8295, 0.9306] | 0.8887 | 0.8116 | 0.9515 | 0.9268 |
+| YOLO26n | 0.25 | 0.9250 [0.8855, 0.9654] | 0.9270 | 0.8986 | 0.9515 | 0.9724 |
+
+Intervalos complementarios, calculados con los mismos remuestreos:
+
+| Métrica [IC 95 %] | ResNet50 | YOLO11n | YOLO26n |
+|---|---|---|---|
+| F1 macro | 0.8283 [0.7666, 0.8829] | 0.8887 [0.8381, 0.9347] | 0.9270 [0.8880, 0.9640] |
+| Recall con paneles | 0.8696 [0.7857, 0.9429] | 0.8116 [0.7183, 0.9014] | 0.8986 [0.8261, 0.9688] |
+| Recall sin paneles | 0.8058 [0.7247, 0.8785] | 0.9515 [0.9062, 0.9899] | 0.9515 [0.9072, 0.9900] |
+| AUC | 0.9192 [0.8723, 0.9585] | 0.9268 [0.8836, 0.9653] | 0.9724 [0.9455, 0.9925] |
+
+A los umbrales de referencia, ResNet50 tiene 20 falsos positivos y 9 falsos negativos;
+YOLO11n, 5 y 13; YOLO26n, 5 y 7, respectivamente. Las CNN reciben 256 px y los YOLO 640 px:
+se comparan los enfoques completos, no se atribuye toda la diferencia solo a la arquitectura.
+El puntaje de YOLO es la máxima confianza de sus cajas, no una probabilidad calibrada.
+El umbral recomendado se aplica a ese puntaje para decidir presencia de paneles; no cambia
+el `conf` de inferencia guardado en la receta, que permite conservar cajas para calcular mAP.
+
+#### Diferencias pareadas y elección del modelo
+
+| Comparación | Diferencia de balanced accuracy (pp) | IC 95 % (pp) | Diferencia clara |
+|---|---:|---|---|
+| YOLO11n − ResNet50 | +4.38 | [-1.51, +10.50] | no |
+| YOLO26n − ResNet50 | +8.73 | [+3.72, +13.94] | sí |
+| YOLO26n − YOLO11n | +4.35 | [-0.58, +9.62] | no |
+
+YOLO26n tiene el mejor valor observado y supera a ResNet50 con el intervalo previsto que
+excluye cero. **Frente a YOLO11n, la ventaja de +4.35 pp no es concluyente.** Se aplica el
+desempate por **menor mediana del tiempo registrado por fold**, como implementa el notebook 17:
+YOLO26n, 699.16 s; YOLO11n, 721.30 s. Por eso se recomienda YOLO26n, sin afirmar superioridad
+estadística entre los dos detectores. La diferencia de tiempo es pequeña y no es un benchmark
+de latencia de inferencia ni una prueba de menor costo en toda situación.
+
+Como comprobación exploratoria de sensibilidad se remuestrearon las **39 zonas completas**,
+con 2000 réplicas y semilla 42, conservando las mismas zonas para cada modelo de una réplica.
+La conclusión se mantiene: YOLO26n − ResNet50 tiene IC [+1.67, +14.34] pp y
+YOLO26n − YOLO11n, [−0.93, +13.90] pp. Esta comprobación complementa el bootstrap de imágenes;
+no reemplaza la regla de selección fijada ni mide variación entre nuevos entrenamientos.
+
+#### Umbral: conservar 0.25 en YOLO26n
+
+Se usa la grilla original 0.05–0.95, paso 0.05. El candidato maximiza balanced accuracy;
+su evaluación `*_cv` elige el umbral dejando afuera una zona por vez. La mejora se compara
+pareadamente con **0.5 para ResNet y 0.25 para YOLO**, no con un umbral común arbitrario.
+
+| Modelo | Referencia | Candidato con las 172 imágenes | Balanced accuracy `*_cv` | Mejora `*_cv` e IC 95 % (pp) | Umbral recomendado |
+|---|---:|---:|---:|---|---:|
+| ResNet50 | 0.5 | 0.35 | 0.8521 | +1.44 [-1.67, +4.74] | 0.5 |
+| YOLO11n | 0.25 | 0.25 | 0.8815 | +0.00 [+0.00, +0.00] | 0.25 |
+| YOLO26n | 0.25 | 0.15 | 0.9394 | +1.44 [-1.60, +4.67] | 0.25 |
+
+En YOLO26n, 0.15 es el máximo observado y se repite al dejar zonas afuera. Frente a 0.25,
+reduce los falsos negativos de 7 a 3, pero aumenta los falsos positivos de 5 a 8.
+La mejora estimada es +1.44 pp con IC [−1.60, +4.67]: **no es clara**, por lo que la regla
+predefinida conserva **0.25**. No se presenta 0.15 como un óptimo generalizable.
+ResNet50 conserva 0.5 por el mismo criterio; YOLO11n ya tiene 0.25 como candidato y referencia.
+
+`*_cv` no es una CV anidada completa: los modelos que produjeron predicciones de otros folds
+comparten imágenes de entrenamiento. Los intervalos no corrigen ese efecto, ni la selección
+previa de finalistas con val. Tampoco incluyen la variación de volver a entrenar cada modelo.
+
+#### Detección y costo observado
+
+El mAP se calcula sobre las cajas fuera de fold **reunidas**, con las 134 cajas reales de las
+172 imágenes; no es el promedio de los mAP de folds. No se calculó un intervalo para esta
+diferencia de mAP y no se usó como sustituto del criterio principal de balanced accuracy.
+
+| Detector | mAP50 | mAP50–95 |
+|---|---:|---:|
+| YOLO11n | 0.5197 | 0.2846 |
+| YOLO26n | 0.7084 | 0.3791 |
+
+| Modelo | Mediana de segundos por fold | Total de minutos de los cinco folds |
+|---|---:|---:|
+| ResNet50 | 411.22 | 34.21 |
+| YOLO11n | 721.30 | 51.59 |
+| YOLO26n | 699.16 | 49.41 |
+
+Los tiempos son los registrados por las corridas, incluyen entrenamiento e inferencia y dependen
+del entorno y del early stopping. Ambos YOLO registran Tesla T4; las CNN solo registraron el
+dispositivo GPU, sin identificar el modelo de tarjeta. Las mejores épocas medianas son:
+ResNet50, cabeza 11/fine-tuning 10; YOLO11n, 48; YOLO26n, 37. No se reentrenó ningún modelo
+ni se evaluó el test durante este análisis.
+
+#### Fuentes, verificación y reproducción
+
+- [ResNet50 en Drive](https://drive.google.com/drive/folders/13thFkbcWSZKBHGY-fqDNghf0iwxCvm22),
+  commit de entrenamiento `c1ffe523d2b6233a707cd7fbcd34f1e0c21ddbc4`.
+- [YOLO11n en Drive](https://drive.google.com/drive/folders/1sfrnhpNdw0ZTKKHT8wUC9Lb64ujncsSr) y
+  [YOLO26n en Drive](https://drive.google.com/drive/folders/1OoxxttJpwcYrDOoXYFcGBpWAH5i6VGbq),
+  commit de entrenamiento `c5cb6f15d6e02e391509cc7013c097f008ca78a5` en ambos.
+- Las cinco configuraciones coinciden dentro de cada modelo, incluidas las versiones de paquetes.
+  Los YOLO comparten toda la receta y el entorno registrado salvo Ultralytics: 8.3.221 frente a
+  8.4.184. Esa diferencia limita atribuir el resultado exclusivamente a la arquitectura.
+- Se verificaron contra los originales locales las etiquetas, roles, separación espacial y huellas
+  de datos, y los SHA-256 de configuraciones, particiones, historiales, registros de entrenamiento,
+  predicciones y cajas. Las serializaciones de Colab se reprodujeron con saltos LF desde Windows.
+  Se constató la existencia y el tamaño de los pesos; **no se recalculó el SHA-256 de todos los
+  binarios** por límites de descarga. Las métricas se recalcularon desde las predicciones selladas,
+  sin volver a ejecutar inferencia sobre los pesos.
+- Huella de datos: `bb18b2f0612fb0697b21ac2eb0cf27bacb12538b815b8cc0739f3be095e30652`.
+- Para reproducir las tablas principales: ejecutar el notebook 16 con `ENTRENAR=False` y luego el
+  17, ambos en solo lectura. Usan `comparacion.intervalos`, `comparacion.diferencias`,
+  `cv_jamaica.tabla_umbrales` y `deteccion.map_cajas`. Los valores puntuales de balanced accuracy,
+  F1 macro y AUC también se contrastaron con scikit-learn.
+
+La [elección documentada](modelo_final.md) reemplaza la selección provisional que se hizo cuando
+YOLO26n solo tenía un fold. La evaluación final sigue siendo una tarea posterior: no elegir ni
+cambiar modelos o umbrales después de consultar el test.
 
 ## Umbral de decisión (implementado)
 
@@ -169,8 +283,8 @@ umbral para Kingston. `pdi_tp/umbral.py` elige el umbral para Jamaica y mide si 
 - **No cambia las corridas:** el umbral guardado en `metricas.json` sigue siendo 0.5. Es una evaluación
   adicional.
 
-Hoy usa las 23 imágenes de Jamaica de val (9 grupos espaciales), así que es ruidosa. Cuando existan las
-predicciones fuera de fold del paso 2, se le pasan esas y mide con las 172.
+La evaluación histórica usó 23 imágenes de Jamaica de val (9 grupos). El resultado de CV anterior
+usa ya las 172 predicciones fuera de fold, con las limitaciones metodológicas indicadas.
 
 ### Resultado (27/10/2026): se deja 0.5
 
