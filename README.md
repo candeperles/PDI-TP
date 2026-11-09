@@ -136,6 +136,29 @@ Activar el hook una vez por clon con `git config core.hooksPath .githooks`.
 El PR requiere el chequeo `verificar` en verde y las revisiones indicadas en [AGENTS.md](AGENTS.md).
 No subir datos, pesos ni resultados al repo.
 
+## Pendientes para el informe
+
+El informe no está en el repo: Kevin lo tiene en local. Cuando se rehaga, revisar estos puntos.
+
+**Clasificador contra detector ([#53](https://github.com/candeperles/PDI-TP/issues/53)).** La comparación entre
+familias no es pareja. No atribuir la diferencia solo a la arquitectura:
+
+- **Supervisión:** el detector entrena con las cajas (2669 en el dataset), es decir, con la ubicación de cada
+  panel. La CNN recibe una sola etiqueta por imagen.
+- **Resolución:** las CNN ven la imagen a 256×256 y los YOLO, agrandada a 640×640. Son 6.25 veces más píxeles
+  por imagen.
+- **Umbral:** la CNN decide con 0.5 sobre una probabilidad y el detector, con 0.25 sobre la máxima confianza de
+  sus cajas. No son puntos de operación equivalentes: por eso la comparación se hace sobre todo con AUC.
+
+Qué hacer en el informe:
+
+- En las conclusiones y en el capítulo de comparación, atribuir la ventaja del detector a más supervisión y más
+  resolución, no solo a la arquitectura.
+- Agregar las tres diferencias en limitaciones.
+- Si el control de YOLOv8n a 256 px ([#36](https://github.com/candeperles/PDI-TP/issues/36)) llega a estar,
+  usarlo para comparar contra las CNN a igual resolución.
+- Revisar que ningún texto diga "el detector es mejor" sin esa aclaración.
+
 ## Documentación
 
 - [Alcance y requisitos de la consigna](docs/alcance.md).
