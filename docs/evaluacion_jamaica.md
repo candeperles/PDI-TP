@@ -1,9 +1,9 @@
-# Evaluación sobre Jamaica (propuesta)
+# Evaluación sobre Jamaica
 
-El test va a ser solo de Kingston, con capturas tipo Google Maps y mayoría de imágenes sin paneles (issue #7).
-Evalúa **clasificación y detección**, con la misma entrada que nuestro dataset (256×256, mismo zoom): no hay
-que cambiar el preprocesamiento. Este documento propone cómo medir eso con lo que ya tenemos. **Es una propuesta para discutir en equipo:**
-no cambia el split fijo.
+El test es solo de Kingston, con capturas tipo Google Maps (issue #7): **200 imágenes, 125 con paneles y 75
+sin**, no la mayoría sin paneles que se esperaba al principio. Evalúa **clasificación y detección**, con la
+misma entrada que nuestro dataset (256×256, mismo zoom): no hay que cambiar el preprocesamiento. Este
+documento reúne cómo se mide el desempeño en Jamaica antes del test. Nada de esto cambia el split fijo.
 
 ## Qué imágenes cuentan como Jamaica
 
@@ -155,7 +155,7 @@ final con los modelos y umbrales decididos.
 
 ## Umbral de decisión (implementado)
 
-Train tiene 85 % con paneles y el test va a tener mayoría sin paneles: 0.5 no tiene por qué ser el mejor
+Train tiene 85 % con paneles y el test 62.5 %: 0.5 no tiene por qué ser el mejor
 umbral para Kingston. `pdi_tp/umbral.py` elige el umbral para Jamaica y mide si mejora algo:
 
 - **Criterio: balanced accuracy** (promedio del acierto de cada clase). No depende de la proporción de clases,
@@ -204,12 +204,16 @@ guardadas en Drive a esa fecha. Val también se usó para elegir época y modo, 
 - Las corridas de EfficientNet pueden ser anteriores a los arreglos de fine-tuning, pesos de clase y
   BatchNorm: revisar la fecha en su `config.json` antes de sacar conclusiones sobre ese modelo.
 
-## Paso 3 (cuando lleguen las capturas nuevas): test propio de Kingston
+## Paso 3 (implementado): test propio de Kingston
 
-Las capturas nuevas de Kingston (tarea de @PiaAndreuccetti) dan la mejor estimación del test real si se
-separan como **test propio que no se usa ni para entrenar ni para elegir umbral o modelo**, con una
-proporción de clases parecida a la que esperamos en el test (mayoría sin paneles). Se evalúa una sola vez,
-al final.
+Las 200 capturas de Kingston quedaron como **test propio que no se usa ni para entrenar ni para elegir
+umbral o modelo**, con cajas etiquetadas a mano (178) con el criterio del train. Están en Drive,
+`PDI-TP/test_kingston/`, fuera del repo, y se evalúan con `17_evaluacion_test`.
+
+El 6/11 se hizo una corrida preliminar del 17 con las corridas que había en Drive, que todavía mezclaban
+recetas (YOLOv8n a 256 px y el modo viejo `resnet50/imagenet_cabeza`). **No elegir modelos ni umbrales
+mirando esos números.** Cuando estén fijados los modelos finales, volver a correr el 17 una sola vez y
+aclarar en el informe que hubo esa evaluación preliminar.
 
 ## Detección
 
@@ -218,9 +222,9 @@ Lo de arriba vale igual para el detector, con dos diferencias:
 - **Pocas cajas de Kingston:** 113 en 58 imágenes de train y 21 en 11 imágenes de val. Un mAP solo sobre
   Jamaica de val es todavía más ruidoso que las métricas de clasificación.
 - **Las imágenes sin paneles de Jamaica** (`kingston2_*` y la mayoría de `geo`) entran al entrenamiento como
-  imágenes de fondo y ayudan a bajar los falsos positivos, que en un test con mayoría sin paneles pesan mucho.
+  imágenes de fondo y ayudan a bajar los falsos positivos (en el test, 75 de las 200 imágenes no tienen paneles).
 
-Qué tiene que reportar el notebook de detección (todavía no existe):
+Qué reportan los notebooks de detección (08–10):
 
 1. mAP50 y mAP50-95 sobre todo val y **también solo sobre las imágenes de Jamaica de val** (por ejemplo, con
    un segundo `data.yaml` que liste solo esas imágenes, elegidas con `split.es_jamaica`).
@@ -229,7 +233,8 @@ Qué tiene que reportar el notebook de detección (todavía no existe):
 3. Para la validación cruzada del paso 2 y el test propio del paso 3, las capturas nuevas tienen que venir
    **con cajas** en formato YOLO, no solo con la etiqueta con/sin paneles.
 
-## Para decidir en equipo
+## Decisiones
 
-- ¿Adoptamos el paso 2 para la comparación final de clasificadores?
-- ¿Cuántas de las capturas nuevas van a test propio y cuántas a entrenamiento?
+- **Paso 2:** implementado en `16_validacion_cruzada_jamaica` (issue #43), para los finalistas que salgan
+  del 15. Queda por decidir si se corre antes de la entrega.
+- **Capturas nuevas:** las 200 van a test propio; ninguna se usa para entrenar.

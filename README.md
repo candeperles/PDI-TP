@@ -34,6 +34,7 @@ Los modelos de una misma familia se pueden entrenar en paralelo; los análisis r
 | [17_evaluacion_test](notebooks/17_evaluacion_test.ipynb) | Evaluar una vez, al final, con la elección ya fijada. | [![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/17_evaluacion_test.ipynb) |
 
 Los experimentos 11 y 12 usan las referencias entrenadas en el 05 y el 08, respectivamente.
+El 15 solo necesita los entrenamientos del 05–10: los notebooks 11–14 no son requisito para compararlos.
 Los diagnósticos y la comparación requieren las corridas guardadas de los modelos anteriores.
 El 16 parte de referencias completas de los finalistas y reúne los cinco folds antes de comparar un modelo. El 17 se ejecuta
 **una sola vez, después de fijar modelos y umbrales**; el test no decide ninguno de ellos.
