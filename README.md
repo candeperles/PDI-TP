@@ -10,7 +10,7 @@ Después usamos los detectores como clasificadores para comparar ambos enfoques.
 ## Recorrido de notebooks
 
 El orden sigue el trabajo: **datos y criterios (01–04) → entrenamiento (05–10) → experimentos y
-errores (11–14) → comparación en val (15) → elección con CV de Jamaica (16) → test final (17)**.
+errores (11–14) → comparación en val (15) → CV de Jamaica (16) → elección del modelo final (17) → test final (18)**.
 Los modelos de una misma familia se pueden entrenar en paralelo; los análisis requieren sus resultados.
 
 | Notebook | Qué resuelve | Colab |
@@ -31,13 +31,14 @@ Los modelos de una misma familia se pueden entrenar en paralelo; los análisis r
 | [14_galeria_errores](notebooks/14_galeria_errores.ipynb) | Inspeccionar clasificaciones, cajas, omisiones y falsas detecciones. | [![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/14_galeria_errores.ipynb) |
 | [15_comparacion_validacion](notebooks/15_comparacion_validacion.ipynb) | Comparar arquitecturas sobre val y Jamaica; elegir finalistas. | [![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/15_comparacion_validacion.ipynb) |
 | [16_validacion_cruzada_jamaica](notebooks/16_validacion_cruzada_jamaica.ipynb) | Comparar finalistas y decidir modelo y umbral con predicciones fuera de fold. | [![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/16_validacion_cruzada_jamaica.ipynb) |
-| [17_evaluacion_test](notebooks/17_evaluacion_test.ipynb) | Evaluar una vez, al final, con la elección ya fijada. | [![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/17_evaluacion_test.ipynb) |
+| [17_modelo_final](notebooks/17_modelo_final.ipynb) | Fijar el modelo y el umbral de cada familia con val y la CV, sin mirar el test. | [![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/17_modelo_final.ipynb) |
+| [18_evaluacion_test](notebooks/18_evaluacion_test.ipynb) | Evaluar una vez, al final, con la elección ya fijada. | [![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/notebooks/18_evaluacion_test.ipynb) |
 
 Los experimentos 11 y 12 usan las referencias entrenadas en el 05 y el 08, respectivamente.
 El 15 solo necesita los entrenamientos del 05–10: los notebooks 11–14 no son requisito para compararlos.
 Los diagnósticos y la comparación requieren las corridas guardadas de los modelos anteriores.
-El 16 parte de referencias completas de los finalistas y reúne los cinco folds antes de comparar un modelo. El 17 se ejecuta
-**una sola vez, después de fijar modelos y umbrales**; el test no decide ninguno de ellos.
+El 16 parte de referencias completas de los finalistas y reúne los cinco folds antes de comparar un modelo. El 17 fija modelos y umbrales
+sin cargar el test, y el 18 se ejecuta **una sola vez, después**: el test no decide ninguno de ellos.
 
 ## Puesta en marcha
 
