@@ -30,11 +30,12 @@ de exploración con los de TensorFlow: sus versiones de NumPy pueden ser incompa
 | 13: efecto de marca de agua | Entorno de la familia elegida en sus opciones | Inferencia con pesos guardados, sin reentrenar. |
 | 14–15: galería y comparación de val | Entorno de análisis del propio notebook | CPU; leen CSV y métricas de Drive. |
 | 16: CV de Jamaica | Entorno de la arquitectura seleccionada | T4 para entrenar; análisis sin GPU. |
-| 17: test de Kingston | Entorno de la familia seleccionada | Inferencia; una sesión por familia. |
+| 17: modelo final | `requirements.txt` | CPU; lee métricas y predicciones de Drive. |
+| 18: test de Kingston | Entorno de la familia seleccionada | Inferencia; una sesión por familia. |
 
 **YOLO26n requiere su versión propia de Ultralytics.** La 8.3.221 puede cargar sus pesos pero producir
 otras cajas. El 13 todavía no sirve para YOLO26n: usarlo con las CNN y YOLOv8n/YOLO11n hasta adaptar
-ese diagnóstico. Los notebooks 16 y 17 sí separan los entornos según la arquitectura.
+ese diagnóstico. Los notebooks 16 y 18 sí separan los entornos según la arquitectura.
 La comparación de YOLO26n con los otros YOLO cambia arquitectura y versión de librería; indicarlo en el informe.
 
 ## Revisar antes de repetir
@@ -99,6 +100,6 @@ Las métricas de val también se usaron para elegir checkpoints y son optimistas
 pareadas y los intervalos del 15 y del 16 permiten expresar incertidumbre; una diferencia pequeña
 no demuestra superioridad. El 16 documenta además las limitaciones de su CV y del ajuste de umbral.
 
-Fijar el modelo y el umbral antes de ejecutar el **17**, una sola vez al final. Si se hace un
+Fijar el modelo y el umbral con el **17** (y registrarlos en [modelo_final.md](modelo_final.md)) antes de ejecutar el **18**, una sola vez al final. Si se hace un
 reentrenamiento final como el propuesto en el issue #45, esa evaluación queda para después.
 Las decisiones y los resultados reales se registran en [evaluacion_jamaica.md](evaluacion_jamaica.md).

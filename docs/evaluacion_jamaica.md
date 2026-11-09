@@ -208,11 +208,11 @@ guardadas en Drive a esa fecha. Val también se usó para elegir época y modo, 
 
 Las 200 capturas de Kingston quedaron como **test propio que no se usa ni para entrenar ni para elegir
 umbral o modelo**, con cajas etiquetadas a mano (178) con el criterio del train. Están en Drive,
-`PDI-TP/test_kingston/`, fuera del repo, y se evalúan con `17_evaluacion_test`.
+`PDI-TP/test_kingston/`, fuera del repo, y se evalúan con `18_evaluacion_test` (antes era el 17).
 
-El 6/11 se hizo una corrida preliminar del 17 con las corridas que había en Drive, que todavía mezclaban
+El 6/11 se hizo una corrida preliminar del test (entonces era el notebook 17) con las corridas que había en Drive, que todavía mezclaban
 recetas (YOLOv8n a 256 px y el modo viejo `resnet50/imagenet_cabeza`). **No elegir modelos ni umbrales
-mirando esos números.** Cuando estén fijados los modelos finales, volver a correr el 17 una sola vez y
+mirando esos números.** Cuando estén fijados los modelos finales, fijarlos en `17_modelo_final`, volver a correr el 18 una sola vez y
 aclarar en el informe que hubo esa evaluación preliminar.
 
 ## Detección
