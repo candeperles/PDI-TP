@@ -151,16 +151,50 @@ class CvJamaicaTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "modificado"):
             cv.cargar_predicciones(self.rutas, self.folds)
         cv.preparar_fold(self.rutas, "resnet50", "imagenet_finetuning", fold, params, reiniciar=True)
-        # El resto se guarda bajo otro commit; no puede formar una corrida conjunta.
+        # Una versión de entrenamiento distinta no puede formar una corrida conjunta.
         for f in self.folds[1:]:
             self.guardar(f)
-        with patch.object(cv.resultados, "_commit", return_value="b" * 40):
+        with patch.object(cv.resultados, "_commit", return_value="b" * 40), patch.object(cv, "VERSION_CNN", "otra_version"):
             cv.preparar_fold(self.rutas, "resnet50", "imagenet_finetuning", fold, params, reiniciar=True)
             # guardar() requiere un destino vacío; archivar esta solicitud primero.
             carpeta.rename(carpeta.with_name("solicitud_archivada"))
             self.guardar(fold)
         with self.assertRaisesRegex(ValueError, "distinta receta"):
             cv.cargar_predicciones(self.rutas, self.folds)
+
+    def test_compatibilidad_anterior_conserva_procedencia_y_rechaza_otros_commits(self):
+        params = self.params()
+        for fold in self.folds:
+            carpeta = cv.preparar_fold(self.rutas, "resnet50", "imagenet_finetuning", fold, params)
+            config = json.loads((carpeta / "config.json").read_text(encoding="utf-8"))
+            config.pop("version_entrenamiento")
+            config["commit"] = cv.COMMIT_CNN_ANTERIOR
+            (carpeta / "config.json").write_text(cv._json(config), encoding="utf-8")
+            (carpeta / "modelo.keras").write_bytes(b"pesos")
+            cv.guardar_fold(self.rutas, carpeta, "resnet50", "imagenet_finetuning", fold, params,
+                [0.5] * len(fold["evaluacion"]), dict(segundos=1, etapas={
+                    k: dict(epocas=2, mejor_epoca=1) for k in ("cabeza", "fine_tuning")}))
+            original = (carpeta / "config.json").read_bytes()
+            self.assertTrue(cv.fold_completo(self.rutas, "resnet50", "imagenet_finetuning", fold, params))
+            self.assertEqual((carpeta / "config.json").read_bytes(), original)
+        pred, _ = cv.cargar_predicciones(self.rutas, self.folds)
+        self.assertEqual(len(pred), 20)
+        config["commit"] = "desconocido"
+        self.assertFalse(cv._compatible(config, cv._solicitud(self.rutas, "resnet50", "imagenet_finetuning", fold, params)[0]))
+        config["commit"] = cv.COMMIT_CNN_ANTERIOR
+        config["params"]["entorno"] = {"otro": "entorno"}
+        self.assertFalse(cv._compatible(config, cv._solicitud(self.rutas, "resnet50", "imagenet_finetuning", fold, params)[0]))
+
+    def test_reanudar_cnn_archiva_parcial_sin_checkpoint_y_conserva_el_recuperable(self):
+        fold, params = self.folds[0], self.params()
+        carpeta = cv.preparar_fold(self.rutas, "resnet50", "imagenet_finetuning", fold, params)
+        self.assertFalse(cv.fold_completo(self.rutas, "resnet50", "imagenet_finetuning", fold, params, reanudar=True))
+        cv.preparar_fold(self.rutas, "resnet50", "imagenet_finetuning", fold, params, reanudar=True)
+        self.assertEqual(len(list(carpeta.parent.glob("fold_1__anterior_*"))), 1)
+        (carpeta / "reanudacion").mkdir()
+        (carpeta / "reanudacion" / "conservar.txt").write_bytes(b"parcial")
+        cv.preparar_fold(self.rutas, "resnet50", "imagenet_finetuning", fold, params, reanudar=True)
+        self.assertEqual((carpeta / "reanudacion" / "conservar.txt").read_bytes(), b"parcial")
 
     def test_rechaza_particiones_con_fuga_test_o_pendientes(self):
         for cambio in ("fuga", "test", "pendiente"):

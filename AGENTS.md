@@ -58,6 +58,9 @@ referencias y commit, las particiones, las mejores épocas y las predicciones fu
 `cv_jamaica.cargar_predicciones` solo compara modelos con los cinco folds íntegros y compatibles.
 Los folds repetidos se archivan; nunca se borran. El verificador controla este protocolo específico
 con metadata `pdi_tp.flujo: cv_jamaica_v1`; las reglas de las corridas comunes siguen vigentes.
+Las CNN pueden reanudar épocas con dos checkpoints alternos verificados. La versión de entrenamiento
+permite conservar los folds CNN del commit anterior documentado; receta, datos y entorno deben coincidir.
+Registrar los commits de ejecución y cambiar `VERSION_CNN` si cambia el entrenamiento.
 En modo análisis, `entorno.preparar(solo_lectura=not ENTRENAR)` monta Drive sin permitir guardados.
 El fold evaluado no elige checkpoints. Las etiquetas pendientes de Jamaica deben resolverse antes
 de incorporarlas al entrenamiento de CV; no se confirman automáticamente.
