@@ -81,8 +81,8 @@ el finalista de cada sesión. Comprueba el umbral guardado y reproduce las predi
 antes de predecir el test; si el finalista no supera ese control, frena.
 Se evalúan los pesos actuales, entrenados solo con train (738 imágenes), sin reentrenamiento
 con train + val: es la alternativa prevista en el #45. Se recibió la salida completa de YOLO26n,
-registrada abajo. Falta recuperar la salida de ResNet50 y reunir las predicciones por imagen
-de ambos modelos para cerrar la comparación final.
+registrada abajo junto con su CSV de predicciones. Falta recuperar la salida de ResNet50 y
+sus predicciones por imagen para cerrar la comparación final.
 
 Se mantiene el registro histórico: el 06/11 se hizo una corrida preliminar del test con las
 corridas vigentes. Las decisiones de esta actualización salen solo de la CV; los resultados del
@@ -101,6 +101,12 @@ Las fuentes de todas sus celdas coinciden con el notebook del commit `ef2ddcf`. 
 no identifica el commit del código importado en Colab: la salida no registra el commit de
 ejecución ni las versiones efectivas instaladas. El setup informó que no había GPU.
 
+También se recuperó `resultados_locales/predicciones_test_yolo26n.csv`, con SHA-256
+`ce0138c944fea13497594a61605ef020bb5fe00b3428d0130b5c28ceeae015b8`.
+Contiene exactamente las 200 imágenes únicas del manifiesto, con las mismas etiquetas y las
+predicciones correspondientes al umbral 0.25. Reproduce la matriz de confusión y las cuatro
+métricas con sus intervalos mostrados en el notebook, sin volver a ejecutar la inferencia.
+
 El test controlado por el notebook tiene **200 imágenes de Kingston: 125 con paneles, 75 sin
 paneles y 178 cajas**, anotadas por una persona. Los pesos provienen de la corrida del 06/11,
 entrenada solo con las 738 imágenes de train; **val eligió los checkpoints y también se usa
@@ -116,7 +122,8 @@ La inferencia del test se ejecutó después de superar ese control.
 ### Presencia de paneles
 
 Se transcriben los valores de las tablas guardadas, **redondeados a tres decimales**.
-Los intervalos del test son bootstrap del 95 %, remuestreando las 200 imágenes; describen
+Los intervalos del test son bootstrap del 95 %, con 2000 remuestreos de las 200 imágenes y
+semilla 42 (`comparacion.intervalos`); describen
 la incertidumbre de este test, sin corregir la selección previa ni el etiquetado.
 
 | Métrica | Val (162 imágenes) | Test (200 imágenes) | IC 95 % del test |
@@ -175,7 +182,7 @@ El equipo informó haber ejecutado ResNet50, pero la copia recibida no conserva 
 hasta recuperar sus resultados. Para cerrar el informe faltan su control de carga, las métricas
 con intervalos, la matriz de confusión y los ejemplos.
 
-También faltan los CSV de predicciones de las 200 imágenes de ambos modelos. El notebook
-recibido conserva tablas y figuras, pero no esas filas. Se necesitan para calcular con
-`comparacion.diferencias` el intervalo pareado de la diferencia entre enfoques; no se puede
-deducir de las métricas agregadas ni del solapamiento de sus intervalos individuales.
+Ya se cuenta con el CSV verificado de las 200 predicciones de YOLO26n; falta el de ResNet50.
+Las predicciones por imagen de ambos se necesitan para calcular con `comparacion.diferencias`
+el intervalo pareado de la diferencia entre enfoques; no se puede deducir de las métricas
+agregadas ni del solapamiento de sus intervalos individuales.
