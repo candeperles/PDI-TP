@@ -7,6 +7,25 @@ Después usamos los detectores como clasificadores para comparar ambos enfoques.
 [Consigna](docs/Consigna_Paneles_Solares.pdf) · [Alcance del trabajo](docs/alcance.md) ·
 [Instalación local y problemas comunes](INSTRUCCIONES.md)
 
+## Ver la entrega sin acceso a Drive
+
+El [informe final](informe_paneles_solares.html) reúne resultados, figuras, CV y evaluación final.
+Descargar el repo y abrir el HTML junto con `docs/` permite usarlo sin conexión.
+Las [copias con salidas](ejecutados/README.md) se pueden leer directamente en GitHub:
+
+- Datos: [01](ejecutados/01_exploracion.ipynb), [02](ejecutados/02_validacion_datos.ipynb),
+  [03](ejecutados/03_revision_anotaciones.ipynb), [04](ejecutados/04_marca_de_agua.ipynb).
+- Consultas de corridas guardadas, sin entrenar: [05](ejecutados/05_clasificacion_mobilenetv2.ipynb),
+  [06](ejecutados/06_clasificacion_resnet50.ipynb), [07](ejecutados/07_clasificacion_efficientnet.ipynb),
+  [08](ejecutados/08_deteccion_yolov8n.ipynb), [09](ejecutados/09_deteccion_yolo11n.ipynb),
+  [10](ejecutados/10_deteccion_yolo26n.ipynb).
+- [15 · comparación de las 15 corridas en val](ejecutados/15_comparacion_validacion.ipynb).
+- Test final, sin imágenes: [18 · ResNet50](ejecutados/18_test_resnet50.ipynb)
+  y [18 · YOLO26n](ejecutados/18_test_yolo26n.ipynb).
+
+05–10 muestran una consulta nueva de métricas y curvas guardadas; sus logs originales de entrenamiento
+no se conservaban. Val eligió checkpoints y se usa para reportar. Ver [procedencia y alcance](docs/entrega.md).
+
 ## Recorrido de notebooks
 
 El orden sigue el trabajo: **datos y criterios (01–04) → entrenamiento (05–10) → experimentos y

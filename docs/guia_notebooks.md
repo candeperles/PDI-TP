@@ -89,6 +89,9 @@ memoria; los checkpoints se escriben localmente y se copian a Drive al guardar l
 
 ## Analizar sin volver a entrenar
 
+- En **05–10**, ejecutar únicamente la sección final «Consultar las corridas guardadas sin entrenar».
+  Es independiente de las celdas de entrenamiento, no requiere GPU y exige los modos completos.
+  Las [copias públicas](../ejecutados/README.md) muestran esa consulta, no los logs originales.
 - En el **11**, usar `ENTRENAR=False`.
 - En el **12**, usar `ENTRENAR=False` y `MEDIR_INFERENCIA=False`.
 - En el **16**, usar `ENTRENAR=False`: abre Drive en solo lectura y muestra qué modelos tienen
