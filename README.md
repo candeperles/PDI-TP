@@ -10,7 +10,7 @@ Después usamos los detectores como clasificadores para comparar ambos enfoques.
 ## Ver la entrega sin acceso a Drive
 
 El [informe final](informe_paneles_solares.html) reúne resultados, figuras, CV y evaluación final.
-Descargar el repo y abrir el HTML junto con `docs/` permite usarlo sin conexión.
+Descargar y abrir el HTML permite usarlo sin conexión: todas sus figuras están incorporadas al archivo.
 Las [copias con salidas](ejecutados/README.md) se pueden leer directamente en GitHub:
 
 - Datos: [01](ejecutados/01_exploracion.ipynb), [02](ejecutados/02_validacion_datos.ipynb),
@@ -158,8 +158,9 @@ No subir datos, pesos ni resultados al repo.
 ## Informe y criterios de comparación
 
 El [informe HTML](informe_paneles_solares.html) está en el repo. Incluye la CV completa de Jamaica,
-la elección de modelos y umbrales, y la evaluación final de ResNet50 y YOLO26n. Abrirlo junto con
-la carpeta `docs/` para ver sus figuras.
+la elección de modelos y umbrales, y la evaluación final de ResNet50 y YOLO26n. Sus figuras están
+incorporadas al HTML y se ven también al descargarlo solo. Los enlaces a documentos y notebooks
+requieren descargar el repo completo.
 
 La evaluación final de ResNet50 y YOLO26n ya está registrada en
 [`docs/modelo_final.md`](docs/modelo_final.md#evaluación-final-en-kingston-09112026), con métricas,

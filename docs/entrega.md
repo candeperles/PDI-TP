@@ -2,7 +2,9 @@
 
 El [informe HTML](../informe_paneles_solares.html) y las
 [13 copias con salidas](../ejecutados/README.md) permiten revisar la entrega desde GitHub.
-Para usar el informe interactivo, descargar el repo y abrir el HTML junto con `docs/`.
+Para usar el informe interactivo, descargar y abrir el HTML: todas sus figuras están incorporadas
+al archivo, incluidas las seis curvas PR originales. No necesitan conexión ni carpetas adicionales.
+Para seguir los enlaces a documentos y notebooks, descargar el repo completo.
 Las copias `.ipynb` muestran sus salidas directamente en GitHub.
 
 ## Alcance y procedencia
