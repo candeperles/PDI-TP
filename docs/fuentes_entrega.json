@@ -1,0 +1,1375 @@
+{
+  "fecha_verificacion": "2026-11-10",
+  "archivos": [
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/aleatorio/config.json",
+      "bytes": 819,
+      "fuente": "https://drive.google.com/file/d/13nTvpuj8YAELwM64tnueiBTLAirVyuLH/view?usp=drivesdk",
+      "id": "13nTvpuj8YAELwM64tnueiBTLAirVyuLH",
+      "sha256": "a33740e6f80699ed69f2cdb5bf6e277392f15d52fea665c70fe3e12fbab6fbe0"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/imagenet_congelado/config.json",
+      "bytes": 836,
+      "fuente": "https://drive.google.com/file/d/1OI8B_beigRFPkSssF-sYVyF4Jda_eUnO/view?usp=drivesdk",
+      "id": "1OI8B_beigRFPkSssF-sYVyF4Jda_eUnO",
+      "sha256": "369c0c74d163f2ad9dff14ee329b25ea13933e7e4cd423e8e9d735a033bb9960"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/imagenet_finetuning/metricas.json",
+      "bytes": 3150,
+      "fuente": "https://drive.google.com/file/d/1_dXWVcLsW5INx8zWml37dFmh_KRotaNr/view?usp=drivesdk",
+      "id": "1_dXWVcLsW5INx8zWml37dFmh_KRotaNr",
+      "sha256": "43b05c9989f47e169062933a87df4e9d0f5bb0354b75d1aacb02f7cd7c9c96d6"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/imagenet_congelado/metricas.json",
+      "bytes": 3179,
+      "fuente": "https://drive.google.com/file/d/17swEU-Y_WfZLMmPCEoEVqnnLFWwQd-lw/view?usp=drivesdk",
+      "id": "17swEU-Y_WfZLMmPCEoEVqnnLFWwQd-lw",
+      "sha256": "54e756a6ca16bae2fcf245345fe2b250be01f274bec2748f59a065a543163c37"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/imagenet_finetuning/config.json",
+      "bytes": 839,
+      "fuente": "https://drive.google.com/file/d/1Eo7LADlQS3VBh_8wUY3jB1EFNYre62HE/view?usp=drivesdk",
+      "id": "1Eo7LADlQS3VBh_8wUY3jB1EFNYre62HE",
+      "sha256": "4da685d63378c7f6a29f891b0059f4ef3c8531ef605277a1b17c078e80cd7fff"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/imagenet_finetuning/historia.csv",
+      "bytes": 7882,
+      "fuente": "https://drive.google.com/file/d/1j2ehXKIQVM6ln2tXgGT8ewEi1onEJ5kG/view?usp=drivesdk",
+      "id": "1j2ehXKIQVM6ln2tXgGT8ewEi1onEJ5kG",
+      "sha256": "fd58ed2f8721c4904bf804ab4d128aac7cc20b4545e52e19a783141bdfb04ccc"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/imagenet_finetuning/predicciones_val.csv",
+      "bytes": 13080,
+      "fuente": "https://drive.google.com/file/d/1wv-Poc-qftUWTwgAHPtanL67L7mnJ0ob/view?usp=drivesdk",
+      "id": "1wv-Poc-qftUWTwgAHPtanL67L7mnJ0ob",
+      "sha256": "613bc21de06be9615ed68fa4def96941adcd0bb0eb39572082cf6bc02dfed4ff"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/aleatorio/metricas.json",
+      "bytes": 3140,
+      "fuente": "https://drive.google.com/file/d/1XGPtQW278GThyLktGFQBmkB51S4yK7ai/view?usp=drivesdk",
+      "id": "1XGPtQW278GThyLktGFQBmkB51S4yK7ai",
+      "sha256": "f8950de313588712719e72ae7fded0c3512f9de0dcbb07c7b3ab27c44cad3853"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/aleatorio/predicciones_val.csv",
+      "bytes": 13094,
+      "fuente": "https://drive.google.com/file/d/1_9fdrcTqO5agwwi9BaD1DJeau71Czx8t/view?usp=drivesdk",
+      "id": "1_9fdrcTqO5agwwi9BaD1DJeau71Czx8t",
+      "sha256": "4c7558e6864e2265302b1cbb201a09c45897d94deb49518b3763944e1ab9c4ac"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/aleatorio/historia.csv",
+      "bytes": 7434,
+      "fuente": "https://drive.google.com/file/d/1xZ3mMKJZz-eiYTGSdBzRYXHD1AFYuj-M/view?usp=drivesdk",
+      "id": "1xZ3mMKJZz-eiYTGSdBzRYXHD1AFYuj-M",
+      "sha256": "20e2ed516f3437133805501cb63f05fbd6d69906274bc305d927e6e65e89e256"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/imagenet_finetuning/modelo.keras",
+      "bytes": 27194679,
+      "fuente": "https://drive.google.com/file/d/13zB7n938iXPQ2fWSD6KPNBq_IvHrd8nT/view?usp=drivesdk",
+      "id": "13zB7n938iXPQ2fWSD6KPNBq_IvHrd8nT",
+      "sha256": "c98dd48e2e345c77c76f0bbc1153d85a4a13d3de92e1519ebafe66262e8e8b78"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/aleatorio/modelo.keras",
+      "bytes": 27543785,
+      "fuente": "https://drive.google.com/file/d/1FCi3UpvZ3EhN_m7l_rADbGSXvKXhCsGy/view?usp=drivesdk",
+      "id": "1FCi3UpvZ3EhN_m7l_rADbGSXvKXhCsGy",
+      "sha256": "d880bee7cd059698776735b6ee9e463948d7f900d780fe024813d7581073bbf1"
+    },
+    {
+      "destino": "resultados_locales/resultados/resnet50/imagenet_finetuning/metricas.json",
+      "bytes": 4325,
+      "fuente": "https://drive.google.com/file/d/1WsgkO1s7en0HmQRGkrANbNPptA_fuxAS/view?usp=drivesdk",
+      "id": "1WsgkO1s7en0HmQRGkrANbNPptA_fuxAS",
+      "sha256": "9476f479a8607ac852102269891a4e56e9d4bc4a2293598db568125c9012c88d"
+    },
+    {
+      "destino": "resultados_locales/resultados/resnet50/imagenet_finetuning/historia.csv",
+      "bytes": 1655,
+      "fuente": "https://drive.google.com/file/d/1yZEBjFvcjqblAu0hRk8rEY90VBg3b8sH/view?usp=drivesdk",
+      "id": "1yZEBjFvcjqblAu0hRk8rEY90VBg3b8sH",
+      "sha256": "1136a53c670b14a063a5f882dd1fc75e6861b2d69e8fdd057f03061c8333b861"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/imagenet_congelado/historia.csv",
+      "bytes": 6022,
+      "fuente": "https://drive.google.com/file/d/1xn2zzzjlBL8Tkbyd5OTqwXLJGYh36SS6/view?usp=drivesdk",
+      "id": "1xn2zzzjlBL8Tkbyd5OTqwXLJGYh36SS6",
+      "sha256": "cb96894f407c43ebce2eaa477d00f4e9d2e8fb6717c824b560a9634f3dbdf63f"
+    },
+    {
+      "destino": "resultados_locales/resultados/resnet50/aleatorio/metricas.json",
+      "bytes": 4355,
+      "fuente": "https://drive.google.com/file/d/1AKI0vXAJ8FJmu04Kz20kX-A4dDct549A/view?usp=drivesdk",
+      "id": "1AKI0vXAJ8FJmu04Kz20kX-A4dDct549A",
+      "sha256": "53dd772636016f7e60cd8f61c1bc065ed5c2b82c6f21d244cd36db8602434c09"
+    },
+    {
+      "destino": "resultados_locales/resultados/resnet50/aleatorio/config.json",
+      "bytes": 1765,
+      "fuente": "https://drive.google.com/file/d/1xu3I7ba7Gk_xQ5c27A7C7pcjo7mh2_5i/view?usp=drivesdk",
+      "id": "1xu3I7ba7Gk_xQ5c27A7C7pcjo7mh2_5i",
+      "sha256": "9db66a4bf781fec57915d98d5f8bbc5d8be8efe40c22326ead7ac0e61db92ad1"
+    },
+    {
+      "destino": "resultados_locales/resultados/resnet50/aleatorio/historia.csv",
+      "bytes": 4138,
+      "fuente": "https://drive.google.com/file/d/1mrqkOCP06hgaq6-EUxIAQsJRS2HaqWU6/view?usp=drivesdk",
+      "id": "1mrqkOCP06hgaq6-EUxIAQsJRS2HaqWU6",
+      "sha256": "c2c69388923dd3a2378766bbd033633bb3408354cf38267458830e4599b2ec77"
+    },
+    {
+      "destino": "resultados_locales/resultados/resnet50/imagenet_finetuning/predicciones_val.csv",
+      "bytes": 12326,
+      "fuente": "https://drive.google.com/file/d/1a-SKaDJwU399yxUsLPLKnlkhhuT3RC5S/view?usp=drivesdk",
+      "id": "1a-SKaDJwU399yxUsLPLKnlkhhuT3RC5S",
+      "sha256": "5fdc39e902693e3192e31ca9112b39bf80386179b5628a6ae934a9d623500845"
+    },
+    {
+      "destino": "resultados_locales/resultados/resnet50/aleatorio/predicciones_val.csv",
+      "bytes": 12856,
+      "fuente": "https://drive.google.com/file/d/1irY09kEGRt0bXexJ49GrWrs4VeRxC2jS/view?usp=drivesdk",
+      "id": "1irY09kEGRt0bXexJ49GrWrs4VeRxC2jS",
+      "sha256": "b02b6001aed1e34850a79bd7b4e1e66d7f4f8a9d13c4b351568b20d9d230f9c0"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/imagenet_congelado/predicciones_val.csv",
+      "bytes": 13079,
+      "fuente": "https://drive.google.com/file/d/1JzrLp-hEFPA2gLk7AjytVrcjIDOLW-20/view?usp=drivesdk",
+      "id": "1JzrLp-hEFPA2gLk7AjytVrcjIDOLW-20",
+      "sha256": "a2c5e813bce7e383a1e2f817e9e0ae2a7d52d28a1a38040da841a2c111e5b43c"
+    },
+    {
+      "destino": "resultados_locales/resultados/resnet50/imagenet_congelado/config.json",
+      "bytes": 1651,
+      "fuente": "https://drive.google.com/file/d/1uxn0jb53cyK_ZOlEBIAWUsTAIXlE2j5G/view?usp=drivesdk",
+      "id": "1uxn0jb53cyK_ZOlEBIAWUsTAIXlE2j5G",
+      "sha256": "36a0cc8fb677a83594fc49a83e2c02cca4b15d69a1c77feeb2580988662d0b00"
+    },
+    {
+      "destino": "resultados_locales/resultados/resnet50/imagenet_finetuning/config.json",
+      "bytes": 1824,
+      "fuente": "https://drive.google.com/file/d/1NFJcrYpc6zWjobHu02Rjczw67zO4rGrI/view?usp=drivesdk",
+      "id": "1NFJcrYpc6zWjobHu02Rjczw67zO4rGrI",
+      "sha256": "4c59652d06ff64b711a1524cacde5351f867b64b3b23e0191182ecf154c64282"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/imagenet_congelado/modelo.keras",
+      "bytes": 9639045,
+      "fuente": "https://drive.google.com/file/d/1p9dPGTFhykz3sQiXFTeNfLsGEbRSEKWN/view?usp=drivesdk",
+      "id": "1p9dPGTFhykz3sQiXFTeNfLsGEbRSEKWN",
+      "sha256": "bb8c9d3768fd5d736cf095fa13b4b9645aacb81b33468a87bf2de3e744a976cf"
+    },
+    {
+      "destino": "resultados_locales/resultados/resnet50/imagenet_congelado/predicciones_val.csv",
+      "bytes": 13083,
+      "fuente": "https://drive.google.com/file/d/1XNGebaljZVdxeCfNsdKWzipyPBZvDzD-/view?usp=drivesdk",
+      "id": "1XNGebaljZVdxeCfNsdKWzipyPBZvDzD-",
+      "sha256": "b7d0b8db84842170f9a057285ee5f325a4d692b35cf2a86115b7bf34006e580e"
+    },
+    {
+      "destino": "resultados_locales/resultados/efficientnetb0/imagenet_finetuning/config.json",
+      "bytes": 979,
+      "fuente": "https://drive.google.com/file/d/1Qp4ur1ChwYTlXTkhgGkSF8wYqiupI_fk/view?usp=drivesdk",
+      "id": "1Qp4ur1ChwYTlXTkhgGkSF8wYqiupI_fk",
+      "sha256": "64ab35ea53a8c4f2f0b0ed138b700181295faa92b50fb0ecc328749b1fd5997b"
+    },
+    {
+      "destino": "resultados_locales/resultados/efficientnetb0/aleatorio/config.json",
+      "bytes": 977,
+      "fuente": "https://drive.google.com/file/d/1eF-0Qw_E2uXproGoZE4B3wO9pV7PzPcb/view?usp=drivesdk",
+      "id": "1eF-0Qw_E2uXproGoZE4B3wO9pV7PzPcb",
+      "sha256": "023856f1e9cb13e5721131545d8898e8faeb3f71105652f19e8072d124fc8ac5"
+    },
+    {
+      "destino": "resultados_locales/resultados/efficientnetb0/aleatorio/historia.csv",
+      "bytes": 3802,
+      "fuente": "https://drive.google.com/file/d/14RXNvLrcJuMc2BcJVozMWvmJJc5hZCoX/view?usp=drivesdk",
+      "id": "14RXNvLrcJuMc2BcJVozMWvmJJc5hZCoX",
+      "sha256": "167f46c8354a05260f82d280f4cb342d728e6ba689532ea9d39cd96c3a279c80"
+    },
+    {
+      "destino": "resultados_locales/resultados/efficientnetb0/imagenet_finetuning/predicciones_val.csv",
+      "bytes": 13087,
+      "fuente": "https://drive.google.com/file/d/1KX3vHf8AsFzuAqnYjDYraeWqkA-dBelv/view?usp=drivesdk",
+      "id": "1KX3vHf8AsFzuAqnYjDYraeWqkA-dBelv",
+      "sha256": "75875d605d1b1073dfbae470959f140101118da5c568df75208d39a53645b55b"
+    },
+    {
+      "destino": "resultados_locales/resultados/efficientnetb0/imagenet_finetuning/metricas.json",
+      "bytes": 2987,
+      "fuente": "https://drive.google.com/file/d/1nSeTvyb4q0sNqnAPdAISdW1ij6fmR42A/view?usp=drivesdk",
+      "id": "1nSeTvyb4q0sNqnAPdAISdW1ij6fmR42A",
+      "sha256": "caafa1ade932a54145aa10cff83248230921f1637e9ed46665fe47b0e23f06a7"
+    },
+    {
+      "destino": "resultados_locales/resultados/efficientnetb0/aleatorio/predicciones_val.csv",
+      "bytes": 13106,
+      "fuente": "https://drive.google.com/file/d/1XG9qgLhR8ecgUKc42h20BpLXUNLFSl7a/view?usp=drivesdk",
+      "id": "1XG9qgLhR8ecgUKc42h20BpLXUNLFSl7a",
+      "sha256": "fc0e3be380d3fa4d275b1eaddc22de459c7dd7f6ee6657c605721829e6d51ab6"
+    },
+    {
+      "destino": "resultados_locales/resultados/resnet50/imagenet_congelado/historia.csv",
+      "bytes": 2457,
+      "fuente": "https://drive.google.com/file/d/1HU6i8QEMonVDPRm8ufG8kUMsmAmHiyxm/view?usp=drivesdk",
+      "id": "1HU6i8QEMonVDPRm8ufG8kUMsmAmHiyxm",
+      "sha256": "7bf0fe95acedae75f48cf42aff1f67f74cde15e8dac03d1b978b9c0e15844a0a"
+    },
+    {
+      "destino": "resultados_locales/resultados/efficientnetb0/aleatorio/metricas.json",
+      "bytes": 3025,
+      "fuente": "https://drive.google.com/file/d/19ZUPoZxMTSy0Z2WHWw5KteznEiMrW4Vt/view?usp=drivesdk",
+      "id": "19ZUPoZxMTSy0Z2WHWw5KteznEiMrW4Vt",
+      "sha256": "381579e96b98416592c063739e29985f2acf36e27187d1690d3c614cc2ba7356"
+    },
+    {
+      "destino": "resultados_locales/resultados/resnet50/imagenet_congelado/metricas.json",
+      "bytes": 4216,
+      "fuente": "https://drive.google.com/file/d/1tmTJK_0miE4hbXhgO-K8NQYUq9dJ14Tx/view?usp=drivesdk",
+      "id": "1tmTJK_0miE4hbXhgO-K8NQYUq9dJ14Tx",
+      "sha256": "0e8c249563cfc9f23ee9f9f9082c608154249347ecf3a99e65f4cdfad05f89e1"
+    },
+    {
+      "destino": "resultados_locales/resultados/efficientnetb0/aleatorio/modelo.keras",
+      "bytes": 49273530,
+      "fuente": "https://drive.google.com/file/d/1nvDMkpbMWR1Ej9i0lYDcjMHnKt-00_Y-/view?usp=drivesdk",
+      "id": "1nvDMkpbMWR1Ej9i0lYDcjMHnKt-00_Y-",
+      "sha256": "45931f1cdd5c46dbd5a2fb03c2ad6e5873493eda34b8b13139c5516a22bf0ff2"
+    },
+    {
+      "destino": "resultados_locales/resultados/resnet50/imagenet_congelado/mejor.keras",
+      "bytes": 95036708,
+      "fuente": "https://drive.google.com/file/d/1prpvCYrPWJAsrVWeBUsaUwe7kTck4RnE/view?usp=drivesdk",
+      "id": "1prpvCYrPWJAsrVWeBUsaUwe7kTck4RnE",
+      "sha256": "594d0cb5b66e42fe3434b5b05e3e30965124860a33d040719a39dbbbb7500d5e"
+    },
+    {
+      "destino": "resultados_locales/resultados/efficientnetb0/imagenet_congelado/predicciones_val.csv",
+      "bytes": 13081,
+      "fuente": "https://drive.google.com/file/d/1ubKR6Z0LyvTCviUYiJxUBYKBQXBG_m7q/view?usp=drivesdk",
+      "id": "1ubKR6Z0LyvTCviUYiJxUBYKBQXBG_m7q",
+      "sha256": "8a9fe4fba2864ffaecf3ab2fe2cee6bfd1869fa611709ae7333344c93387e1dc"
+    },
+    {
+      "destino": "resultados_locales/resultados/efficientnetb0/imagenet_finetuning/historia.csv",
+      "bytes": 1627,
+      "fuente": "https://drive.google.com/file/d/1p2XygL2pw0VJF9T7yUqw0joNG1bxVGwN/view?usp=drivesdk",
+      "id": "1p2XygL2pw0VJF9T7yUqw0joNG1bxVGwN",
+      "sha256": "f800cfd5c891634ff9b0fb5381d08ea374cab80cada30468b2c54017c6b7df34"
+    },
+    {
+      "destino": "resultados_locales/resultados/efficientnetb0/imagenet_congelado/metricas.json",
+      "bytes": 2955,
+      "fuente": "https://drive.google.com/file/d/10-DvKW_b3OHTezlu_GhYhsqaQRNkkImO/view?usp=drivesdk",
+      "id": "10-DvKW_b3OHTezlu_GhYhsqaQRNkkImO",
+      "sha256": "477d00dfd73964eef0172c001604d9b5d86e4093e89b5cf2e29b921d7d8c8573"
+    },
+    {
+      "destino": "resultados_locales/resultados/efficientnetb0/imagenet_congelado/historia.csv",
+      "bytes": 2409,
+      "fuente": "https://drive.google.com/file/d/1IaP8v9HYcylAxbbvrYqKC3FtB9OlLKn_/view?usp=drivesdk",
+      "id": "1IaP8v9HYcylAxbbvrYqKC3FtB9OlLKn_",
+      "sha256": "4e049b8676344f539c154976221d2ecaf6a2d5d288cc715e1eafb95619f358e5"
+    },
+    {
+      "destino": "resultados_locales/resultados/efficientnetb0/imagenet_congelado/config.json",
+      "bytes": 920,
+      "fuente": "https://drive.google.com/file/d/1CUteQEuvnFvUcKpEvnsbpJxwsZVWBca2/view?usp=drivesdk",
+      "id": "1CUteQEuvnFvUcKpEvnsbpJxwsZVWBca2",
+      "sha256": "2000824c62d6d668a9f68e3666879fff4edbf59ccd80054936b44c439f12a041"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolov8n/coco_completo/predicciones_val.csv",
+      "bytes": 13057,
+      "fuente": "https://drive.google.com/file/d/1AYazBPxEecVm1jdfL9g7rWKvSAC4shDK/view?usp=drivesdk",
+      "id": "1AYazBPxEecVm1jdfL9g7rWKvSAC4shDK",
+      "sha256": "f567da7931912868ff0f2afc7b180fba4c03f5f88ae56e94af9d302d1ac91ced"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolov8n/coco_completo/metricas_deteccion.json",
+      "bytes": 316,
+      "fuente": "https://drive.google.com/file/d/1VHPNi7bDzKUAnWEKDuiGa6mo9EicccVg/view?usp=drivesdk",
+      "id": "1VHPNi7bDzKUAnWEKDuiGa6mo9EicccVg",
+      "sha256": "5427cf846e7b495b426ed8ee3a6597600be21c3129b6afb9dbf1fead9556f98e"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolov8n/coco_completo/config.json",
+      "bytes": 1890,
+      "fuente": "https://drive.google.com/file/d/1qVlOpvVrKg7p9LqExbAiZpBHJxm3vRgE/view?usp=drivesdk",
+      "id": "1qVlOpvVrKg7p9LqExbAiZpBHJxm3vRgE",
+      "sha256": "91483be7bf1c909cf5058e0cc45c43d0b08cb6aaa50bccb32171d0227734eac9"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolov8n/coco_completo/metricas.json",
+      "bytes": 4357,
+      "fuente": "https://drive.google.com/file/d/1_-pKCEilWwZWNIgt_6L4Ffm5vis852-x/view?usp=drivesdk",
+      "id": "1_-pKCEilWwZWNIgt_6L4Ffm5vis852-x",
+      "sha256": "cbadc7157ea4fd74c6a644756e2e5a8b47736b8d14e148acfbc193fdbe7c1baa"
+    },
+    {
+      "destino": "resultados_locales/resultados/efficientnetb0/imagenet_congelado/modelo.keras",
+      "bytes": 17059988,
+      "fuente": "https://drive.google.com/file/d/1_d4qCwgk8KKf2cNcCgRPeFnyusz8vQ_Q/view?usp=drivesdk",
+      "id": "1_d4qCwgk8KKf2cNcCgRPeFnyusz8vQ_Q",
+      "sha256": "f678062cb24fbb940ad50d7e3c3720c4f5b5af10bd837d435f2b3a60c5c53412"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolov8n/coco_completo/cajas_val.csv",
+      "bytes": 1351907,
+      "fuente": "https://drive.google.com/file/d/1zFKrB8PEaT7tBfeC88LGNTczdnOZaXYk/view?usp=drivesdk",
+      "id": "1zFKrB8PEaT7tBfeC88LGNTczdnOZaXYk",
+      "sha256": "9f26edd2131e63546f07d982fafb8aafdab545083cf028e2b61146a7bf3b1516"
+    },
+    {
+      "destino": "resultados_locales/resultados/efficientnetb0/imagenet_finetuning/modelo.keras",
+      "bytes": 48858756,
+      "fuente": "https://drive.google.com/file/d/1m09yFlQ524j4vYQrSn2ZztqmbNthAx5A/view?usp=drivesdk",
+      "id": "1m09yFlQ524j4vYQrSn2ZztqmbNthAx5A",
+      "sha256": "145f4552801042810771891e36d74f2ed33cc56b9847b8e60ff3d26a13812e2d"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo11n/coco_completo/config.json",
+      "bytes": 1890,
+      "fuente": "https://drive.google.com/file/d/1D3mLKHGf9QuASR5M3EEGoBrle16itxEn/view?usp=drivesdk",
+      "id": "1D3mLKHGf9QuASR5M3EEGoBrle16itxEn",
+      "sha256": "8b71a4a974231c91e4feaa582f41131c4ce0234d0a16a5b1f942ba650c7b5711"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo11n/coco_completo/metricas.json",
+      "bytes": 4340,
+      "fuente": "https://drive.google.com/file/d/12fbTYIo1VCOOjdO56UsoMajrlLAE5FLo/view?usp=drivesdk",
+      "id": "12fbTYIo1VCOOjdO56UsoMajrlLAE5FLo",
+      "sha256": "4b8bf19f2b8015a0106b49369c07d51f29bb84c811d9a9aeb122f4493fac43b3"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo11n/coco_completo/predicciones_val.csv",
+      "bytes": 13088,
+      "fuente": "https://drive.google.com/file/d/18Aa4lbLVEhWs5fubRzTAdw4dJzvZYJPb/view?usp=drivesdk",
+      "id": "18Aa4lbLVEhWs5fubRzTAdw4dJzvZYJPb",
+      "sha256": "006bc85faab942bcb906a63a71848f79f98090f16def631d9e3652123b4ad085"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolov8n/coco_backbone_congelado/predicciones_val.csv",
+      "bytes": 13095,
+      "fuente": "https://drive.google.com/file/d/1EE7DEZXcAzHiUnh4aVIJw-fn70DE5OJL/view?usp=drivesdk",
+      "id": "1EE7DEZXcAzHiUnh4aVIJw-fn70DE5OJL",
+      "sha256": "aa3d3e60c38ab4bae0cba9d7ff090ed3d3a1005ab7a3aceeeae6b9859981bcd6"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo11n/coco_completo/metricas_deteccion.json",
+      "bytes": 314,
+      "fuente": "https://drive.google.com/file/d/1k1S3iTc7ZJy47_9-xnfg-n5hcQgFKwjR/view?usp=drivesdk",
+      "id": "1k1S3iTc7ZJy47_9-xnfg-n5hcQgFKwjR",
+      "sha256": "38b18bd9465a92aced09b81cc1513d90022092d4ef6cdbefa1c88a96852582d4"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolov8n/coco_backbone_congelado/metricas.json",
+      "bytes": 4491,
+      "fuente": "https://drive.google.com/file/d/1CLOmSH3wjoMy8az3598e1kqqf7CWhg_C/view?usp=drivesdk",
+      "id": "1CLOmSH3wjoMy8az3598e1kqqf7CWhg_C",
+      "sha256": "72a2195ae29e6910b1da5c54f4073b3b060f5c90f29937d42330175c77c05787"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolov8n/coco_backbone_congelado/metricas_deteccion.json",
+      "bytes": 319,
+      "fuente": "https://drive.google.com/file/d/1VawQJQmBdvk8g5g0VLHm7QAgLvMJBvXZ/view?usp=drivesdk",
+      "id": "1VawQJQmBdvk8g5g0VLHm7QAgLvMJBvXZ",
+      "sha256": "3f86049c13111fe12bdc7497bd007db44ba7b58d8283f82608e16e602ba0d0c7"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolov8n/coco_backbone_congelado/config.json",
+      "bytes": 1901,
+      "fuente": "https://drive.google.com/file/d/16GmHKm9WbF7lbrTbfVR2w4CQggG0OdQ3/view?usp=drivesdk",
+      "id": "16GmHKm9WbF7lbrTbfVR2w4CQggG0OdQ3",
+      "sha256": "c76db23e6ea3b501f63a9a61f1cd5e410f5c028480c7a2658362fd08cff9a5d9"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo11n/coco_completo/cajas_val.csv",
+      "bytes": 1436704,
+      "fuente": "https://drive.google.com/file/d/19kkPkqXrAeyaLhDGhU8UXnXnopwygtx1/view?usp=drivesdk",
+      "id": "19kkPkqXrAeyaLhDGhU8UXnXnopwygtx1",
+      "sha256": "c6ba6fec7822759c7d55642d34415443a40bb53f43236cc9208eea50c82acca3"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolov8n/coco_backbone_congelado/cajas_val.csv",
+      "bytes": 1670856,
+      "fuente": "https://drive.google.com/file/d/1kgA79ex-sCzp6YFWmecPyyReFYZVtTqf/view?usp=drivesdk",
+      "id": "1kgA79ex-sCzp6YFWmecPyyReFYZVtTqf",
+      "sha256": "ec465ec59d4ee301fca51fb7f1144fa50799654c4f7b84799ed0f136cf7abdc3"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolov8n/coco_backbone_congelado/modelo.pt",
+      "bytes": 6250218,
+      "fuente": "https://drive.google.com/file/d/12lq6YX1CVIP54F2BeHSRqVfKr8-4ieyO/view?usp=drivesdk",
+      "id": "12lq6YX1CVIP54F2BeHSRqVfKr8-4ieyO",
+      "sha256": "511ca04b283a162825c581fb6e800cd8337d3f4bd7cbc04ea8e648fe58d54e3d"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolov8n/coco_completo/modelo.pt",
+      "bytes": 6250154,
+      "fuente": "https://drive.google.com/file/d/11ji2phS2g3dU_x_NZdbrHxuCusUsac-s/view?usp=drivesdk",
+      "id": "11ji2phS2g3dU_x_NZdbrHxuCusUsac-s",
+      "sha256": "0853dabbbb6e5fd5fdb09a0848f0cbef93ac9788650884630f4748845a1eacbb"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo26n/coco_completo/config.json",
+      "bytes": 1998,
+      "fuente": "https://drive.google.com/file/d/1bPkZbIGoaNbONQK66cCXtgIOTfGTvDdv/view?usp=drivesdk",
+      "id": "1bPkZbIGoaNbONQK66cCXtgIOTfGTvDdv",
+      "sha256": "e077db888e859c0d61e62461a955fa15d09fbb201d1a2a9de70ca2a9aa17d883"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo26n/coco_completo/predicciones_val.csv",
+      "bytes": 13096,
+      "fuente": "https://drive.google.com/file/d/1LZcqc65JUR2OuK05WJxcPYbA9rs-OGP9/view?usp=drivesdk",
+      "id": "1LZcqc65JUR2OuK05WJxcPYbA9rs-OGP9",
+      "sha256": "0624ac63e96fcb337aa44df51bc2c7fdd86dcf1b549ec1502d2127d46b5efbb0"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo11n/coco_backbone_congelado/predicciones_val.csv",
+      "bytes": 13102,
+      "fuente": "https://drive.google.com/file/d/1ZB2eA7iQaheH37Jy0zmJV1ut6RfKoiaM/view?usp=drivesdk",
+      "id": "1ZB2eA7iQaheH37Jy0zmJV1ut6RfKoiaM",
+      "sha256": "b89c231dda360cab39f4f537125565de855999edc621f69c4d171b826afe6504"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo11n/coco_backbone_congelado/config.json",
+      "bytes": 1901,
+      "fuente": "https://drive.google.com/file/d/17H0qNjzaVsPloCZtNxsNFScn1uPTp5gr/view?usp=drivesdk",
+      "id": "17H0qNjzaVsPloCZtNxsNFScn1uPTp5gr",
+      "sha256": "e84f013c7aa4190685d2ee0df1c700818d6ec5cf74cf80d09cbbcf65ce6ef444"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo26n/coco_completo/metricas.json",
+      "bytes": 4873,
+      "fuente": "https://drive.google.com/file/d/15GqngBVFKSf_sOszPmd_c7GZkXbqwxEt/view?usp=drivesdk",
+      "id": "15GqngBVFKSf_sOszPmd_c7GZkXbqwxEt",
+      "sha256": "f8487dd70e53df1caf9a147ec86bc3249da9d7212fe51439ef2f425b448d4ec4"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo11n/coco_backbone_congelado/metricas_deteccion.json",
+      "bytes": 316,
+      "fuente": "https://drive.google.com/file/d/1I6RoyeDbCkVSomYIlN4mk_RPRE1jCv3Q/view?usp=drivesdk",
+      "id": "1I6RoyeDbCkVSomYIlN4mk_RPRE1jCv3Q",
+      "sha256": "e211c12e9e58563997bbd89e7d1263d942bdcd5016bec05962f2da62c3036776"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo26n/coco_completo/metricas_deteccion.json",
+      "bytes": 316,
+      "fuente": "https://drive.google.com/file/d/1LLpbJcL3zzmHqPcCAwI2d-HBk7g_CEZi/view?usp=drivesdk",
+      "id": "1LLpbJcL3zzmHqPcCAwI2d-HBk7g_CEZi",
+      "sha256": "c751d9c43b777ef8f23dcf7b77c1cc22747f9286bb943c3181c830cf809ad938"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo11n/coco_backbone_congelado/metricas.json",
+      "bytes": 4638,
+      "fuente": "https://drive.google.com/file/d/1cEEFPn0T2o7LFLyC9K2040WPEB_hWBya/view?usp=drivesdk",
+      "id": "1cEEFPn0T2o7LFLyC9K2040WPEB_hWBya",
+      "sha256": "cb4301e1fdc7a8c441fae8ebf8b6e1741b102b5c2e1330e47fc09b79837eab08"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo11n/coco_backbone_congelado/cajas_val.csv",
+      "bytes": 1854478,
+      "fuente": "https://drive.google.com/file/d/1UtHxz3um0C25ta4XdoHLTqo-J6sXkfDZ/view?usp=drivesdk",
+      "id": "1UtHxz3um0C25ta4XdoHLTqo-J6sXkfDZ",
+      "sha256": "41bdb0c903af13df30ac95065214bbbc5c3f62d28a50ad17bc9f7a16b372a59a"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo26n/coco_completo/cajas_val.csv",
+      "bytes": 1036133,
+      "fuente": "https://drive.google.com/file/d/1RIF-5e01Svu_5F1jFoBV1V014aW2n_aK/view?usp=drivesdk",
+      "id": "1RIF-5e01Svu_5F1jFoBV1V014aW2n_aK",
+      "sha256": "646bce99a03f4093eb8dca136147a130cbb4851dcdc11c44593b24839b42cee6"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo11n/coco_completo/modelo.pt",
+      "bytes": 5472410,
+      "fuente": "https://drive.google.com/file/d/1cb06arZmFdtKsai841hcwiWyBSiEYJmK/view?usp=drivesdk",
+      "id": "1cb06arZmFdtKsai841hcwiWyBSiEYJmK",
+      "sha256": "88f02815cda6629ba3295d575182261038209da5bc954c7828455fc4ff22aec6"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo11n/coco_backbone_congelado/modelo.pt",
+      "bytes": 5471258,
+      "fuente": "https://drive.google.com/file/d/1RngpiyuRiuv3uogrNqIiGAoX1m0voF0v/view?usp=drivesdk",
+      "id": "1RngpiyuRiuv3uogrNqIiGAoX1m0voF0v",
+      "sha256": "44cfafa46c40f234250e60ba840bdcfdbaeafa891908ef7fdeb46d764b92f355"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo26n/coco_backbone_congelado/metricas.json",
+      "bytes": 4919,
+      "fuente": "https://drive.google.com/file/d/12keH6HvJoYztPA39ZzvtblmDgSpgjF-r/view?usp=drivesdk",
+      "id": "12keH6HvJoYztPA39ZzvtblmDgSpgjF-r",
+      "sha256": "01746d7b13ce3bba52a7b88d9a57e05dbc109434719c786b0f06f5df67ebeb4b"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo26n/coco_backbone_congelado/config.json",
+      "bytes": 2009,
+      "fuente": "https://drive.google.com/file/d/1-q053EBCraFAETeaudAOlr0xgS0jOS82/view?usp=drivesdk",
+      "id": "1-q053EBCraFAETeaudAOlr0xgS0jOS82",
+      "sha256": "2d6ec6e1de4c9f3b930bbda7220c1a4c01b8a50257e0f1b5f4be653c474ea58a"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo26n/coco_backbone_congelado/predicciones_val.csv",
+      "bytes": 13112,
+      "fuente": "https://drive.google.com/file/d/14FkaLldBAFktgzwj5qi8AHpWcyJ5i2GO/view?usp=drivesdk",
+      "id": "14FkaLldBAFktgzwj5qi8AHpWcyJ5i2GO",
+      "sha256": "4b131fb92ba424ba001b7cf7d3915083ced2d22b501ee045e3a03114bc36e774"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo26n/coco_backbone_congelado/metricas_deteccion.json",
+      "bytes": 318,
+      "fuente": "https://drive.google.com/file/d/1ecM4ZJaXNRV4opWZRdcEL7khzuczolpe/view?usp=drivesdk",
+      "id": "1ecM4ZJaXNRV4opWZRdcEL7khzuczolpe",
+      "sha256": "ea6042199e6d5fef9ba19ccb14a4d6688686635bafaa992b96ae14813e1b72c8"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/sin_aug/metricas.json",
+      "bytes": 3116,
+      "fuente": "https://drive.google.com/file/d/1ifg5AjnIg87-Cp3A_Q1BQSaDM1G4xb55/view?usp=drivesdk",
+      "id": "1ifg5AjnIg87-Cp3A_Q1BQSaDM1G4xb55",
+      "sha256": "30c3d57023af6268551e8885a7fa78549cfb28580560f06d78667ffc09bfa49d"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/sin_aug/predicciones_val.csv",
+      "bytes": 13061,
+      "fuente": "https://drive.google.com/file/d/15jTqINaDp8H26AshMCmr0m8us5Jgs_mD/view?usp=drivesdk",
+      "id": "15jTqINaDp8H26AshMCmr0m8us5Jgs_mD",
+      "sha256": "4a36d4d3379e3f8f6cd55d267b743cac285bdbb07587227f0af0880362a23f65"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/sin_aug/config.json",
+      "bytes": 892,
+      "fuente": "https://drive.google.com/file/d/1QYdcrlauNJTtYooLTX9_Yt_wp-RAl5OT/view?usp=drivesdk",
+      "id": "1QYdcrlauNJTtYooLTX9_Yt_wp-RAl5OT",
+      "sha256": "17ee79133322372f0faf34f49d1c15cc383fb4883424857055cdab5c54c39919"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo26n/coco_backbone_congelado/cajas_val.csv",
+      "bytes": 1727435,
+      "fuente": "https://drive.google.com/file/d/1O31811RzBcmixLW1uyRGijVcVkJLia6m/view?usp=drivesdk",
+      "id": "1O31811RzBcmixLW1uyRGijVcVkJLia6m",
+      "sha256": "4e31c39fb5b2e4fe91344759527e9b5711ffcd8ffc9ad8a022490b990e2bb0b1"
+    },
+    {
+      "destino": "docs/figuras/validacion/yolov8n__coco_completo__PR.png",
+      "bytes": 92089,
+      "fuente": "https://drive.google.com/file/d/18HSWRk7PEZxfs3AFVJA_pgdg4Mp_D_d-/view?usp=drivesdk",
+      "id": "18HSWRk7PEZxfs3AFVJA_pgdg4Mp_D_d-",
+      "sha256": "107adbe484f2228cfe18f273d89d6e7f6b6a7a333c1d8bc72dfd55e69c4efb40"
+    },
+    {
+      "destino": "docs/figuras/validacion/yolov8n__coco_backbone_congelado__PR.png",
+      "bytes": 94902,
+      "fuente": "https://drive.google.com/file/d/1O7Z9qnwXln-fYzm4AOYDSh6TYLZ1vNyG/view?usp=drivesdk",
+      "id": "1O7Z9qnwXln-fYzm4AOYDSh6TYLZ1vNyG",
+      "sha256": "4204f3a10566d1e3fcaf0e16479a51b89df99a3559ca4cafee5197640650c4ef"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo26n/coco_completo/modelo.pt",
+      "bytes": 5452421,
+      "fuente": "https://drive.google.com/file/d/164GP0b17U49qFlnm2ypi4zOsgNmhr22C/view?usp=drivesdk",
+      "id": "164GP0b17U49qFlnm2ypi4zOsgNmhr22C",
+      "sha256": "0a30c0dab2209e5bc9e017dfd9908274e9930ca5dc19fc3a1078466e8715c363"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo26n/coco_backbone_congelado/modelo.pt",
+      "bytes": 5450501,
+      "fuente": "https://drive.google.com/file/d/1vWj-Ur0FRwNEQE7W5XbUupCN5GMbL4dT/view?usp=drivesdk",
+      "id": "1vWj-Ur0FRwNEQE7W5XbUupCN5GMbL4dT",
+      "sha256": "d03f692ac58cf4fe14670eccadc2f4f3248d92fa19c9f3ec0002b313f8b3c772"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/pesos_clase/predicciones_val.csv",
+      "bytes": 13081,
+      "fuente": "https://drive.google.com/file/d/1jDsNv1VFFe2Uzuq6lZbcc-NLw7p8qmDX/view?usp=drivesdk",
+      "id": "1jDsNv1VFFe2Uzuq6lZbcc-NLw7p8qmDX",
+      "sha256": "d1520f8ea608793060d65b9622508cb0795a8dc8053e7fdb235e6e3d5f0755e8"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/sin_pesos/predicciones_val.csv",
+      "bytes": 13076,
+      "fuente": "https://drive.google.com/file/d/1iteb7lK6ND3dg0oi4Z5Sni5MSiXdmAkD/view?usp=drivesdk",
+      "id": "1iteb7lK6ND3dg0oi4Z5Sni5MSiXdmAkD",
+      "sha256": "759735e6b646d6210e054f9638fbd58fdc8bf4be8d569bb5c76d28ecd6120293"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/lr_ft_1e-4/predicciones_val.csv",
+      "bytes": 12893,
+      "fuente": "https://drive.google.com/file/d/1PnCPPk0qttIWgoffxDVjIw8jmSfa-E62/view?usp=drivesdk",
+      "id": "1PnCPPk0qttIWgoffxDVjIw8jmSfa-E62",
+      "sha256": "9e134b08d5421207f35d2f303a312760c8ddacc7128bd915478578b36e0d28c0"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/lr_ft_1e-4/metricas.json",
+      "bytes": 3078,
+      "fuente": "https://drive.google.com/file/d/12Q2GWPIMbzYnzcTX_qHvFObmbeV1U-5v/view?usp=drivesdk",
+      "id": "12Q2GWPIMbzYnzcTX_qHvFObmbeV1U-5v",
+      "sha256": "50eb6d7c2603efa18e5ffbb1163ab49cbcb7127e90142c6498d4533967ccd8b6"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/lr_ft_1e-6/config.json",
+      "bytes": 896,
+      "fuente": "https://drive.google.com/file/d/1MmBzqc1ILCHDxr-06z7S5xLLPFYnJpMz/view?usp=drivesdk",
+      "id": "1MmBzqc1ILCHDxr-06z7S5xLLPFYnJpMz",
+      "sha256": "0612fe23a9fa48aced40e305085d1b2dbc51482aaeed1b10492a15f671d491ea"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/pesos_clase/config.json",
+      "bytes": 872,
+      "fuente": "https://drive.google.com/file/d/1dDU_XWn0vzECKQ6BffDyOdgQFHJBUaRr/view?usp=drivesdk",
+      "id": "1dDU_XWn0vzECKQ6BffDyOdgQFHJBUaRr",
+      "sha256": "d4e332667b7b2761012e89531f02db0d4d60f9a11749a76fcc971d662e4382f8"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/sin_pesos/metricas.json",
+      "bytes": 3130,
+      "fuente": "https://drive.google.com/file/d/1l-1UvprR_K04Mp8Ww7s4RIOs6piWFB7P/view?usp=drivesdk",
+      "id": "1l-1UvprR_K04Mp8Ww7s4RIOs6piWFB7P",
+      "sha256": "5ca341adb73b3b6611cbb9ea62b58e4e2cd48ad468fea3340ac45bfc6dca9286"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/pesos_clase/metricas.json",
+      "bytes": 3196,
+      "fuente": "https://drive.google.com/file/d/16EezxPUXvm-IY7yh-q3tIFFG_pGQydfz/view?usp=drivesdk",
+      "id": "16EezxPUXvm-IY7yh-q3tIFFG_pGQydfz",
+      "sha256": "4a46b48b2a76e665516e7e55c66e9ca2614cdf12034f0ebb6f3e140f691b08f5"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/lr_ft_1e-6/metricas.json",
+      "bytes": 3189,
+      "fuente": "https://drive.google.com/file/d/1canzpIiOmhJ-8H3LoO0tjoWiQxzYqbji/view?usp=drivesdk",
+      "id": "1canzpIiOmhJ-8H3LoO0tjoWiQxzYqbji",
+      "sha256": "0afb61b5859c252a2a90baec25df1b927023a2849a30f827537bef4e0b309efd"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/lr_ft_1e-4/config.json",
+      "bytes": 897,
+      "fuente": "https://drive.google.com/file/d/1yKaAUq6L3IMVpPDltwAn3qqmHOt-oWtN/view?usp=drivesdk",
+      "id": "1yKaAUq6L3IMVpPDltwAn3qqmHOt-oWtN",
+      "sha256": "bd5240292a32c225c94beda4a9603607fbf50616aff22080f73affb170752ed8"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/lr_ft_1e-6/predicciones_val.csv",
+      "bytes": 13082,
+      "fuente": "https://drive.google.com/file/d/15sIOm8KKGPooLyjfaGEi-CiKojM4xHGT/view?usp=drivesdk",
+      "id": "15sIOm8KKGPooLyjfaGEi-CiKojM4xHGT",
+      "sha256": "ffa340df1e5781e7419de543a50a65709c80ed491fb060e010b65390e08cd933"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/sin_pesos/config.json",
+      "bytes": 867,
+      "fuente": "https://drive.google.com/file/d/1473r_5rddzs1HICEVe0STguIYDysUQKE/view?usp=drivesdk",
+      "id": "1473r_5rddzs1HICEVe0STguIYDysUQKE",
+      "sha256": "be467d7fca6ffbeba5a70f0f6bd564f2adcad1047d980aef1e21f01e8c95fd23"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/lr_cabeza_1e-4/metricas.json",
+      "bytes": 3218,
+      "fuente": "https://drive.google.com/file/d/1uNhqYRaV7Gg93eFJa85-RNrWwp-51vVy/view?usp=drivesdk",
+      "id": "1uNhqYRaV7Gg93eFJa85-RNrWwp-51vVy",
+      "sha256": "8a9035187f649a5441c6e18d4583ea9397bf8acfc3b08bb6cc5a786f9e3420ef"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/sin_early_stopping/metricas.json",
+      "bytes": 3093,
+      "fuente": "https://drive.google.com/file/d/16M-v3cfM8jA6cRleeO9fKaAHr4-NGYpP/view?usp=drivesdk",
+      "id": "16M-v3cfM8jA6cRleeO9fKaAHr4-NGYpP",
+      "sha256": "7859d55f10f3c541ad4594fb97b1a8ca35260eb794f29a019c084137feed461a"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/sin_early_stopping/predicciones_val.csv",
+      "bytes": 13074,
+      "fuente": "https://drive.google.com/file/d/1wYXSZ-0_9FCEEbRNVSUjbBBC0ZPNhIXM/view?usp=drivesdk",
+      "id": "1wYXSZ-0_9FCEEbRNVSUjbBBC0ZPNhIXM",
+      "sha256": "828fc6c5c83d9be888821a3068f2a9932f1e7c9dfed7c25cc6e0585a54301fb3"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/lr_cabeza_1e-4/config.json",
+      "bytes": 896,
+      "fuente": "https://drive.google.com/file/d/1IXWxE7PPW56OJC9NT4BvSX8H94a3Xq1C/view?usp=drivesdk",
+      "id": "1IXWxE7PPW56OJC9NT4BvSX8H94a3Xq1C",
+      "sha256": "f0ef8bba9ca034f1839ffe0d29faf503e1ae05c2a7c3cc921ae88a0f63a8acfc"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/sin_early_stopping/config.json",
+      "bytes": 905,
+      "fuente": "https://drive.google.com/file/d/1KaDttOQDfyiX1swojv7NxrJFmJtUDXyP/view?usp=drivesdk",
+      "id": "1KaDttOQDfyiX1swojv7NxrJFmJtUDXyP",
+      "sha256": "4f0efd4b6cccae4d410c650cad212c70a431d9f468d961f4d3c17ce065311f50"
+    },
+    {
+      "destino": "resultados_locales/resultados/mobilenetv2/lr_cabeza_1e-4/predicciones_val.csv",
+      "bytes": 13085,
+      "fuente": "https://drive.google.com/file/d/1s54wRwNQpa40jSgKOF_Mh2JJHAiIrQWG/view?usp=drivesdk",
+      "id": "1s54wRwNQpa40jSgKOF_Mh2JJHAiIrQWG",
+      "sha256": "b03ed03df352db3fe9240ae2ddebafb09309f6668e1818f1421db839244ba6c9"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo11n/coco_completo/entrenamiento/results.csv",
+      "bytes": 6136,
+      "fuente": "https://drive.google.com/file/d/12vox4M_ireBo-9nPtQEioz1X7IES_K5c/view?usp=drivesdk",
+      "id": "12vox4M_ireBo-9nPtQEioz1X7IES_K5c",
+      "sha256": "6a27706d647ccb21a7c29d56eea12ddc10830b92f93ee3107f3e05fcb619c12b"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo26n/coco_completo/entrenamiento/results.png",
+      "bytes": 309260,
+      "fuente": "https://drive.google.com/file/d/1I_dRgf1NUxYsgza5qrVTp50crvIhqCsV/view?usp=drivesdk",
+      "id": "1I_dRgf1NUxYsgza5qrVTp50crvIhqCsV",
+      "sha256": "34dfcf879a8d60505186b0041eff4673b5e7ba2e5cb561a42cfd1e470b9a6f9b"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo26n/coco_completo/entrenamiento/results.csv",
+      "bytes": 6142,
+      "fuente": "https://drive.google.com/file/d/1WlblelCjueCuwDtgsp-hCiIMZqLdAfK3/view?usp=drivesdk",
+      "id": "1WlblelCjueCuwDtgsp-hCiIMZqLdAfK3",
+      "sha256": "db91206218ae91ee54a5e4c90bdb58902368405242c9abe209b71e050258ea1e"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo26n/coco_backbone_congelado/entrenamiento/results.png",
+      "bytes": 322072,
+      "fuente": "https://drive.google.com/file/d/1vAX8YPf5LbbjVIoXf_6Etya9NWhtluOh/view?usp=drivesdk",
+      "id": "1vAX8YPf5LbbjVIoXf_6Etya9NWhtluOh",
+      "sha256": "a2b49f0f7959b04b6c7755105a3a20720e0fbbb06f3d504ebeb18310c39d8b39"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo26n/coco_backbone_congelado/entrenamiento/results.csv",
+      "bytes": 4376,
+      "fuente": "https://drive.google.com/file/d/1rpzhgLmyIwQKFuFAQRs5Y0eFic1D1zph/view?usp=drivesdk",
+      "id": "1rpzhgLmyIwQKFuFAQRs5Y0eFic1D1zph",
+      "sha256": "93776eb4ab00ec289ff3f7eec27f673fa014afcfc3c07e3e283302953bea3f62"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolov8n/coco_backbone_congelado/entrenamiento/results.csv",
+      "bytes": 6147,
+      "fuente": "https://drive.google.com/file/d/1b2RWIvrpZsGzk9HapjBeak0_-0tdtBw4/view?usp=drivesdk",
+      "id": "1b2RWIvrpZsGzk9HapjBeak0_-0tdtBw4",
+      "sha256": "4d7c20f03d07711a458bf128e98448931e506f0eeba99e898cf4f2814a089bce"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo11n/coco_backbone_congelado/entrenamiento/results.csv",
+      "bytes": 5087,
+      "fuente": "https://drive.google.com/file/d/1W7C316u0vtC_3UzW4KC_Uj4HbDxczaCw/view?usp=drivesdk",
+      "id": "1W7C316u0vtC_3UzW4KC_Uj4HbDxczaCw",
+      "sha256": "c30973e80c26b54da23e5553e7672f13bce41a637c4f245d38681532c1982c43"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolov8n/coco_completo/entrenamiento/results.png",
+      "bytes": 324531,
+      "fuente": "https://drive.google.com/file/d/1uAMnNUuA1l-pz5pKxkKjj1GEu9RPHnx1/view?usp=drivesdk",
+      "id": "1uAMnNUuA1l-pz5pKxkKjj1GEu9RPHnx1",
+      "sha256": "c5563c902fb48e085b6b95135fff86ae6208e9f46516529367ccee58d3d581c8"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo11n/coco_completo/entrenamiento/results.png",
+      "bytes": 321338,
+      "fuente": "https://drive.google.com/file/d/1ba885oUkG06NEj-j2BuasidwwAcdMkXX/view?usp=drivesdk",
+      "id": "1ba885oUkG06NEj-j2BuasidwwAcdMkXX",
+      "sha256": "390488b4a639453ff750b38100ce13a806d5986381ba952f2f456f4c35a4f765"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolo11n/coco_backbone_congelado/entrenamiento/results.png",
+      "bytes": 342574,
+      "fuente": "https://drive.google.com/file/d/1m0IfIkFeqn3Dx93Al4WjY58Yre7w9nxP/view?usp=drivesdk",
+      "id": "1m0IfIkFeqn3Dx93Al4WjY58Yre7w9nxP",
+      "sha256": "ebc6956d1ccba9df6937dafe5389cc21bd430391ebc2a9354d78d9c448553a1e"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolov8n/coco_completo/entrenamiento/results.csv",
+      "bytes": 6148,
+      "fuente": "https://drive.google.com/file/d/1Qrzd7h1yo_aOS9kPVUC2yif-lDfmxrCQ/view?usp=drivesdk",
+      "id": "1Qrzd7h1yo_aOS9kPVUC2yif-lDfmxrCQ",
+      "sha256": "337e8ebb08284faec5f57ac3a92e186c72edd78ea2cbb1da9a0124d3f8c832e3"
+    },
+    {
+      "destino": "resultados_locales/resultados/yolov8n/coco_backbone_congelado/entrenamiento/results.png",
+      "bytes": 336400,
+      "fuente": "https://drive.google.com/file/d/1w_aT9iiToiXvHwu1DguFvBqIqooA9fY6/view?usp=drivesdk",
+      "id": "1w_aT9iiToiXvHwu1DguFvBqIqooA9fY6",
+      "sha256": "00c9b8a07713cf2976280d47b66aec61a9afaf6bfc3ef29acdecc2b922bf1026"
+    },
+    {
+      "destino": "resultados_locales/resultados/resnet50/imagenet_finetuning/mejor.keras",
+      "bytes": 282967114,
+      "id": "1xUOe8Cb9zCzjmNld7MkzAEBuZ2w-ZKNe",
+      "fuente": "https://drive.google.com/file/d/1xUOe8Cb9zCzjmNld7MkzAEBuZ2w-ZKNe/view",
+      "sha256": "417551fffb528053b1bdf67c3cf1bbbf04011c55a9bd795405249ea1eb78b59d"
+    },
+    {
+      "destino": "resultados_locales/resultados/resnet50/aleatorio/mejor.keras",
+      "bytes": 283469733,
+      "id": "1iKzZqdSp9o_oya0QeRobIvsELX2r_iYq",
+      "fuente": "https://drive.google.com/file/d/1iKzZqdSp9o_oya0QeRobIvsELX2r_iYq/view",
+      "sha256": "7226d509f8847de3257e2f547d69d25deac42844d787cc558b90938b6e51c4d0"
+    },
+    {
+      "archivo": "docs/figuras/validacion/yolo11n__coco_completo__PR.png",
+      "bytes": 92710,
+      "sha256": "d05672b58e257561686761ac2997502895b438c4d5b595ace7147543378cb324",
+      "fuente": "https://drive.google.com/file/d/1L_OjTJ27cuJoRL54wbDRhixc6l7g39Jm/view?usp=drivesdk",
+      "id_drive": "1L_OjTJ27cuJoRL54wbDRhixc6l7g39Jm"
+    },
+    {
+      "archivo": "docs/figuras/validacion/yolo11n__coco_backbone_congelado__PR.png",
+      "bytes": 96563,
+      "sha256": "3da4f60e0f84f1e6a9889c40a08712a4c854ec309183b8e55f5e5b982de0edf5",
+      "fuente": "https://drive.google.com/file/d/1sO2XETK9Uc3iTkhkcTShCvmmoXfgf06R/view?usp=drivesdk",
+      "id_drive": "1sO2XETK9Uc3iTkhkcTShCvmmoXfgf06R"
+    },
+    {
+      "archivo": "docs/figuras/validacion/yolo26n__coco_completo__PR.png",
+      "bytes": 88772,
+      "sha256": "a9940e1d733d371045ccd80b7ac2525178e851ccd8def0355c1aa73bfa79baad",
+      "fuente": "https://drive.google.com/file/d/1UCocP1W9j4aKRrSXJz9RiWEL_WjLkm70/view?usp=drivesdk",
+      "id_drive": "1UCocP1W9j4aKRrSXJz9RiWEL_WjLkm70"
+    },
+    {
+      "archivo": "docs/figuras/validacion/yolo26n__coco_backbone_congelado__PR.png",
+      "bytes": 92007,
+      "sha256": "ae9ea06344b3896950ca02fee2606c5f8d9d0973085dde31fa4f24a55a1aed8b",
+      "fuente": "https://drive.google.com/file/d/1OxJ2w0AS-J_unU_VDnRG0b2ip04WNJ6Q/view?usp=drivesdk",
+      "id_drive": "1OxJ2w0AS-J_unU_VDnRG0b2ip04WNJ6Q"
+    }
+  ],
+  "verificacion_metricas": [
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/imagenet_congelado/config.json",
+      "sha256": "369c0c74d163f2ad9dff14ee329b25ea13933e7e4cd423e8e9d735a033bb9960",
+      "modelo": "mobilenetv2",
+      "modo": "imagenet_congelado",
+      "fecha": "2026-11-02T19:41:13",
+      "commit": "c32fad17f1b49755fd2c06271ec6872bd9692e24"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/imagenet_congelado/metricas.json",
+      "sha256": "54e756a6ca16bae2fcf245345fe2b250be01f274bec2748f59a065a543163c37",
+      "modelo": "mobilenetv2",
+      "modo": "imagenet_congelado",
+      "fecha": "2026-11-02T19:41:13",
+      "commit": "c32fad17f1b49755fd2c06271ec6872bd9692e24"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/imagenet_congelado/predicciones_val.csv",
+      "sha256": "a2c5e813bce7e383a1e2f817e9e0ae2a7d52d28a1a38040da841a2c111e5b43c",
+      "modelo": "mobilenetv2",
+      "modo": "imagenet_congelado",
+      "fecha": "2026-11-02T19:41:13",
+      "commit": "c32fad17f1b49755fd2c06271ec6872bd9692e24"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/imagenet_finetuning/config.json",
+      "sha256": "4da685d63378c7f6a29f891b0059f4ef3c8531ef605277a1b17c078e80cd7fff",
+      "modelo": "mobilenetv2",
+      "modo": "imagenet_finetuning",
+      "fecha": "2026-11-02T19:45:41",
+      "commit": "c32fad17f1b49755fd2c06271ec6872bd9692e24"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/imagenet_finetuning/metricas.json",
+      "sha256": "43b05c9989f47e169062933a87df4e9d0f5bb0354b75d1aacb02f7cd7c9c96d6",
+      "modelo": "mobilenetv2",
+      "modo": "imagenet_finetuning",
+      "fecha": "2026-11-02T19:45:41",
+      "commit": "c32fad17f1b49755fd2c06271ec6872bd9692e24"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/imagenet_finetuning/predicciones_val.csv",
+      "sha256": "613bc21de06be9615ed68fa4def96941adcd0bb0eb39572082cf6bc02dfed4ff",
+      "modelo": "mobilenetv2",
+      "modo": "imagenet_finetuning",
+      "fecha": "2026-11-02T19:45:41",
+      "commit": "c32fad17f1b49755fd2c06271ec6872bd9692e24"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/aleatorio/config.json",
+      "sha256": "a33740e6f80699ed69f2cdb5bf6e277392f15d52fea665c70fe3e12fbab6fbe0",
+      "modelo": "mobilenetv2",
+      "modo": "aleatorio",
+      "fecha": "2026-11-02T19:49:53",
+      "commit": "c32fad17f1b49755fd2c06271ec6872bd9692e24"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/aleatorio/metricas.json",
+      "sha256": "f8950de313588712719e72ae7fded0c3512f9de0dcbb07c7b3ab27c44cad3853",
+      "modelo": "mobilenetv2",
+      "modo": "aleatorio",
+      "fecha": "2026-11-02T19:49:53",
+      "commit": "c32fad17f1b49755fd2c06271ec6872bd9692e24"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/aleatorio/predicciones_val.csv",
+      "sha256": "4c7558e6864e2265302b1cbb201a09c45897d94deb49518b3763944e1ab9c4ac",
+      "modelo": "mobilenetv2",
+      "modo": "aleatorio",
+      "fecha": "2026-11-02T19:49:53",
+      "commit": "c32fad17f1b49755fd2c06271ec6872bd9692e24"
+    },
+    {
+      "archivo": "resultados_locales/resultados/resnet50/imagenet_congelado/config.json",
+      "sha256": "36a0cc8fb677a83594fc49a83e2c02cca4b15d69a1c77feeb2580988662d0b00",
+      "modelo": "resnet50",
+      "modo": "imagenet_congelado",
+      "fecha": "2026-11-03T16:46:40",
+      "commit": "7c8ebe1dab70822306565db12cf4a620b24a4f4c"
+    },
+    {
+      "archivo": "resultados_locales/resultados/resnet50/imagenet_congelado/metricas.json",
+      "sha256": "0e8c249563cfc9f23ee9f9f9082c608154249347ecf3a99e65f4cdfad05f89e1",
+      "modelo": "resnet50",
+      "modo": "imagenet_congelado",
+      "fecha": "2026-11-03T16:46:40",
+      "commit": "7c8ebe1dab70822306565db12cf4a620b24a4f4c"
+    },
+    {
+      "archivo": "resultados_locales/resultados/resnet50/imagenet_congelado/predicciones_val.csv",
+      "sha256": "b7d0b8db84842170f9a057285ee5f325a4d692b35cf2a86115b7bf34006e580e",
+      "modelo": "resnet50",
+      "modo": "imagenet_congelado",
+      "fecha": "2026-11-03T16:46:40",
+      "commit": "7c8ebe1dab70822306565db12cf4a620b24a4f4c"
+    },
+    {
+      "archivo": "resultados_locales/resultados/resnet50/imagenet_finetuning/config.json",
+      "sha256": "4c59652d06ff64b711a1524cacde5351f867b64b3b23e0191182ecf154c64282",
+      "modelo": "resnet50",
+      "modo": "imagenet_finetuning",
+      "fecha": "2026-11-03T16:52:43",
+      "commit": "7c8ebe1dab70822306565db12cf4a620b24a4f4c"
+    },
+    {
+      "archivo": "resultados_locales/resultados/resnet50/imagenet_finetuning/metricas.json",
+      "sha256": "9476f479a8607ac852102269891a4e56e9d4bc4a2293598db568125c9012c88d",
+      "modelo": "resnet50",
+      "modo": "imagenet_finetuning",
+      "fecha": "2026-11-03T16:52:43",
+      "commit": "7c8ebe1dab70822306565db12cf4a620b24a4f4c"
+    },
+    {
+      "archivo": "resultados_locales/resultados/resnet50/imagenet_finetuning/predicciones_val.csv",
+      "sha256": "5fdc39e902693e3192e31ca9112b39bf80386179b5628a6ae934a9d623500845",
+      "modelo": "resnet50",
+      "modo": "imagenet_finetuning",
+      "fecha": "2026-11-03T16:52:43",
+      "commit": "7c8ebe1dab70822306565db12cf4a620b24a4f4c"
+    },
+    {
+      "archivo": "resultados_locales/resultados/resnet50/aleatorio/config.json",
+      "sha256": "9db66a4bf781fec57915d98d5f8bbc5d8be8efe40c22326ead7ac0e61db92ad1",
+      "modelo": "resnet50",
+      "modo": "aleatorio",
+      "fecha": "2026-11-03T17:15:17",
+      "commit": "7c8ebe1dab70822306565db12cf4a620b24a4f4c"
+    },
+    {
+      "archivo": "resultados_locales/resultados/resnet50/aleatorio/metricas.json",
+      "sha256": "53dd772636016f7e60cd8f61c1bc065ed5c2b82c6f21d244cd36db8602434c09",
+      "modelo": "resnet50",
+      "modo": "aleatorio",
+      "fecha": "2026-11-03T17:15:17",
+      "commit": "7c8ebe1dab70822306565db12cf4a620b24a4f4c"
+    },
+    {
+      "archivo": "resultados_locales/resultados/resnet50/aleatorio/predicciones_val.csv",
+      "sha256": "b02b6001aed1e34850a79bd7b4e1e66d7f4f8a9d13c4b351568b20d9d230f9c0",
+      "modelo": "resnet50",
+      "modo": "aleatorio",
+      "fecha": "2026-11-03T17:15:17",
+      "commit": "7c8ebe1dab70822306565db12cf4a620b24a4f4c"
+    },
+    {
+      "archivo": "resultados_locales/resultados/efficientnetb0/imagenet_congelado/config.json",
+      "sha256": "2000824c62d6d668a9f68e3666879fff4edbf59ccd80054936b44c439f12a041",
+      "modelo": "efficientnetb0",
+      "modo": "imagenet_congelado",
+      "fecha": "2026-11-02T19:49:53",
+      "commit": "c32fad17f1b49755fd2c06271ec6872bd9692e24"
+    },
+    {
+      "archivo": "resultados_locales/resultados/efficientnetb0/imagenet_congelado/metricas.json",
+      "sha256": "477d00dfd73964eef0172c001604d9b5d86e4093e89b5cf2e29b921d7d8c8573",
+      "modelo": "efficientnetb0",
+      "modo": "imagenet_congelado",
+      "fecha": "2026-11-02T19:49:53",
+      "commit": "c32fad17f1b49755fd2c06271ec6872bd9692e24"
+    },
+    {
+      "archivo": "resultados_locales/resultados/efficientnetb0/imagenet_congelado/predicciones_val.csv",
+      "sha256": "8a9fe4fba2864ffaecf3ab2fe2cee6bfd1869fa611709ae7333344c93387e1dc",
+      "modelo": "efficientnetb0",
+      "modo": "imagenet_congelado",
+      "fecha": "2026-11-02T19:49:53",
+      "commit": "c32fad17f1b49755fd2c06271ec6872bd9692e24"
+    },
+    {
+      "archivo": "resultados_locales/resultados/efficientnetb0/imagenet_finetuning/config.json",
+      "sha256": "64ab35ea53a8c4f2f0b0ed138b700181295faa92b50fb0ecc328749b1fd5997b",
+      "modelo": "efficientnetb0",
+      "modo": "imagenet_finetuning",
+      "fecha": "2026-11-02T19:54:06",
+      "commit": "c32fad17f1b49755fd2c06271ec6872bd9692e24"
+    },
+    {
+      "archivo": "resultados_locales/resultados/efficientnetb0/imagenet_finetuning/metricas.json",
+      "sha256": "caafa1ade932a54145aa10cff83248230921f1637e9ed46665fe47b0e23f06a7",
+      "modelo": "efficientnetb0",
+      "modo": "imagenet_finetuning",
+      "fecha": "2026-11-02T19:54:06",
+      "commit": "c32fad17f1b49755fd2c06271ec6872bd9692e24"
+    },
+    {
+      "archivo": "resultados_locales/resultados/efficientnetb0/imagenet_finetuning/predicciones_val.csv",
+      "sha256": "75875d605d1b1073dfbae470959f140101118da5c568df75208d39a53645b55b",
+      "modelo": "efficientnetb0",
+      "modo": "imagenet_finetuning",
+      "fecha": "2026-11-02T19:54:06",
+      "commit": "c32fad17f1b49755fd2c06271ec6872bd9692e24"
+    },
+    {
+      "archivo": "resultados_locales/resultados/efficientnetb0/aleatorio/config.json",
+      "sha256": "023856f1e9cb13e5721131545d8898e8faeb3f71105652f19e8072d124fc8ac5",
+      "modelo": "efficientnetb0",
+      "modo": "aleatorio",
+      "fecha": "2026-11-02T20:00:36",
+      "commit": "c32fad17f1b49755fd2c06271ec6872bd9692e24"
+    },
+    {
+      "archivo": "resultados_locales/resultados/efficientnetb0/aleatorio/metricas.json",
+      "sha256": "381579e96b98416592c063739e29985f2acf36e27187d1690d3c614cc2ba7356",
+      "modelo": "efficientnetb0",
+      "modo": "aleatorio",
+      "fecha": "2026-11-02T20:00:36",
+      "commit": "c32fad17f1b49755fd2c06271ec6872bd9692e24"
+    },
+    {
+      "archivo": "resultados_locales/resultados/efficientnetb0/aleatorio/predicciones_val.csv",
+      "sha256": "fc0e3be380d3fa4d275b1eaddc22de459c7dd7f6ee6657c605721829e6d51ab6",
+      "modelo": "efficientnetb0",
+      "modo": "aleatorio",
+      "fecha": "2026-11-02T20:00:36",
+      "commit": "c32fad17f1b49755fd2c06271ec6872bd9692e24"
+    },
+    {
+      "archivo": "resultados_locales/resultados/yolov8n/coco_completo/config.json",
+      "sha256": "91483be7bf1c909cf5058e0cc45c43d0b08cb6aaa50bccb32171d0227734eac9",
+      "modelo": "yolov8n",
+      "modo": "coco_completo",
+      "fecha": "2026-11-10T00:03:55",
+      "commit": "cdf8606b88af92f0ce5f95c089301b3793646970"
+    },
+    {
+      "archivo": "resultados_locales/resultados/yolov8n/coco_completo/metricas.json",
+      "sha256": "cbadc7157ea4fd74c6a644756e2e5a8b47736b8d14e148acfbc193fdbe7c1baa",
+      "modelo": "yolov8n",
+      "modo": "coco_completo",
+      "fecha": "2026-11-10T00:03:55",
+      "commit": "cdf8606b88af92f0ce5f95c089301b3793646970"
+    },
+    {
+      "archivo": "resultados_locales/resultados/yolov8n/coco_completo/predicciones_val.csv",
+      "sha256": "f567da7931912868ff0f2afc7b180fba4c03f5f88ae56e94af9d302d1ac91ced",
+      "modelo": "yolov8n",
+      "modo": "coco_completo",
+      "fecha": "2026-11-10T00:03:55",
+      "commit": "cdf8606b88af92f0ce5f95c089301b3793646970"
+    },
+    {
+      "archivo": "resultados_locales/resultados/yolov8n/coco_backbone_congelado/config.json",
+      "sha256": "c76db23e6ea3b501f63a9a61f1cd5e410f5c028480c7a2658362fd08cff9a5d9",
+      "modelo": "yolov8n",
+      "modo": "coco_backbone_congelado",
+      "fecha": "2026-11-10T00:15:49",
+      "commit": "cdf8606b88af92f0ce5f95c089301b3793646970"
+    },
+    {
+      "archivo": "resultados_locales/resultados/yolov8n/coco_backbone_congelado/metricas.json",
+      "sha256": "72a2195ae29e6910b1da5c54f4073b3b060f5c90f29937d42330175c77c05787",
+      "modelo": "yolov8n",
+      "modo": "coco_backbone_congelado",
+      "fecha": "2026-11-10T00:15:49",
+      "commit": "cdf8606b88af92f0ce5f95c089301b3793646970"
+    },
+    {
+      "archivo": "resultados_locales/resultados/yolov8n/coco_backbone_congelado/predicciones_val.csv",
+      "sha256": "aa3d3e60c38ab4bae0cba9d7ff090ed3d3a1005ab7a3aceeeae6b9859981bcd6",
+      "modelo": "yolov8n",
+      "modo": "coco_backbone_congelado",
+      "fecha": "2026-11-10T00:15:49",
+      "commit": "cdf8606b88af92f0ce5f95c089301b3793646970"
+    },
+    {
+      "archivo": "resultados_locales/resultados/yolo11n/coco_completo/config.json",
+      "sha256": "8b71a4a974231c91e4feaa582f41131c4ce0234d0a16a5b1f942ba650c7b5711",
+      "modelo": "yolo11n",
+      "modo": "coco_completo",
+      "fecha": "2026-11-02T20:38:06",
+      "commit": "4006c239c21ae3d04ca6ebb56a88cff299ab7b59"
+    },
+    {
+      "archivo": "resultados_locales/resultados/yolo11n/coco_completo/metricas.json",
+      "sha256": "4b8bf19f2b8015a0106b49369c07d51f29bb84c811d9a9aeb122f4493fac43b3",
+      "modelo": "yolo11n",
+      "modo": "coco_completo",
+      "fecha": "2026-11-02T20:38:06",
+      "commit": "4006c239c21ae3d04ca6ebb56a88cff299ab7b59"
+    },
+    {
+      "archivo": "resultados_locales/resultados/yolo11n/coco_completo/predicciones_val.csv",
+      "sha256": "006bc85faab942bcb906a63a71848f79f98090f16def631d9e3652123b4ad085",
+      "modelo": "yolo11n",
+      "modo": "coco_completo",
+      "fecha": "2026-11-02T20:38:06",
+      "commit": "4006c239c21ae3d04ca6ebb56a88cff299ab7b59"
+    },
+    {
+      "archivo": "resultados_locales/resultados/yolo11n/coco_backbone_congelado/config.json",
+      "sha256": "e84f013c7aa4190685d2ee0df1c700818d6ec5cf74cf80d09cbbcf65ce6ef444",
+      "modelo": "yolo11n",
+      "modo": "coco_backbone_congelado",
+      "fecha": "2026-11-02T20:48:04",
+      "commit": "4006c239c21ae3d04ca6ebb56a88cff299ab7b59"
+    },
+    {
+      "archivo": "resultados_locales/resultados/yolo11n/coco_backbone_congelado/metricas.json",
+      "sha256": "cb4301e1fdc7a8c441fae8ebf8b6e1741b102b5c2e1330e47fc09b79837eab08",
+      "modelo": "yolo11n",
+      "modo": "coco_backbone_congelado",
+      "fecha": "2026-11-02T20:48:04",
+      "commit": "4006c239c21ae3d04ca6ebb56a88cff299ab7b59"
+    },
+    {
+      "archivo": "resultados_locales/resultados/yolo11n/coco_backbone_congelado/predicciones_val.csv",
+      "sha256": "b89c231dda360cab39f4f537125565de855999edc621f69c4d171b826afe6504",
+      "modelo": "yolo11n",
+      "modo": "coco_backbone_congelado",
+      "fecha": "2026-11-02T20:48:04",
+      "commit": "4006c239c21ae3d04ca6ebb56a88cff299ab7b59"
+    },
+    {
+      "archivo": "resultados_locales/resultados/yolo26n/coco_completo/config.json",
+      "sha256": "e077db888e859c0d61e62461a955fa15d09fbb201d1a2a9de70ca2a9aa17d883",
+      "modelo": "yolo26n",
+      "modo": "coco_completo",
+      "fecha": "2026-11-06T20:29:08",
+      "commit": "17be618c81f79a8788e72751ac82259cc671f78a"
+    },
+    {
+      "archivo": "resultados_locales/resultados/yolo26n/coco_completo/metricas.json",
+      "sha256": "f8487dd70e53df1caf9a147ec86bc3249da9d7212fe51439ef2f425b448d4ec4",
+      "modelo": "yolo26n",
+      "modo": "coco_completo",
+      "fecha": "2026-11-06T20:29:08",
+      "commit": "17be618c81f79a8788e72751ac82259cc671f78a"
+    },
+    {
+      "archivo": "resultados_locales/resultados/yolo26n/coco_completo/predicciones_val.csv",
+      "sha256": "0624ac63e96fcb337aa44df51bc2c7fdd86dcf1b549ec1502d2127d46b5efbb0",
+      "modelo": "yolo26n",
+      "modo": "coco_completo",
+      "fecha": "2026-11-06T20:29:08",
+      "commit": "17be618c81f79a8788e72751ac82259cc671f78a"
+    },
+    {
+      "archivo": "resultados_locales/resultados/yolo26n/coco_backbone_congelado/config.json",
+      "sha256": "2d6ec6e1de4c9f3b930bbda7220c1a4c01b8a50257e0f1b5f4be653c474ea58a",
+      "modelo": "yolo26n",
+      "modo": "coco_backbone_congelado",
+      "fecha": "2026-11-06T20:37:44",
+      "commit": "17be618c81f79a8788e72751ac82259cc671f78a"
+    },
+    {
+      "archivo": "resultados_locales/resultados/yolo26n/coco_backbone_congelado/metricas.json",
+      "sha256": "01746d7b13ce3bba52a7b88d9a57e05dbc109434719c786b0f06f5df67ebeb4b",
+      "modelo": "yolo26n",
+      "modo": "coco_backbone_congelado",
+      "fecha": "2026-11-06T20:37:44",
+      "commit": "17be618c81f79a8788e72751ac82259cc671f78a"
+    },
+    {
+      "archivo": "resultados_locales/resultados/yolo26n/coco_backbone_congelado/predicciones_val.csv",
+      "sha256": "4b131fb92ba424ba001b7cf7d3915083ced2d22b501ee045e3a03114bc36e774",
+      "modelo": "yolo26n",
+      "modo": "coco_backbone_congelado",
+      "fecha": "2026-11-06T20:37:44",
+      "commit": "17be618c81f79a8788e72751ac82259cc671f78a"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/sin_aug/config.json",
+      "sha256": "17ee79133322372f0faf34f49d1c15cc383fb4883424857055cdab5c54c39919",
+      "modelo": "mobilenetv2",
+      "modo": "sin_aug",
+      "fecha": "2026-11-09T23:00:51",
+      "commit": "cdf8606b88af92f0ce5f95c089301b3793646970"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/sin_aug/metricas.json",
+      "sha256": "30c3d57023af6268551e8885a7fa78549cfb28580560f06d78667ffc09bfa49d",
+      "modelo": "mobilenetv2",
+      "modo": "sin_aug",
+      "fecha": "2026-11-09T23:00:51",
+      "commit": "cdf8606b88af92f0ce5f95c089301b3793646970"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/sin_aug/predicciones_val.csv",
+      "sha256": "4a36d4d3379e3f8f6cd55d267b743cac285bdbb07587227f0af0880362a23f65",
+      "modelo": "mobilenetv2",
+      "modo": "sin_aug",
+      "fecha": "2026-11-09T23:00:51",
+      "commit": "cdf8606b88af92f0ce5f95c089301b3793646970"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/sin_pesos/config.json",
+      "sha256": "be467d7fca6ffbeba5a70f0f6bd564f2adcad1047d980aef1e21f01e8c95fd23",
+      "modelo": "mobilenetv2",
+      "modo": "sin_pesos",
+      "fecha": "2026-11-09T23:05:08",
+      "commit": "cdf8606b88af92f0ce5f95c089301b3793646970"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/sin_pesos/metricas.json",
+      "sha256": "5ca341adb73b3b6611cbb9ea62b58e4e2cd48ad468fea3340ac45bfc6dca9286",
+      "modelo": "mobilenetv2",
+      "modo": "sin_pesos",
+      "fecha": "2026-11-09T23:05:08",
+      "commit": "cdf8606b88af92f0ce5f95c089301b3793646970"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/sin_pesos/predicciones_val.csv",
+      "sha256": "759735e6b646d6210e054f9638fbd58fdc8bf4be8d569bb5c76d28ecd6120293",
+      "modelo": "mobilenetv2",
+      "modo": "sin_pesos",
+      "fecha": "2026-11-09T23:05:08",
+      "commit": "cdf8606b88af92f0ce5f95c089301b3793646970"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/pesos_clase/config.json",
+      "sha256": "d4e332667b7b2761012e89531f02db0d4d60f9a11749a76fcc971d662e4382f8",
+      "modelo": "mobilenetv2",
+      "modo": "pesos_clase",
+      "fecha": "2026-11-09T23:09:44",
+      "commit": "cdf8606b88af92f0ce5f95c089301b3793646970"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/pesos_clase/metricas.json",
+      "sha256": "4a46b48b2a76e665516e7e55c66e9ca2614cdf12034f0ebb6f3e140f691b08f5",
+      "modelo": "mobilenetv2",
+      "modo": "pesos_clase",
+      "fecha": "2026-11-09T23:09:44",
+      "commit": "cdf8606b88af92f0ce5f95c089301b3793646970"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/pesos_clase/predicciones_val.csv",
+      "sha256": "d1520f8ea608793060d65b9622508cb0795a8dc8053e7fdb235e6e3d5f0755e8",
+      "modelo": "mobilenetv2",
+      "modo": "pesos_clase",
+      "fecha": "2026-11-09T23:09:44",
+      "commit": "cdf8606b88af92f0ce5f95c089301b3793646970"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/lr_cabeza_1e-4/config.json",
+      "sha256": "f0ef8bba9ca034f1839ffe0d29faf503e1ae05c2a7c3cc921ae88a0f63a8acfc",
+      "modelo": "mobilenetv2",
+      "modo": "lr_cabeza_1e-4",
+      "fecha": "2026-11-09T23:23:53",
+      "commit": "cdf8606b88af92f0ce5f95c089301b3793646970"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/lr_cabeza_1e-4/metricas.json",
+      "sha256": "8a9035187f649a5441c6e18d4583ea9397bf8acfc3b08bb6cc5a786f9e3420ef",
+      "modelo": "mobilenetv2",
+      "modo": "lr_cabeza_1e-4",
+      "fecha": "2026-11-09T23:23:53",
+      "commit": "cdf8606b88af92f0ce5f95c089301b3793646970"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/lr_cabeza_1e-4/predicciones_val.csv",
+      "sha256": "b03ed03df352db3fe9240ae2ddebafb09309f6668e1818f1421db839244ba6c9",
+      "modelo": "mobilenetv2",
+      "modo": "lr_cabeza_1e-4",
+      "fecha": "2026-11-09T23:23:53",
+      "commit": "cdf8606b88af92f0ce5f95c089301b3793646970"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/lr_ft_1e-4/config.json",
+      "sha256": "bd5240292a32c225c94beda4a9603607fbf50616aff22080f73affb170752ed8",
+      "modelo": "mobilenetv2",
+      "modo": "lr_ft_1e-4",
+      "fecha": "2026-11-09T23:13:56",
+      "commit": "cdf8606b88af92f0ce5f95c089301b3793646970"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/lr_ft_1e-4/metricas.json",
+      "sha256": "50eb6d7c2603efa18e5ffbb1163ab49cbcb7127e90142c6498d4533967ccd8b6",
+      "modelo": "mobilenetv2",
+      "modo": "lr_ft_1e-4",
+      "fecha": "2026-11-09T23:13:56",
+      "commit": "cdf8606b88af92f0ce5f95c089301b3793646970"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/lr_ft_1e-4/predicciones_val.csv",
+      "sha256": "9e134b08d5421207f35d2f303a312760c8ddacc7128bd915478578b36e0d28c0",
+      "modelo": "mobilenetv2",
+      "modo": "lr_ft_1e-4",
+      "fecha": "2026-11-09T23:13:56",
+      "commit": "cdf8606b88af92f0ce5f95c089301b3793646970"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/lr_ft_1e-6/config.json",
+      "sha256": "0612fe23a9fa48aced40e305085d1b2dbc51482aaeed1b10492a15f671d491ea",
+      "modelo": "mobilenetv2",
+      "modo": "lr_ft_1e-6",
+      "fecha": "2026-11-09T23:18:57",
+      "commit": "cdf8606b88af92f0ce5f95c089301b3793646970"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/lr_ft_1e-6/metricas.json",
+      "sha256": "0afb61b5859c252a2a90baec25df1b927023a2849a30f827537bef4e0b309efd",
+      "modelo": "mobilenetv2",
+      "modo": "lr_ft_1e-6",
+      "fecha": "2026-11-09T23:18:57",
+      "commit": "cdf8606b88af92f0ce5f95c089301b3793646970"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/lr_ft_1e-6/predicciones_val.csv",
+      "sha256": "ffa340df1e5781e7419de543a50a65709c80ed491fb060e010b65390e08cd933",
+      "modelo": "mobilenetv2",
+      "modo": "lr_ft_1e-6",
+      "fecha": "2026-11-09T23:18:57",
+      "commit": "cdf8606b88af92f0ce5f95c089301b3793646970"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/sin_early_stopping/config.json",
+      "sha256": "4f0efd4b6cccae4d410c650cad212c70a431d9f468d961f4d3c17ce065311f50",
+      "modelo": "mobilenetv2",
+      "modo": "sin_early_stopping",
+      "fecha": "2026-11-09T23:28:43",
+      "commit": "cdf8606b88af92f0ce5f95c089301b3793646970"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/sin_early_stopping/metricas.json",
+      "sha256": "7859d55f10f3c541ad4594fb97b1a8ca35260eb794f29a019c084137feed461a",
+      "modelo": "mobilenetv2",
+      "modo": "sin_early_stopping",
+      "fecha": "2026-11-09T23:28:43",
+      "commit": "cdf8606b88af92f0ce5f95c089301b3793646970"
+    },
+    {
+      "archivo": "resultados_locales/resultados/mobilenetv2/sin_early_stopping/predicciones_val.csv",
+      "sha256": "828fc6c5c83d9be888821a3068f2a9932f1e7c9dfed7c25cc6e0585a54301fb3",
+      "modelo": "mobilenetv2",
+      "modo": "sin_early_stopping",
+      "fecha": "2026-11-09T23:28:43",
+      "commit": "cdf8606b88af92f0ce5f95c089301b3793646970"
+    }
+  ]
+}

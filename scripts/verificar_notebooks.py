@@ -25,6 +25,8 @@ import sys
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(RAIZ))
+from pdi_tp import publicaciones
 COLAB = "https://colab.research.google.com/github/candeperles/PDI-TP/blob/main/"
 # Flujo adicional acordado para el #43: solo el notebook 16 puede usarlo.
 FLUJOS_CV = {"notebooks/16_validacion_cruzada_jamaica.ipynb": "cv_jamaica_v1"}
@@ -88,6 +90,13 @@ def verificar(ruta: Path, readme: str) -> list[str]:
         return [f"no es un notebook JSON válido: {error}"]
     if nb.get("nbformat") != 4:
         return ["no es nbformat 4"]
+    if ruta.resolve().is_relative_to(RAIZ / "ejecutados"):
+        problemas = publicaciones.validar(nb, raiz=RAIZ)
+        if ruta.stat().st_size > publicaciones.LIMITE_BYTES:
+            problemas.append("la copia supera 5 MiB")
+        if ruta.resolve().relative_to(RAIZ).as_posix() not in readme:
+            problemas.append("la copia ejecutada no está enlazada en el README")
+        return problemas
     problemas = []
     codigo = []
     for i, celda in enumerate(nb.get("cells", [])):
@@ -123,6 +132,8 @@ def main(argumentos: list[str]) -> int:
     rutas = [Path(a) for a in argumentos] or sorted(
         p for p in (RAIZ / "notebooks").rglob("*.ipynb")
         if "local" not in p.relative_to(RAIZ / "notebooks").parts and ".ipynb_checkpoints" not in p.parts)
+    if not argumentos:
+        rutas += sorted((RAIZ / "ejecutados").rglob("*.ipynb"))
     readme = (RAIZ / "README.md").read_text(encoding="utf-8")
     fallas = 0
     for ruta in rutas:

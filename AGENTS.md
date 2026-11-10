@@ -48,6 +48,19 @@ No desactivar, aflojar ni esquivar el verificador. Si algo legítimo no entra en
 
 No agregar excepciones al verificador sin acuerdo del equipo.
 
+### Copias con salidas para la entrega (issue #54)
+
+Excepción aprobada por el equipo: `ejecutados/` contiene copias de consulta, publicadas con
+`scripts/publicar_ejecutado.py`. Los originales en `notebooks/` siguen sin salidas ni contadores.
+El verificador exige código idéntico al original, cabecera con procedencia, fecha, commit y entorno
+(o ausencia explícita de esos datos), sin widgets ni formatos activos y un máximo de 5 MiB por copia.
+Solo el notebook 18 admite cambiar `FAMILIA` entre `yolo26n` y `clasificadores`; se registra en la cabecera.
+Las publicaciones de test no incluyen imágenes. No se publican ejecuciones con errores.
+Si no se conservan los logs de entrenamiento, 05–10 pueden publicar una `consulta_guardada`:
+solo se ejecuta la sección independiente marcada `consulta_entrega`, se leen corridas completas
+del formato común y se declara que las celdas de entrenamiento no se volvieron a ejecutar.
+El cambio del protocolo o de los originales obliga a regenerar las copias; no se editan a mano.
+
 ### Validación cruzada de Jamaica (issue #43)
 
 Flujo adicional autorizado para `notebooks/16_validacion_cruzada_jamaica.ipynb`:

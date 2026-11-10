@@ -43,12 +43,15 @@ def seleccionar_casos(informe: Informe, semilla=42, negativos_por_estrato=3) -> 
     return casos
 
 
-def exportar_galerias(casos: pd.DataFrame, informe: Informe, rutas: Rutas, destino: Path) -> list[Path]:
+def exportar_galerias(casos: pd.DataFrame, informe: Informe, rutas: Rutas, destino: Path,
+                     formato: str = "png") -> list[Path]:
     """Genera páginas de seis casos con imagen completa y zoom de la caja.
 
     El zoom conserva contexto (al menos 24 px) y usa píxeles sin suavizado.
     No se interpreta el zoom como información de mayor resolución.
     """
+    if formato not in {"png", "jpg"}:
+        raise ValueError("Formato de galería: png o jpg.")
     destino = Path(destino)
     destino.mkdir(parents=True, exist_ok=True)
     casos.to_csv(destino / "casos.csv", index=False, encoding="utf-8")
@@ -94,7 +97,7 @@ def exportar_galerias(casos: pd.DataFrame, informe: Informe, rutas: Rutas, desti
             numero = inicio//6+1
             fig.suptitle(f"{categoria} · página {numero} · IDs completos en casos.csv", fontsize=13)
             fig.tight_layout(rect=(0, 0, 1, .97))
-            archivo = destino / f"{categoria}_{numero:02}.png"
+            archivo = destino / f"{categoria}_{numero:02}.{formato}"
             fig.savefig(archivo, dpi=100, bbox_inches="tight")
             plt.close(fig)
             archivos.append(archivo)
