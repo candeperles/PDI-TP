@@ -159,7 +159,7 @@ los puntajes sin fijar un umbral común. La evidencia corresponde a estas config
 este test: el detector recibió cajas durante el entrenamiento y ve las imágenes agrandadas
 a 640×640, mientras que la CNN recibe etiquetas por imagen a 256×256. La comparación no
 permite atribuir la diferencia únicamente a la arquitectura ni medir por separado el aporte
-de la supervisión, la resolución o el punto de operación (ver [README](../README.md#pendientes-para-el-informe)).
+de la supervisión, la resolución o el punto de operación (ver [README](../README.md#informe-y-criterios-de-comparación)).
 
 ![Métricas e intervalos pareados de ResNet50 y YOLO26n en Kingston](figuras/test_kingston/comparacion_final.png)
 
@@ -249,5 +249,6 @@ del umbral ni del test. Los intervalos por imagen tampoco resuelven la anotació
 persona ni justifican extrapolar el desempeño a otras regiones.
 
 **La evaluación y el registro de ambos enfoques están completos para la alternativa de pesos
-entrenados solo con train del #45.** Queda trasladar estas tablas, figuras y limitaciones al
-informe que se mantiene fuera del repo, y completar la revisión y el merge del PR según `AGENTS.md`.
+entrenados solo con train del #45.** Las tablas, figuras y limitaciones ya están incorporadas al
+[informe HTML](../informe_paneles_solares.html#test). Su integración se revisa mediante PR,
+conforme a `AGENTS.md`.

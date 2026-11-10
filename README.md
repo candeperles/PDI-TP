@@ -136,14 +136,16 @@ Activar el hook una vez por clon con `git config core.hooksPath .githooks`.
 El PR requiere el chequeo `verificar` en verde y las revisiones indicadas en [AGENTS.md](AGENTS.md).
 No subir datos, pesos ni resultados al repo.
 
-## Pendientes para el informe
+## Informe y criterios de comparación
 
-El informe no está en el repo: Kevin lo tiene en local. Cuando se rehaga, revisar estos puntos.
+El [informe HTML](informe_paneles_solares.html) está en el repo. Incluye la CV completa de Jamaica,
+la elección de modelos y umbrales, y la evaluación final de ResNet50 y YOLO26n. Abrirlo junto con
+la carpeta `docs/` para ver sus figuras.
 
 La evaluación final de ResNet50 y YOLO26n ya está registrada en
 [`docs/modelo_final.md`](docs/modelo_final.md#evaluación-final-en-kingston-09112026), con métricas,
-intervalos pareados, matrices de confusión y ejemplos. Incorporar esas tablas, figuras y limitaciones
-al informe; se evaluaron los pesos entrenados solo con train, con checkpoints elegidos en val.
+intervalos pareados, matrices de confusión y ejemplos. Ese material ya está incorporado al informe;
+se evaluaron los pesos entrenados solo con train, con checkpoints elegidos en val.
 
 **Clasificador contra detector ([#53](https://github.com/candeperles/PDI-TP/issues/53)).** La comparación entre
 familias no es pareja. No atribuir la diferencia solo a la arquitectura:
@@ -155,17 +157,17 @@ familias no es pareja. No atribuir la diferencia solo a la arquitectura:
 - **Umbral:** la CNN decide con 0.5 sobre una probabilidad y el detector, con 0.25 sobre la máxima confianza de
   sus cajas. No son puntos de operación equivalentes: por eso la comparación se hace sobre todo con AUC.
 
-Qué hacer en el informe:
+Interpretación aplicada en el informe:
 
-- En las conclusiones y en el capítulo de comparación, atribuir la ventaja del detector a más supervisión y más
-  resolución, no solo a la arquitectura.
-- Agregar las tres diferencias en limitaciones.
-- Si el control de YOLOv8n a 256 px ([#36](https://github.com/candeperles/PDI-TP/issues/36)) llega a estar,
-  usarlo para comparar contra las CNN a igual resolución.
-- Revisar que ningún texto diga "el detector es mejor" sin esa aclaración.
+- Comparar los enfoques completos y explicitar las diferencias de supervisión, resolución y punto de operación.
+- Limitar las conclusiones a las configuraciones y los conjuntos evaluados; no atribuir una causa aislada
+  a una comparación que cambia varios factores.
+- Mantener como trabajo pendiente el control de YOLOv8n a 256 px
+  ([#36](https://github.com/candeperles/PDI-TP/issues/36)), sin inventar sus resultados.
 
 ## Documentación
 
+- [Informe final en HTML](informe_paneles_solares.html).
 - [Alcance y requisitos de la consigna](docs/alcance.md).
 - [Instalación, descarga del dataset y problemas comunes](INSTRUCCIONES.md).
 - [Guía de entornos, guardado y recuperación](docs/guia_notebooks.md).

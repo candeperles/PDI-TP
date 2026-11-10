@@ -61,10 +61,10 @@ con esta tabla.
 | Métricas de clasificación | `resultados.guardar_corrida`: matriz de confusión, accuracy, precision, recall y F1, más F1 macro, balanced accuracy, recall sin paneles y AUC |
 | Métricas de detección | mAP50, mAP50-95 y curva precisión-recall de Ultralytics en `08`–`10` (`deteccion_val/`) |
 | Detector como clasificador | `08`–`10` guardan la máxima confianza por imagen en el formato común; `15_comparacion_validacion` lo compara con las CNN sobre las mismas 162 imágenes |
-| Informe | Pendiente |
+| Informe | [Informe HTML](../informe_paneles_solares.html), con comparaciones, CV de Jamaica, evaluación final y limitaciones |
 
 Además de la consigna: diagnóstico de la marca de agua de Google Maps (`04` y `13`), galería de errores
-(`14`), validación cruzada sobre Jamaica (`16`) y test propio de Kingston (`17`).
+(`14`), validación cruzada sobre Jamaica (`16`), elección del modelo final (`17`) y test propio de Kingston (`18`).
 
 ## Decisiones tomadas
 
