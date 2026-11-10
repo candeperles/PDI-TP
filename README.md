@@ -140,6 +140,11 @@ No subir datos, pesos ni resultados al repo.
 
 El informe no está en el repo: Kevin lo tiene en local. Cuando se rehaga, revisar estos puntos.
 
+La evaluación final de ResNet50 y YOLO26n ya está registrada en
+[`docs/modelo_final.md`](docs/modelo_final.md#evaluación-final-en-kingston-09112026), con métricas,
+intervalos pareados, matrices de confusión y ejemplos. Incorporar esas tablas, figuras y limitaciones
+al informe; se evaluaron los pesos entrenados solo con train, con checkpoints elegidos en val.
+
 **Clasificador contra detector ([#53](https://github.com/candeperles/PDI-TP/issues/53)).** La comparación entre
 familias no es pareja. No atribuir la diferencia solo a la arquitectura:
 
@@ -166,4 +171,5 @@ Qué hacer en el informe:
 - [Guía de entornos, guardado y recuperación](docs/guia_notebooks.md).
 - [Validación del dataset](docs/validacion_dataset.md) y [revisión de anotaciones](docs/revision_anotaciones.md).
 - [Receta de detección](docs/deteccion_yolov8n.md) y [evaluación de Jamaica](docs/evaluacion_jamaica.md).
+- [Elección de modelos y evaluación final en Kingston](docs/modelo_final.md).
 - [Normas de colaboración](AGENTS.md).
