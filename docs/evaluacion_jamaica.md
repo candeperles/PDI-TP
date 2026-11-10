@@ -264,8 +264,9 @@ ni se evaluó el test durante este análisis.
   F1 macro y AUC también se contrastaron con scikit-learn.
 
 La [elección documentada](modelo_final.md) reemplaza la selección provisional que se hizo cuando
-YOLO26n solo tenía un fold. La evaluación final sigue siendo una tarea posterior: no elegir ni
-cambiar modelos o umbrales después de consultar el test.
+YOLO26n solo tenía un fold. La [evaluación final de Kingston](modelo_final.md#evaluación-final-en-kingston-09112026)
+ya está registrada e incorporada al [informe](../informe_paneles_solares.html#test), con esa elección
+fijada previamente; no se ajustaron modelos ni umbrales a partir del test.
 
 ## Umbral de decisión (implementado)
 
